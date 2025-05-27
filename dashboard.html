@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cryptotech X</title>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="auth.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3DB8F5',
+                        secondary: '#2CA8E5',
+                        dark: '#0F1A33',
+                        'dark-light': '#1E293B'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 35%, #000000 70%);
+            min-height: 100vh;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3DB8F5 0%, #2CA8E5 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: white;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #3DB8F5 0%, #2CA8E5 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white">
+    <!-- Navigation -->
+    <nav class="bg-[#0D1225] border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center space-x-3">
+                        <svg class="w-8 h-8 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-opacity="0.2"/>
+                            <path d="M12 32C12 32 20 20 32 32C44 44 52 32 52 32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="32" cy="32" r="2" fill="currentColor"/>
+                            <circle cx="22" cy="32" r="2" fill="currentColor" fill-opacity="0.6"/>
+                            <circle cx="42" cy="32" r="2" fill="currentColor" fill-opacity="0.6"/>
+                        </svg>
+                        <span class="text-xl font-bold gradient-text">Cryptotech X</span>
+                    </a>
+                    <div class="hidden md:flex items-center space-x-8 ml-10">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="index.html#features" class="nav-link">Features</a>
+                        <a href="shop.html" class="nav-link">Tokens</a>
+                        <a href="contact.html" class="nav-link">Contact</a>
+                        <a href="dashboard.html" class="nav-link active">Profile</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userEmail" class="text-gray-300"></span>
+                    <button onclick="logout()" class="text-gray-300 hover:text-white flex items-center space-x-2">
+                        <span>Logout</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-3xl font-bold mb-8">Dashboard</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Token Balance Card -->
+            <div class="bg-[#0D1225] rounded-xl p-6 border border-gray-800">
+                <h3 class="text-xl font-semibold mb-4">Token Balance</h3>
+                <div class="flex items-center justify-between">
+                    <span class="text-3xl font-bold gradient-text" id="tokenBalance">0</span>
+                    <a href="shop.html" class="bg-primary/10 text-primary px-4 py-2 rounded-lg hover:bg-primary/20 transition-colors">
+                        Buy More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Personal Details Card -->
+            <div class="bg-[#0D1225] rounded-xl p-6 border border-gray-800">
+                <h3 class="text-xl font-semibold mb-4">Personal Details</h3>
+                <div class="space-y-2">
+                    <div>
+                        <span class="text-gray-400">Name:</span>
+                        <span id="userName" class="ml-2"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-400">Email:</span>
+                        <span id="userEmailDetails" class="ml-2"></span>
+                    </div>
+                    <button onclick="editDetails()" class="text-primary hover:text-primary/80 text-sm mt-4">
+                        Edit Details
+                    </button>
+                </div>
+            </div>
+
+            <!-- Payment Methods Card -->
+            <div class="bg-[#0D1225] rounded-xl p-6 border border-gray-800">
+                <h3 class="text-xl font-semibold mb-4">Payment Methods</h3>
+                <div id="paymentMethods" class="space-y-3">
+                    <!-- Payment methods will be inserted here -->
+                </div>
+                <button onclick="addPaymentMethod()" class="text-primary hover:text-primary/80 text-sm mt-4">
+                    Add Payment Method
+                </button>
+            </div>
+        </div>
+
+        <!-- Trading History -->
+        <div class="mt-8">
+            <h3 class="text-xl font-semibold mb-4">Trading History</h3>
+            <div class="bg-[#0D1225] rounded-xl border border-gray-800 overflow-hidden">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-800">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Strategy</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Tokens Used</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tradingHistory">
+                        <!-- Trading history will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-gray-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div>
+                    <a href="#" class="flex items-center space-x-2 mb-6">
+                        <svg class="w-8 h-8 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-opacity="0.2"/>
+                            <path d="M12 32C12 32 20 20 32 32C44 44 52 32 52 32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="32" cy="32" r="2" fill="currentColor"/>
+                            <circle cx="22" cy="32" r="2" fill="currentColor" fill-opacity="0.6"/>
+                            <circle cx="42" cy="32" r="2" fill="currentColor" fill-opacity="0.6"/>
+                        </svg>
+                        <span class="text-xl font-semibold tracking-tight gradient-text">Cryptotech X</span>
+                    </a>
+                    <p class="text-gray-400">Building the future of crypto trading.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Navigate</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="shop.html" class="text-gray-400 hover:text-white">Tokens</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <ul class="space-y-3">
+                        <li class="text-gray-400">support@cryptotechx.com</li>
+                        <li class="text-gray-400">+1 (888) 888-8888</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
+            <p>&copy; 2024 Cryptotech X. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            window.location.href = 'index.html';
+        }
+
+        // Update user interface with data
+        async function updateUserInterface() {
+            try {
+                console.log('Fetching user data for:', user.email);
+                const response = await fetch(`http://localhost:5000/api/get_user_data?email=${encodeURIComponent(user.email)}`);
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+                
+                const userData = await response.json();
+                console.log('Received user data:', userData);
+                
+                // Store the updated user data in localStorage
+                localStorage.setItem('user', JSON.stringify(userData));
+                
+                // Update UI elements
+                document.getElementById('userEmail').textContent = userData.email;
+                document.getElementById('userEmailDetails').textContent = userData.email;
+                document.getElementById('userName').textContent = userData.name;
+                document.getElementById('tokenBalance').textContent = userData.token_balance.toLocaleString();
+
+                // Update payment methods
+                const paymentMethods = document.getElementById('paymentMethods');
+                if (userData.payment_methods && userData.payment_methods.length > 0) {
+                    paymentMethods.innerHTML = userData.payment_methods.map(method => `
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                </svg>
+                                <span class="ml-3">•••• ${method.last4}</span>
+                            </div>
+                            <span class="text-gray-400">Expires ${method.expiry}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    paymentMethods.innerHTML = '<p class="text-gray-400">No payment methods added</p>';
+                }
+
+                // Update trading history
+                const tradingHistory = document.getElementById('tradingHistory');
+                if (userData.trading_history && userData.trading_history.length > 0) {
+                    tradingHistory.innerHTML = userData.trading_history.map(trade => `
+                        <tr class="border-b border-gray-800">
+                            <td class="px-6 py-4 whitespace-nowrap">${trade.date}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${trade.strategy}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${trade.tokens}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs rounded-full ${
+                                    trade.status === 'Completed' ? 'bg-green-500/20 text-green-400' :
+                                    trade.status === 'Pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                                    'bg-red-500/20 text-red-400'
+                                }">${trade.status}</span>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tradingHistory.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-gray-400">No trading history available</td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                // Try to use cached data from localStorage if available
+                const cachedUser = JSON.parse(localStorage.getItem('user'));
+                if (cachedUser) {
+                    document.getElementById('userEmail').textContent = cachedUser.email;
+                    document.getElementById('userEmailDetails').textContent = cachedUser.email;
+                    document.getElementById('userName').textContent = cachedUser.name;
+                    document.getElementById('tokenBalance').textContent = cachedUser.token_balance.toLocaleString();
+                } else {
+                    alert('Error loading user data. Please try logging in again.');
+                    logout();
+                }
+            }
+        }
+
+        // Call updateUserInterface when the page loads
+        updateUserInterface();
+
+        // Add payment method function
+        async function addPaymentMethod() {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (!user || !user.email) {
+                    throw new Error('User not logged in');
+                }
+
+                const response = await fetch('http://localhost:5000/api/add_payment_method', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: user.email,
+                        payment_method: {
+                            type: 'card',
+                            last4: '4242',
+                            expiry: '12/24'
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Failed to add payment method');
+                }
+
+                // Refresh the UI
+                await updateUserInterface();
+                alert('Payment method added successfully!');
+            } catch (error) {
+                console.error('Error adding payment method:', error);
+                alert('Error adding payment method. Please try again.');
+            }
+        }
+
+        // Edit details function
+        function editDetails() {
+            // This would typically open a form or modal to edit user details
+            alert('Edit details functionality coming soon!');
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html> 

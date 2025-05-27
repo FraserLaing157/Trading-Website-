@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="auth.js"></script>
+    <script src="cart.js"></script>
+    <script src="ticker.js"></script>
     <style>
         @font-face {
             font-family: 'Inter';
@@ -731,6 +734,33 @@
         }
 
         /* Rest of your existing styles */
+
+        /* Basic input styles */
+        input {
+            background: #1E293B;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: white;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #3DB8F5;
+            outline: none;
+        }
+
+        /* Remove the animation styles */
+        .animated-input-wrapper,
+        .animated-input,
+        .animated-input-overlay,
+        .animated-char,
+        @keyframes floatIn,
+        .animated-input:focus + .animated-input-overlay .animated-char,
+        .animated-input-wrapper::after,
+        .animated-input-wrapper:focus-within::after {
+            display: none !important;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -861,22 +891,26 @@
                     }
                 </style>
                 
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
-                    <a href="#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Tokens</a>
-                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
-                    <div class="relative">
-                        <a href="cart.html" class="cart-button group">
-                            <div class="cart-container">
-                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                </svg>
-                                <span id="cartBadge" class="absolute -top-2 -right-2 bg-primary text-xs text-white rounded-full w-5 h-5 flex items-center justify-center animate-cartBadgeAppear">0</span>
-                            </div>
-                        </a>
+                                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#home" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
+                        <a href="#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
+                        <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Tokens</a>
+                        <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
+                        <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors font-medium" style="display: none;">Profile</a>
+                        <div class="relative">
+                            <a href="cart.html" class="cart-button group">
+                                <div class="cart-container">
+                                    <svg class="w-6 h-6 text-gray-300 transition-transform group-hover:scale-110 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                    </svg>
+                                    <div class="cart-badge" id="cartCount">0</div>
+                                </div>
+                            </a>
+                        </div>
+                        <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">
+                            Sign In
+                        </button>
                     </div>
-                </div>
             </div>
         </div>
     </nav>
@@ -1358,6 +1392,102 @@
         </footer>
     </main>
 
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-[#0D1225] rounded-xl p-8 w-full max-w-md mx-4 relative">
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-white" onclick="toggleLogin()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            
+            <!-- Login Form -->
+            <div id="loginForm">
+                <h2 class="text-2xl font-bold mb-6 gradient-text">Sign In to Your Account</h2>
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-300 mb-2" for="email">Email</label>
+                        <input type="email" id="email" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2" for="password">Password</label>
+                        <input type="password" id="password" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox bg-[#1E293B] border-gray-600 rounded text-primary">
+                            <span class="ml-2 text-sm text-gray-300">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm text-primary hover:text-primary/80">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-semibold transition-colors">
+                        Sign In
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-gray-400">
+                    Don't have an account? 
+                    <a href="#" onclick="showRegister()" class="text-primary hover:text-primary/80">Register</a>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="hidden">
+                <h2 class="text-2xl font-bold mb-6 gradient-text">Create Your Account</h2>
+                <form onsubmit="handleRegister(event)" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-300 mb-2" for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 mb-2" for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2" for="regEmail">Email</label>
+                        <input type="email" id="regEmail" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2" for="regPassword">Password</label>
+                        <input type="password" id="regPassword" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2" for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
+                    </div>
+                    <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-semibold transition-colors">
+                        Create Account
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-gray-400">
+                    Already have an account? 
+                    <a href="#" onclick="showLogin()" class="text-primary hover:text-primary/80">Sign In</a>
+                </p>
+            </div>
+
+            <!-- Trading History -->
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold mb-4">Trading History</h3>
+                <div class="bg-[#0D1225] rounded-xl border border-gray-800 overflow-hidden">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-800">
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Strategy</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Tokens Used</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tradingHistory">
+                            <!-- Trading history will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Initialize cart from localStorage
         let cart = JSON.parse(localStorage.getItem('cart')) || {
@@ -1415,73 +1545,6 @@
             window.addEventListener('scroll', updateNavbar);
             updateNavbar();
 
-            // Crypto ticker functionality
-            const tickerContainer = document.getElementById('crypto-ticker');
-            if (tickerContainer) {
-                // Initial static data
-                const initialData = {
-                    'BTC/USD': { price: 65420.50, change: 2.45, name: 'Bitcoin' },
-                    'ETH/USD': { price: 3215.75, change: -1.32, name: 'Ethereum' },
-                    'SOL/USD': { price: 146.80, change: 3.25, name: 'Solana' },
-                    'BNB/USD': { price: 485.35, change: -0.75, name: 'Binance' },
-                    'ADA/USD': { price: 0.72, change: 1.28, name: 'Cardano' },
-                    'XRP/USD': { price: 0.85, change: 0.65, name: 'Ripple' }
-                };
-
-                const prices = { ...initialData };
-
-                function formatPrice(price) {
-                    return parseFloat(price).toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    });
-                }
-
-                function formatChange(change) {
-                    return (change > 0 ? '+' : '') + change.toFixed(2) + '%';
-                }
-
-                function createTickerItem(symbol, data) {
-                    const changeClass = data.change >= 0 ? 'positive' : 'negative';
-                    const arrow = data.change >= 0 ? '↑' : '↓';
-                    
-                    return `
-                        <div class="ticker-item">
-                            <span class="ticker-symbol">${data.name}</span>
-                            <span class="ticker-price">$${formatPrice(data.price)}</span>
-                            <span class="ticker-change ${changeClass}">
-                                <span class="ticker-arrow">${arrow}</span>
-                                ${formatChange(data.change)}
-                            </span>
-                        </div>
-                    `;
-                }
-
-                function updateTicker() {
-                    let tickerHTML = '';
-                    Object.entries(prices).forEach(([symbol, data]) => {
-                        tickerHTML += createTickerItem(symbol, data);
-                    });
-                    
-                    // Double the content for seamless scrolling
-                    tickerContainer.innerHTML = tickerHTML + tickerHTML;
-                }
-
-                // Initial update
-                updateTicker();
-
-                // Simulate price updates
-                setInterval(() => {
-                    Object.keys(prices).forEach(symbol => {
-                        // Simulate small random price movements
-                        const randomChange = (Math.random() - 0.5) * 0.5;
-                        prices[symbol].price *= (1 + randomChange/100);
-                        prices[symbol].change = randomChange;
-                    });
-                    updateTicker();
-                }, 2000);
-            }
-
             // OS detection and icon update
             function detectOS() {
                 const platform = navigator.platform.toLowerCase();
@@ -1516,8 +1579,174 @@
                 });
             }
 
-            // Call detectOS when the page loads
+            // Call detectOS and checkLoginState when the page loads
             detectOS();
+            checkLoginState();
+        });
+
+        });
+
+        // Login functionality
+        const loginModal = document.getElementById('loginModal');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const userDashboard = document.getElementById('userDashboard');
+        const loginBtn = document.getElementById('loginBtn');
+
+        loginBtn.addEventListener('click', toggleLogin);
+
+        function toggleLogin() {
+            loginModal.classList.toggle('hidden');
+            loginModal.classList.toggle('flex');
+        }
+
+        function showRegister() {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        }
+
+        function showLogin() {
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store user data in localStorage
+                    localStorage.setItem('user', JSON.stringify(data));
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during login');
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const email = document.getElementById('regEmail').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                        name: `${firstName} ${lastName}`
+                    }),
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store user data in localStorage
+                    localStorage.setItem('user', JSON.stringify(data));
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during registration');
+            }
+        }
+
+        function logout() {
+            userDashboard.classList.add('hidden');
+            // Here you would typically clear the session/token
+        }
+
+        // Example data population
+        document.getElementById('tokenBalance').textContent = '1,500';
+        
+        const paymentMethods = document.getElementById('paymentMethods');
+        paymentMethods.innerHTML = `
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    </svg>
+                    <span class="ml-3">•••• 4242</span>
+                </div>
+                <span class="text-gray-400">Expires 12/24</span>
+            </div>
+        `;
+
+        const tradingHistory = document.getElementById('tradingHistory');
+        tradingHistory.innerHTML = `
+            <tr class="border-b border-gray-800">
+                <td class="px-6 py-4 whitespace-nowrap">2024-05-27</td>
+                <td class="px-6 py-4 whitespace-nowrap">Trend Following</td>
+                <td class="px-6 py-4 whitespace-nowrap">50</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400">Completed</span>
+                </td>
+            </tr>
+        `;
+
+        // Add input animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedInputs = document.querySelectorAll('.animated-input');
+            
+            animatedInputs.forEach(input => {
+                input.addEventListener('input', function(e) {
+                    const overlay = this.nextElementSibling;
+                    const text = this.value;
+                    
+                    // Clear previous characters
+                    overlay.innerHTML = '';
+                    
+                    // Create animated characters
+                    text.split('').forEach((char, index) => {
+                        const span = document.createElement('span');
+                        span.textContent = this.type === 'password' ? '•' : char;
+                        span.className = 'animated-char';
+                        span.style.animationDelay = `${index * 50}ms`;
+                        overlay.appendChild(span);
+                    });
+                });
+
+                // Add glow effect
+                input.addEventListener('mousemove', function(e) {
+                    const wrapper = this.closest('.animated-input-wrapper');
+                    const rect = wrapper.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    wrapper.style.setProperty('--x', `${x}%`);
+                    wrapper.style.setProperty('--y', `${y}%`);
+                });
+            });
         });
     </script>
 
@@ -1554,7 +1783,7 @@
         .animated-border::before {
             content: '';
             position: absolute;
-            top: -50%;
+             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
