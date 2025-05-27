@@ -238,6 +238,124 @@
                 transform: scale(1);
             }
         }
+
+        .logo-wrapper {
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
+
+        .logo-particles {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            left: -50%;
+            top: -50%;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            width: var(--size);
+            height: var(--size);
+            background: var(--color);
+            filter: blur(1px);
+            z-index: var(--z);
+        }
+
+        .particle.front {
+            animation: floatParticleFront 8s infinite;
+            animation-delay: var(--delay);
+        }
+
+        .particle.back {
+            animation: floatParticleBack 10s infinite;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes floatParticleFront {
+            0% { transform: translate(0%, 0%) scale(1); }
+            25% { transform: translate(120%, -30%) scale(1.2); }
+            50% { transform: translate(80%, 100%) scale(0.8); }
+            75% { transform: translate(-50%, 50%) scale(1.1); }
+            100% { transform: translate(0%, 0%) scale(1); }
+        }
+
+        @keyframes floatParticleBack {
+            0% { transform: translate(0%, 0%) scale(1); }
+            25% { transform: translate(-80%, 60%) scale(1.4); }
+            50% { transform: translate(100%, -50%) scale(0.9); }
+            75% { transform: translate(30%, 100%) scale(1.2); }
+            100% { transform: translate(0%, 0%) scale(1); }
+        }
+
+        .particle-trails {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%,
+                rgba(61, 184, 245, 0.1) 0%,
+                rgba(44, 168, 229, 0.05) 50%,
+                transparent 70%);
+            animation: pulseTrails 4s infinite ease-in-out;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes pulseTrails {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.5;
+            }
+        }
+
+        .logo-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #3DB8F5 0%, #2CA8E5 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(61, 184, 245, 0.2);
+        }
+
+        .billing-toggle {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .billing-option {
+            position: relative;
+            z-index: 1;
+        }
+
+        .billing-option.active {
+            background: rgba(61, 184, 245, 0.1);
+            color: #3DB8F5;
+        }
+
+        .package-card {
+            transition: all 0.3s ease;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .popular-package {
+            border: 2px solid #3DB8F5;
+            box-shadow: 0 0 30px rgba(61, 184, 245, 0.2);
+        }
+
+        .feature-check {
+            color: #3DB8F5;
+        }
     </style>
 </head>
 <body class="min-h-screen text-white overflow-x-hidden antialiased">
@@ -246,7 +364,279 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <div class="flex items-center">
-                    <a href="index.html" class="flex items-center space-x-3">
+                    <a href="index.html" class="flex items-center space-x-3 relative logo-wrapper">
+                        <div class="logo-particles">
+                            <!-- Front particles -->
+                            <div class="particle front" style="--delay: 0s; --size: 4px; --color: #3DB8F5; --z: 2"></div>
+                            <div class="particle front" style="--delay: 1.5s; --size: 3px; --color: #3DB8F5; --z: 2"></div>
+                            <div class="particle front" style="--delay: 2.8s; --size: 5px; --color: #2CA8E5; --z: 2"></div>
+                            <!-- Back particles -->
+                            <div class="particle back" style="--delay: 0.7s; --size: 6px; --color: #2CA8E5; --z: 0"></div>
+                            <div class="particle back" style="--delay: 2.2s; --size: 4px; --color: #3DB8F5; --z: 0"></div>
+                            <div class="particle back" style="--delay: 3.5s; --size: 5px; --color: #2CA8E5; --z: 0"></div>
+                            <!-- Connection lines -->
+                            <div class="particle-trails"></div>
+                        </div>
+                        <span class="text-2xl logo-text gradient-text relative" style="z-index: 1">Cryptotech X</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
+                    <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
+                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium active">Tokens</a>
+                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
+                    <div class="relative">
+                        <a href="cart.html" class="cart-button group">
+                            <div class="cart-container">
+                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <span id="cartBadge" class="absolute -top-2 -right-2 bg-primary text-xs text-white rounded-full w-5 h-5 flex items-center justify-center animate-cartBadgeAppear">0</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Shop Header -->
+            <div class="text-center mb-16">
+                <h1 class="text-5xl font-bold mb-6">
+                    <span class="text-white">Choose Your </span>
+                    <span class="gradient-text">Trading Plan</span>
+                </h1>
+                <p class="text-gray-400 text-xl max-w-2xl mx-auto mb-8">
+                    Select the perfect plan for your trading needs. Save more with our annual plans.
+                </p>
+
+                <!-- Billing Toggle -->
+                <div class="flex justify-center items-center space-x-4 mb-12">
+                    <div class="billing-toggle flex bg-[#0D1225] p-1 rounded-xl border border-[#3DB8F5]/20">
+                        <button class="billing-option active px-6 py-2 rounded-lg text-white font-medium transition-all duration-300" data-billing="monthly">Monthly</button>
+                        <button class="billing-option px-6 py-2 rounded-lg text-gray-400 font-medium transition-all duration-300" data-billing="annual">Annual <span class="text-[#3DB8F5] text-sm">-25%</span></button>
+                        <button class="billing-option px-6 py-2 rounded-lg text-gray-400 font-medium transition-all duration-300" data-billing="biennial">Biennial <span class="text-[#3DB8F5] text-sm">-35%</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Package Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16 relative">
+                <!-- Free Package -->
+                <div class="package-card p-8">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Free</h3>
+                        <div class="flex items-baseline mb-4">
+                            <span class="text-4xl font-bold">$0</span>
+                            <span class="text-gray-400 ml-2">/month</span>
+                        </div>
+                        <p class="text-gray-400">Perfect for testing our platform</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">Unlimited</span> Terminal Access</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">3</span> Active SmartTrades</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">1</span> Running Signal Bot</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">1</span> Running Grid Bot</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">1</span> Running DCA Bot</span>
+                        </li>
+                    </ul>
+                    
+                    <button class="outline-btn w-full py-4 rounded-lg text-white font-semibold">
+                        Get Started Free
+                    </button>
+                </div>
+
+                <!-- Pro Package -->
+                <div class="package-card popular-package p-8 relative">
+                    <div class="absolute top-4 right-4">
+                        <span class="px-3 py-1 bg-[#3DB8F5] text-black text-sm font-semibold rounded-full">Most Popular</span>
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Pro</h3>
+                        <div class="pricing-monthly flex items-baseline mb-4">
+                            <span class="text-4xl font-bold">$49</span>
+                            <span class="text-gray-400 ml-2">/month</span>
+                        </div>
+                        <div class="pricing-annual hidden items-baseline mb-4">
+                            <span class="text-4xl font-bold">$37</span>
+                            <span class="text-gray-400 ml-2">/month</span>
+                            <span class="ml-2 text-sm text-[#3DB8F5]">Save $144/year</span>
+                        </div>
+                        <div class="pricing-biennial hidden items-baseline mb-4">
+                            <span class="text-4xl font-bold">$32</span>
+                            <span class="text-gray-400 ml-2">/month</span>
+                            <span class="ml-2 text-sm text-[#3DB8F5]">Save $408/2years</span>
+                        </div>
+                        <p class="text-gray-400">Perfect for active traders</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">50</span> Active SmartTrades</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">50</span> Running Signal Bots</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">10</span> Running Grid Bots</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">50</span> Running DCA Bots</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">500</span> Active DCA Trades</span>
+                        </li>
+                    </ul>
+                    
+                    <button class="buy-btn w-full py-4 rounded-lg text-black font-semibold" onclick="addToCart('pro', getPlanPrice('pro'), getPlanTokens('pro'))">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Expert Package -->
+                <div class="package-card p-8">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Expert</h3>
+                        <div class="pricing-monthly flex items-baseline mb-4">
+                            <span class="text-4xl font-bold">$79</span>
+                            <span class="text-gray-400 ml-2">/month</span>
+                        </div>
+                        <div class="pricing-annual hidden items-baseline mb-4">
+                            <span class="text-4xl font-bold">$59</span>
+                            <span class="text-gray-400 ml-2">/month</span>
+                            <span class="ml-2 text-sm text-[#3DB8F5]">Save $240/year</span>
+                        </div>
+                        <div class="pricing-biennial hidden items-baseline mb-4">
+                            <span class="text-4xl font-bold">$51</span>
+                            <span class="text-gray-400 ml-2">/month</span>
+                            <span class="ml-2 text-sm text-[#3DB8F5]">Save $672/2years</span>
+                        </div>
+                        <p class="text-gray-400">For professional traders</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">Unlimited</span> Active SmartTrades</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">250</span> Running Signal Bots</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">50</span> Running Grid Bots</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">250</span> Running DCA Bots</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="flex items-center"><span class="font-semibold mr-2">2500</span> Active DCA Trades</span>
+                        </li>
+                    </ul>
+                    
+                    <button class="outline-btn w-full py-4 rounded-lg text-white font-semibold" onclick="addToCart('expert', getPlanPrice('expert'), getPlanTokens('expert'))">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="p-6">
+                    <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Flexible Pricing</h3>
+                    <p class="text-gray-400">Choose the package that fits your trading volume and budget</p>
+                </div>
+
+                <div class="p-6">
+                    <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Secure Trading</h3>
+                    <p class="text-gray-400">Enterprise-grade security for your trading activities</p>
+                </div>
+
+                <div class="p-6">
+                    <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Instant Access</h3>
+                    <p class="text-gray-400">Start trading immediately after purchase</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div>
+                    <a href="#" class="flex items-center space-x-2 mb-6">
                         <svg class="w-8 h-8 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <!-- Main circular frame -->
                             <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-opacity="0.2"/>
@@ -290,222 +680,41 @@
                             <path d="M8 32H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             <path d="M50 32H56" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
-                        <span class="text-2xl logo-text gradient-text">Cryptotech X</span>
+                        <span class="text-xl font-semibold tracking-tight gradient-text">Cryptotech X</span>
                     </a>
+                    <p class="text-gray-400">Building the future of crypto trading.</p>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
-                    <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium active">Tokens</a>
-                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
-                    <div class="relative">
-                        <a href="cart.html" class="cart-button group">
-                            <div class="cart-container">
-                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                </svg>
-                                <span id="cartBadge" class="absolute -top-2 -right-2 bg-primary text-xs text-white rounded-full w-5 h-5 flex items-center justify-center animate-cartBadgeAppear">0</span>
-                            </div>
-                        </a>
-                    </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Navigate</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="shop.html" class="text-gray-400 hover:text-white">Tokens</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <ul class="space-y-3">
+                        <li class="text-gray-400">support@cryptotechx.com</li>
+                        <li class="text-gray-400">+1 (888) 888-8888</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </nav>
-
-    <main class="pt-32 pb-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Shop Header -->
-            <div class="text-center mb-16">
-                <h1 class="text-5xl font-bold mb-6">
-                    <span class="text-white">Choose Your </span>
-                    <span class="gradient-text">Token Package</span>
-                </h1>
-                <p class="text-gray-400 text-xl max-w-2xl mx-auto">
-                    Select the perfect token package for your trading needs. The more tokens you buy, the more you save.
-                </p>
-            </div>
-
-            <!-- Package Grid -->
-            <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <!-- Starter Package -->
-                <div class="package-card p-8">
-                    <div class="mb-8">
-                        <h3 class="text-2xl font-bold mb-2">Starter Package</h3>
-                        <div class="flex items-baseline mb-4">
-                            <span class="text-4xl font-bold">$99</span>
-                            <span class="text-gray-400 ml-2">/ 10 tokens</span>
-                        </div>
-                        <p class="text-gray-400">Perfect for testing the waters with automated trading</p>
-                    </div>
-                    
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            10 Days of Trading
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Up to 3 Active Strategies
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Basic Analytics
-                        </li>
-                    </ul>
-                    
-                    <button class="outline-btn w-full py-4 rounded-lg text-white font-semibold" onclick="addToCart('starter', 99, 10)">
-                        Add to Cart
-                    </button>
-                </div>
-
-                <!-- Popular Package -->
-                <div class="package-card popular-package p-8 relative">
-                    <div class="absolute top-4 right-4">
-                        <span class="discount-badge">10% OFF</span>
-                    </div>
-                    <div class="mb-8">
-                        <h3 class="text-2xl font-bold mb-2">Popular Package</h3>
-                        <div class="flex items-baseline mb-4">
-                            <span class="text-4xl font-bold">$450</span>
-                            <span class="text-gray-400 ml-2">/ 50 tokens</span>
-                        </div>
-                        <p class="text-gray-400">Most popular choice for serious traders</p>
-                    </div>
-                    
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            50 Days of Trading
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Unlimited Strategies
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Advanced Analytics
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Priority Support
-                        </li>
-                    </ul>
-                    
-                    <button class="buy-btn w-full py-4 rounded-lg text-black font-semibold" onclick="addToCart('popular', 450, 50)">
-                        Add to Cart
-                    </button>
-                </div>
-
-                <!-- Pro Package -->
-                <div class="package-card p-8 relative">
-                    <div class="absolute top-4 right-4">
-                        <span class="discount-badge">20% OFF</span>
-                    </div>
-                    <div class="mb-8">
-                        <h3 class="text-2xl font-bold mb-2">Pro Package</h3>
-                        <div class="flex items-baseline mb-4">
-                            <span class="text-4xl font-bold">$800</span>
-                            <span class="text-gray-400 ml-2">/ 100 tokens</span>
-                        </div>
-                        <p class="text-gray-400">Maximum value for professional traders</p>
-                    </div>
-                    
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            100 Days of Trading
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Unlimited Strategies
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Premium Analytics
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            24/7 Priority Support
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 feature-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Strategy Consultation
-                        </li>
-                    </ul>
-                    
-                    <button class="outline-btn w-full py-4 rounded-lg text-white font-semibold" onclick="addToCart('pro', 800, 100)">
-                        Add to Cart
-                    </button>
-                </div>
-            </div>
-
-            <!-- Features Section -->
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div class="p-6">
-                    <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Flexible Pricing</h3>
-                    <p class="text-gray-400">Choose the package that fits your trading volume and budget</p>
-                </div>
-
-                <div class="p-6">
-                    <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Secure Trading</h3>
-                    <p class="text-gray-400">Enterprise-grade security for your trading activities</p>
-                </div>
-
-                <div class="p-6">
-                    <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Instant Access</h3>
-                    <p class="text-gray-400">Start trading immediately after purchase</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-gray-400">&copy; 2024 Cryptotech X. All rights reserved.</p>
-            </div>
+        
+        <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
+            <p>&copy; 2024 Cryptotech X. All rights reserved.</p>
         </div>
     </footer>
 
@@ -592,6 +801,22 @@
             
             // OS detection and icon update
             detectOS();
+
+            const billingOptions = document.querySelectorAll('.billing-option');
+            
+            billingOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    billingOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Update pricing display
+                    const billingType = this.dataset.billing;
+                    updatePricing(billingType);
+                });
+            });
         });
 
         // Navbar scroll behavior
@@ -643,6 +868,42 @@
                     iconSpan.innerHTML = icon;
                 }
             });
+        }
+
+        function updatePricing(billingType) {
+            const packages = ['monthly', 'annual', 'biennial'];
+            
+            packages.forEach(pkg => {
+                const elements = document.querySelectorAll('.pricing-' + pkg);
+                elements.forEach(el => {
+                    el.style.display = pkg === billingType ? 'flex' : 'none';
+                });
+            });
+        }
+
+        function getPlanPrice(plan) {
+            const activeBilling = document.querySelector('.billing-option.active').dataset.billing;
+            const prices = {
+                pro: {
+                    monthly: 49,
+                    annual: 37,
+                    biennial: 32
+                },
+                expert: {
+                    monthly: 79,
+                    annual: 59,
+                    biennial: 51
+                }
+            };
+            return prices[plan][activeBilling];
+        }
+
+        function getPlanTokens(plan) {
+            const tokens = {
+                pro: 50,
+                expert: 250
+            };
+            return tokens[plan];
         }
     </script>
 </body>
