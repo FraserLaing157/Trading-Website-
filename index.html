@@ -9,6 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Add at the top of the style section */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 35%, #000000 70%);
@@ -96,11 +101,12 @@
             background: rgba(15, 26, 51, 0.4);
         }
         .platform-preview {
-            width: 100%;
+            width: 120%;
             max-width: none;
             position: relative;
             z-index: 1;
             transition: transform 0.3s ease;
+            margin-right: -10%;
         }
         .platform-preview:hover {
             transform: scale(1.02);
@@ -108,8 +114,8 @@
         .platform-preview img {
             width: 100%;
             height: auto;
-            max-height: 80vh;
-            object-fit: contain;
+            max-height: none;
+            object-fit: cover;
             border-radius: 12px;
             box-shadow: 0 0 40px rgba(61, 184, 245, 0.15);
             transition: box-shadow 0.3s ease;
@@ -143,11 +149,12 @@
         }
         .hero-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 0.8fr 1.2fr;
             gap: 2rem;
             align-items: center;
             max-width: 1400px;
             margin: 0 auto;
+            overflow: visible;
         }
         @media (max-width: 768px) {
             .hero-grid {
@@ -156,6 +163,11 @@
             }
             .hero-content {
                 padding-right: 0;
+            }
+            .platform-preview {
+                width: 100%;
+                margin-right: 0;
+                margin-top: 2rem;
             }
         }
         .ticker-container {
@@ -297,8 +309,10 @@
             width: 80%;
         }
 
+        /* Add active state for nav links */
         .nav-link.active {
             color: white;
+            position: relative;
         }
 
         .nav-link.active::before {
@@ -434,17 +448,6 @@
                 max-width: min(150px, 35vw);
             }
         }
-
-        /* Add mouse trail effect */
-        .mouse-trail {
-            position: fixed;
-            pointer-events: none;
-            z-index: 1;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-        }
     </style>
     <script>
         tailwind.config = {
@@ -465,17 +468,6 @@
     </script>
 </head>
 <body class="min-h-screen text-white overflow-x-hidden antialiased">
-    <!-- Floating background images -->
-    <div class="floating-image top-right">
-        <img src="images/AdobeStock_519087125.png" alt="Decorative Shape 1">
-    </div>
-    <div class="floating-image middle-right">
-        <img src="images/AdobeStock_1348868299.png" alt="Decorative Shape 2">
-    </div>
-    <div class="floating-image bottom-left">
-        <img src="images/AdobeStock_1002555427.png" alt="Decorative Shape 3">
-    </div>
-
     <!-- Navigation -->
     <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -529,22 +521,31 @@
                     </a>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-2">
-                    <div class="nav-container">
-                        <a href="#features" class="nav-link active">Features</a>
-                        <a href="#products" class="nav-link">Products</a>
-                        <a href="#solutions" class="nav-link">Solutions</a>
-                        <a href="#faq" class="nav-link">FAQ</a>
-                    </div>
-                    <a href="#" class="get-started-btn ml-4">Get Early access</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
+                    <a href="#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
+                    <a href="#tokens" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Tokens</a>
+                    <a href="#contact" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
+                    <a href="#" class="get-started-btn">Get Early access</a>
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- Floating background images -->
+    <div class="floating-image top-right">
+        <img src="images/AdobeStock_519087125.png" alt="Decorative Shape 1">
+    </div>
+    <div class="floating-image middle-right">
+        <img src="images/AdobeStock_1348868299.png" alt="Decorative Shape 2">
+    </div>
+    <div class="floating-image bottom-left">
+        <img src="images/AdobeStock_1002555427.png" alt="Decorative Shape 3">
+    </div>
+
     <main>
         <!-- Hero Section -->
-        <section class="hero-section">
+        <section id="home" class="hero-section">
             <div class="hero-grid">
                 <!-- Hero Text Content -->
                 <div class="hero-content">
@@ -582,8 +583,8 @@
             </div>
         </section>
 
-        <!-- Strategy Interface Showcase -->
-        <section class="py-20 relative">
+        <!-- Features Section (Advanced Strategy Builder) -->
+        <section id="features" class="py-20 relative">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold mb-6">
@@ -704,8 +705,8 @@
             </style>
         </section>
 
-        <!-- Account Types Section -->
-        <section class="py-20 relative">
+        <!-- Tokens Section (Account Types) -->
+        <section id="tokens" class="py-20 relative">
             <div class="max-w-7xl mx-auto px-4">
                 <!-- Header -->
                 <div class="text-center mb-16">
@@ -882,100 +883,6 @@
             </style>
         </section>
 
-        <!-- Products Section -->
-        <section id="products" class="py-20 relative">
-            <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
-                    <span class="gradient-text">One platform</span>
-                    <span class="text-white">endless solutions</span>
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Solution 1 -->
-                    <div class="feature-card p-8">
-                        <h3 class="text-xl font-semibold mb-4">Professional Trading</h3>
-                        <p class="text-gray-400 mb-6">Advanced trading tools and features designed for professional traders and institutions.</p>
-                        <a href="#" class="text-primary hover:text-secondary flex items-center">
-                            Learn more
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <!-- Solution 2 -->
-                    <div class="feature-card p-8">
-                        <h3 class="text-xl font-semibold mb-4">NFT Integration</h3>
-                        <p class="text-gray-400 mb-6">Seamless NFT trading and management with built-in marketplace features.</p>
-                        <a href="#" class="text-primary hover:text-secondary flex items-center">
-                            Learn more
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <!-- Solution 3 -->
-                    <div class="feature-card p-8">
-                        <h3 class="text-xl font-semibold mb-4">Market Insights</h3>
-                        <p class="text-gray-400 mb-6">Real-time market analysis and expert insights to inform your trading decisions.</p>
-                        <a href="#" class="text-primary hover:text-secondary flex items-center">
-                            Learn more
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Solutions Section -->
-        <section id="solutions" class="py-20 relative">
-            <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
-                    <span class="gradient-text">One platform</span>
-                    <span class="text-white">endless solutions</span>
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Solution 1 -->
-                    <div class="feature-card p-8">
-                        <h3 class="text-xl font-semibold mb-4">Professional Trading</h3>
-                        <p class="text-gray-400 mb-6">Advanced trading tools and features designed for professional traders and institutions.</p>
-                        <a href="#" class="text-primary hover:text-secondary flex items-center">
-                            Learn more
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <!-- Solution 2 -->
-                    <div class="feature-card p-8">
-                        <h3 class="text-xl font-semibold mb-4">NFT Integration</h3>
-                        <p class="text-gray-400 mb-6">Seamless NFT trading and management with built-in marketplace features.</p>
-                        <a href="#" class="text-primary hover:text-secondary flex items-center">
-                            Learn more
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <!-- Solution 3 -->
-                    <div class="feature-card p-8">
-                        <h3 class="text-xl font-semibold mb-4">Market Insights</h3>
-                        <p class="text-gray-400 mb-6">Real-time market analysis and expert insights to inform your trading decisions.</p>
-                        <a href="#" class="text-primary hover:text-secondary flex items-center">
-                            Learn more
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- FAQ Section -->
         <section id="faq" class="py-20 relative">
             <div class="max-w-3xl mx-auto px-4">
@@ -1011,90 +918,127 @@
             </div>
         </section>
 
-        <!-- Profit Calculator Section -->
-        <section class="py-20 relative">
-            <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-5xl font-bold text-center mb-8">Estimate Your Profit</h2>
-                <p class="text-center text-gray-400 text-xl mb-16">HOW MUCH WILL YOU TRADE MONTHLY?</p>
-                
-                <!-- Calculator Display -->
-                <div class="max-w-3xl mx-auto mb-16">
-                    <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20">
-                        <div class="bg-[#0F1A33] p-6 rounded-lg flex justify-center items-center space-x-2 text-6xl font-bold mb-8">
-                            <span class="text-[#3DB8F5]">$</span>
-                            <div class="flex items-center">
-                                <span class="text-white">238,042</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Progress Bar -->
-                        <div class="relative h-4 bg-[#1E293B] rounded-full overflow-hidden mb-4">
-                            <div class="absolute left-0 top-0 h-full w-3/5 bg-gradient-to-r from-[#3DB8F5] to-[#2CA8E5] rounded-full"></div>
-                        </div>
-                        
-                        <!-- Trading Levels -->
-                        <div class="flex justify-between text-sm">
-                            <span class="text-[#3DB8F5]">FREE</span>
-                            <span class="text-[#3DB8F5]">HOBBYIST</span>
-                            <span class="text-white font-bold">TRADER</span>
-                            <span class="text-gray-400">PRO</span>
-                            <span class="text-gray-400">BUSINESS</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Account Connection Guide -->
-        <section class="py-20 relative">
+        <section class="py-20 relative bg-[#0D1225]/50 backdrop-blur-lg">
             <div class="max-w-7xl mx-auto px-4">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-12">
-                        <!-- Account Control -->
-                        <div class="space-y-4">
-                            <div class="flex items-center space-x-4">
-                                <svg class="w-8 h-8 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                </svg>
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <!-- Left Column: Account Settings Cards -->
+                    <div class="space-y-6">
+                        <!-- Account Security Card -->
+                        <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                            <div class="flex items-center space-x-4 mb-6">
+                                <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                </div>
                                 <h3 class="text-2xl font-bold">Your Account, Your Control</h3>
                             </div>
-                            <p class="text-gray-400">Your trading account remains entirely under your control, with withdrawals accessible only by you. We do not have access to withdrawals; our access is limited to executing trades via the bot.</p>
-                            <div class="bg-yellow-900/20 border border-yellow-500/20 rounded-lg p-4">
-                                <p class="text-yellow-500 font-medium">⚠️ Warning: DO NOT ENABLE WITHDRAWAL OPTION.</p>
-                            </div>
+                            <p class="text-gray-400">Your trading account remains entirely under your control. Our access is limited to executing trades via the bot, ensuring your account security at all times.</p>
                         </div>
 
-                        <!-- No Experience Needed -->
-                        <div class="space-y-4">
-                            <div class="flex items-center space-x-4">
-                                <svg class="w-8 h-8 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                </svg>
+                        <!-- Experience Level Card -->
+                        <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                            <div class="flex items-center space-x-4 mb-6">
+                                <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                    </svg>
+                                </div>
                                 <h3 class="text-2xl font-bold">No Trading Experience Needed</h3>
                             </div>
                             <p class="text-gray-400">You don't need any trading experience or knowledge. There are no complex settings to configure. Simply connect your account and let our advanced algorithms handle the rest.</p>
                         </div>
 
-                        <!-- Bot Connection -->
-                        <div class="space-y-4">
-                            <div class="flex items-center space-x-4">
-                                <svg class="w-8 h-8 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
+                        <!-- Quick Setup Card -->
+                        <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                            <div class="flex items-center space-x-4 mb-6">
+                                <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                </div>
                                 <h3 class="text-2xl font-bold">Quick Setup Process</h3>
                             </div>
-                            <p class="text-gray-400">We will connect the trading bot to your account via API keys and start automated trading within 24 hours. Monitor your trading records, profits, and balances anytime, from anywhere.</p>
+                            <p class="text-gray-400 mb-6">We will connect the trading bot to your account via API keys and start automated trading within 24 hours. Monitor your trading records, profits, and balances anytime, from anywhere.</p>
+                            <a href="#" class="inline-block bg-[#3DB8F5] text-black font-semibold px-8 py-4 rounded-lg hover:bg-[#2CA8E5] transition-colors">
+                                Get Started Now
+                            </a>
                         </div>
-
-                        <a href="#" class="inline-block bg-[#3DB8F5] text-black font-semibold px-8 py-4 rounded-lg hover:bg-[#2CA8E5] transition-colors">
-                            Get Started Now
-                        </a>
                     </div>
 
-                    <!-- Dashboard Preview -->
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-gradient-to-r from-[#3DB8F5]/10 via-transparent to-[#3DB8F5]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <img src="images/dashboard.png" alt="Trading Dashboard" class="rounded-xl shadow-2xl">
+                    <!-- Right Column: Interactive Stats & Features -->
+                    <div class="space-y-6">
+                        <!-- Stats Grid -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-[#0D1225] p-6 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                                <div class="text-[#3DB8F5] text-3xl font-bold mb-2">24/7</div>
+                                <div class="text-gray-400">Automated Trading</div>
+                            </div>
+                            <div class="bg-[#0D1225] p-6 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                                <div class="text-[#3DB8F5] text-3xl font-bold mb-2">100%</div>
+                                <div class="text-gray-400">Secure Platform</div>
+                            </div>
+                            <div class="bg-[#0D1225] p-6 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                                <div class="text-[#3DB8F5] text-3xl font-bold mb-2">&lt;1ms</div>
+                                <div class="text-gray-400">Execution Time</div>
+                            </div>
+                            <div class="bg-[#0D1225] p-6 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                                <div class="text-[#3DB8F5] text-3xl font-bold mb-2">50+</div>
+                                <div class="text-gray-400">Trading Pairs</div>
+                            </div>
+                        </div>
+
+                        <!-- Features List -->
+                        <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                            <h4 class="text-xl font-bold mb-6">Advanced Features</h4>
+                            <ul class="space-y-4">
+                                <li class="flex items-center text-gray-400">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Real-time market analysis
+                                </li>
+                                <li class="flex items-center text-gray-400">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Risk management tools
+                                </li>
+                                <li class="flex items-center text-gray-400">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Custom trading strategies
+                                </li>
+                                <li class="flex items-center text-gray-400">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Performance analytics
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Trust Badge -->
+                        <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-[#3DB8F5]/10 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold">Trusted Platform</h4>
+                                        <p class="text-gray-400">Secure, reliable, and compliant trading</p>
+                                    </div>
+                                </div>
+                                <div class="text-[#3DB8F5] font-bold text-xl">
+                                    Verified
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1158,8 +1102,7 @@
                                 <h3 class="text-lg font-semibold mb-4">Navigate</h3>
                                 <ul class="space-y-3">
                                     <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
-                                    <li><a href="#" class="text-gray-400 hover:text-white">Products</a></li>
-                                    <li><a href="#" class="text-gray-400 hover:text-white">Solutions</a></li>
+                                    <li><a href="#" class="text-gray-400 hover:text-white">Tokens</a></li>
                                     <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
                                 </ul>
                             </div>
@@ -1192,223 +1135,103 @@
     </main>
 
     <script>
-        // Cache DOM elements and use RAF for smooth animations
-        const navbar = document.getElementById('navbar');
-        const tickerContainer = document.getElementById('crypto-ticker');
-        let ticking = false;
-        let animationFrameId = null;
-        let lastScrollTop = 0;
-        let mouseX = 50;
-        let mouseY = 50;
-
-        // Debounce function for performance
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        // Throttle function for performance
-        function throttle(func, limit) {
-            let inThrottle;
-            return function(...args) {
-                if (!inThrottle) {
-                    func.apply(this, args);
-                    inThrottle = true;
-                    setTimeout(() => inThrottle = false, limit);
-                }
-            }
-        }
-
-        // Optimized navbar update using RAF
-        function updateNavbar() {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    const scrollThreshold = 50;
-
-                    if (scrollTop > scrollThreshold) {
-                        const opacity = Math.min((scrollTop - scrollThreshold) / 100, 0.8);
-                        navbar.style.cssText = `
-                            background-color: rgba(0, 0, 0, ${opacity});
-                            backdrop-filter: blur(10px);
-                        `;
-                    } else {
-                        navbar.style.cssText = `
-                            background-color: transparent;
-                            backdrop-filter: none;
-                        `;
-                    }
-
-                    lastScrollTop = scrollTop;
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }
-
-        // Optimized mouse move handler using RAF
-        const updateMouseEffect = throttle((e) => {
-            mouseX = (e.clientX / window.innerWidth) * 100;
-            mouseY = (e.clientY / window.innerHeight) * 100;
-
-            if (!animationFrameId) {
-                animationFrameId = requestAnimationFrame(() => {
-                    document.documentElement.style.setProperty('--mouse-x', `${mouseX}%`);
-                    document.documentElement.style.setProperty('--mouse-y', `${mouseY}%`);
-
-                    const trail = document.querySelector('.mouse-trail');
-                    if (trail) {
-                        trail.style.background = `radial-gradient(
-                            circle at ${e.clientX}px ${e.clientY}px,
-                            rgba(255, 255, 255, 0.03) 0%,
-                            transparent 25%
-                        )`;
-                    }
-                    animationFrameId = null;
-                });
-            }
-        }, 16); // ~60fps
-
-        // Initial data with base USD prices
-        const initialData = {
-            'XAUUSD': { price: 2015.50, change: 0.45, name: 'Gold' },
-            'XAGUSD': { price: 23.15, change: -0.32, name: 'Silver' },
-            'WTIUSD': { price: 76.80, change: 1.25, name: 'Crude Oil' },
-            'NGUSD': { price: 2.85, change: -0.75, name: 'Natural Gas' },
-            'PLUSD': { price: 925.30, change: 0.28, name: 'Platinum' },
-            'CUUSD': { price: 3.85, change: 0.65, name: 'Copper' }
-        };
-
-        const prices = { ...initialData };
-        let tickerUpdateTimeout = null;
-
-        // Memoized price formatter
-        const priceFormatOptions = {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        };
-
-        function formatPrice(price) {
-            return parseFloat(price).toLocaleString('en-US', priceFormatOptions);
-        }
-
-        function formatChange(change) {
-            return (change > 0 ? '+' : '') + change.toFixed(2) + '%';
-        }
-
-        // Create ticker item with template literal for better performance
-        function createTickerItem(symbol, data) {
-            const changeClass = data.change >= 0 ? 'positive' : 'negative';
-            const arrow = data.change >= 0 ? '↑' : '↓';
-            
-            return `<div class="ticker-item">
-                <span class="ticker-symbol">${data.name}</span>
-                <span class="ticker-price">$${formatPrice(data.price)}</span>
-                <span class="ticker-change ${changeClass}">
-                    <span class="ticker-arrow">${arrow}</span>${formatChange(data.change)}
-                </span>
-            </div>`;
-        }
-
-        // Optimized ticker update with RAF and debouncing
-        const updateTicker = debounce(() => {
-            if (!tickerUpdateTimeout) {
-                tickerUpdateTimeout = requestAnimationFrame(() => {
-                    const tickerHTML = Object.entries(prices)
-                        .map(([symbol, data]) => createTickerItem(symbol, data))
-                        .join('');
-                    
-                    const repeatedContent = tickerHTML.repeat(3);
-                    tickerContainer.innerHTML = repeatedContent;
-                    tickerUpdateTimeout = null;
-                });
-            }
-        }, 100);
-
-        // WebSocket connection with optimized message handling
-        const ws = new WebSocket('wss://ws.finnhub.io/ws');
-        let wsUpdateTimeout;
-
-        ws.onopen = function() {
-            Object.keys(initialData).forEach(symbol => {
-                ws.send(JSON.stringify({
-                    type: 'subscribe',
-                    symbol: symbol
-                }));
-            });
-        };
-
-        ws.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            if (data.type === 'trade' && data.data) {
-                const trade = data.data[0];
-                const symbol = trade.s;
-                
-                if (prices[symbol]) {
-                    clearTimeout(wsUpdateTimeout);
-                    wsUpdateTimeout = setTimeout(() => {
-                        const oldPrice = prices[symbol].price;
-                        const newPrice = trade.p;
-                        const priceChange = ((newPrice - oldPrice) / oldPrice) * 100;
-                        
-                        prices[symbol] = {
-                            ...prices[symbol],
-                            price: newPrice,
-                            change: priceChange
-                        };
-                        
-                        updateTicker();
-                    }, 100); // Throttle WebSocket updates
-                }
-            }
-        };
-
-        ws.onerror = function(error) {
-            console.error('WebSocket error:', error);
-            updateTicker();
-        };
-
-        // Optimized fallback updates
-        const fallbackUpdate = throttle(() => {
-            Object.keys(prices).forEach(symbol => {
-                const randomChange = (Math.random() - 0.5) * 0.2;
-                prices[symbol].price *= (1 + randomChange/100);
-                prices[symbol].change = randomChange;
-            });
-            updateTicker();
-        }, 2000);
-
-        // Event listeners with passive option for better scroll performance
         document.addEventListener('DOMContentLoaded', function() {
+            // Navbar scroll behavior
+            const navbar = document.getElementById('navbar');
+            let lastScrollTop = 0;
+
+            function updateNavbar() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollThreshold = 50;
+
+                if (scrollTop > scrollThreshold) {
+                    navbar.style.backgroundColor = `rgba(0, 0, 0, ${Math.min((scrollTop - scrollThreshold) / 100, 0.8)})`;
+                    navbar.style.backdropFilter = 'blur(10px)';
+                } else {
+                    navbar.style.backgroundColor = 'transparent';
+                    navbar.style.backdropFilter = 'none';
+                }
+
+                lastScrollTop = scrollTop;
+            }
+
             updateNavbar();
+            window.addEventListener('scroll', updateNavbar, { passive: true });
+
+            // Mouse move handler for interactive background
+            document.addEventListener('mousemove', function(e) {
+                const x = (e.clientX / window.innerWidth) * 100;
+                const y = (e.clientY / window.innerHeight) * 100;
+                
+                document.documentElement.style.setProperty('--mouse-x', `${x}%`);
+                document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+            });
+
+            // Restore crypto ticker functionality
+            const tickerContainer = document.getElementById('crypto-ticker');
+            
+            // Initial static data
+            const initialData = {
+                'XAUUSD': { price: 2015.50, change: 0.45, name: 'Gold' },
+                'XAGUSD': { price: 23.15, change: -0.32, name: 'Silver' },
+                'WTIUSD': { price: 76.80, change: 1.25, name: 'Crude Oil' },
+                'NGUSD': { price: 2.85, change: -0.75, name: 'Natural Gas' },
+                'PLUSD': { price: 925.30, change: 0.28, name: 'Platinum' },
+                'CUUSD': { price: 3.85, change: 0.65, name: 'Copper' }
+            };
+
+            const prices = { ...initialData };
+
+            function formatPrice(price) {
+                return parseFloat(price).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+
+            function formatChange(change) {
+                return (change > 0 ? '+' : '') + change.toFixed(2) + '%';
+            }
+
+            function createTickerItem(symbol, data) {
+                const changeClass = data.change >= 0 ? 'positive' : 'negative';
+                const arrow = data.change >= 0 ? '↑' : '↓';
+                
+                return `
+                    <div class="ticker-item">
+                        <span class="ticker-symbol">${data.name}</span>
+                        <span class="ticker-price">$${formatPrice(data.price)}</span>
+                        <span class="ticker-change ${changeClass}">
+                            <span class="ticker-arrow">${arrow}</span>
+                            ${formatChange(data.change)}
+                        </span>
+                    </div>
+                `;
+            }
+
+            function updateTicker() {
+                let tickerHTML = '';
+                Object.entries(prices).forEach(([symbol, data]) => {
+                    tickerHTML += createTickerItem(symbol, data);
+                });
+                
+                // Double the content for seamless scrolling
+                tickerContainer.innerHTML = tickerHTML + tickerHTML;
+            }
+
+            // Initial update
             updateTicker();
 
-            // Create mouse trail element once
-            const trail = document.createElement('div');
-            trail.className = 'mouse-trail';
-            document.body.appendChild(trail);
-
-            // Add optimized event listeners
-            window.addEventListener('scroll', updateNavbar, { passive: true });
-            document.addEventListener('mousemove', updateMouseEffect, { passive: true });
-            
-            // Start fallback updates
-            setInterval(fallbackUpdate, 2000);
-        });
-
-        // Cleanup
-        window.addEventListener('beforeunload', function() {
-            if (ws) ws.close();
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
-            if (tickerUpdateTimeout) cancelAnimationFrame(tickerUpdateTimeout);
-            clearTimeout(wsUpdateTimeout);
+            // Simulate price updates
+            setInterval(() => {
+                Object.keys(prices).forEach(symbol => {
+                    // Simulate small random price movements
+                    const randomChange = (Math.random() - 0.5) * 0.2;
+                    prices[symbol].price *= (1 + randomChange/100);
+                    prices[symbol].change = randomChange;
+                });
+                updateTicker();
+            }, 2000);
         });
     </script>
 </body>
