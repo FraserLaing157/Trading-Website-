@@ -11,13 +11,14 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0B0B1E 0%, #0F1A33 50%, #0B0B1E 100%);
+            background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 60%, #000000 100%);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            width: 100%;
         }
 
-        /* Add interactive gradient overlay */
+        /* Interactive overlay */
         body::before {
             content: '';
             position: fixed;
@@ -25,19 +26,21 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                        rgba(61, 184, 245, 0.07),
-                        rgba(44, 168, 229, 0.03),
-                        transparent 40%);
+            background: radial-gradient(
+                circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(61, 184, 245, 0.04),
+                transparent 60%
+            );
             pointer-events: none;
             z-index: 1;
             transition: opacity 0.3s ease;
         }
 
-        /* Ensure main content stays above the gradient */
         main {
             position: relative;
             z-index: 2;
+            width: 100%;
+            overflow-x: hidden;
         }
         .glow {
             box-shadow: 0 0 30px rgba(61, 184, 245, 0.3);
@@ -301,7 +304,7 @@
             transform: translateY(1px);
         }
 
-        /* Add these styles in your style section */
+        /* Restore floating images */
         .floating-image {
             position: absolute;
             opacity: 0.3;
@@ -319,13 +322,6 @@
             right: max(-2%, calc(-30px + 2vw));
             transform: rotate(15deg);
             animation-delay: 1s;
-        }
-
-        .floating-image.bottom-left {
-            bottom: 35vh;
-            left: max(-3%, calc(-40px + 2vw));
-            transform: rotate(-20deg);
-            animation-delay: 2s;
         }
 
         .floating-image.middle-right {
@@ -407,15 +403,12 @@
     </script>
 </head>
 <body class="min-h-screen text-white overflow-x-hidden antialiased">
-    <!-- Add these elements right after the body tag -->
+    <!-- Floating images -->
     <div class="floating-image top-right" style="--rotation: 15deg;">
         <img src="images/AdobeStock_519087125.png" alt="Decorative">
     </div>
-    <div class="floating-image bottom-left" style="--rotation: -20deg;">
-        <img src="images/AdobeStock_1348868299.png" alt="Decorative">
-    </div>
     <div class="floating-image middle-right" style="--rotation: 25deg;">
-        <img src="images/AdobeStock_1002555427.png" alt="Decorative">
+        <img src="images/AdobeStock_1348868299.png" alt="Decorative">
     </div>
 
     <!-- Navigation -->
@@ -748,34 +741,35 @@
                         </svg>
                         <span class="text-xl font-semibold tracking-tight gradient-text">Cryptotech X</span>
                     </a>
-                    <p class="text-gray-400">Building the future of crypto trading.</p>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Navigate</h3>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Products</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Solutions</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
-                    <ul class="space-y-3">
-                        <li class="text-gray-400">support@cryptotechx.com</li>
-                        <li class="text-gray-400">+1 (888) 888-8888</li>
-                    </ul>
+                        <p class="text-gray-400">Building the future of crypto trading.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Navigate</h3>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Products</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Solutions</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                        <ul class="space-y-3">
+                            <li class="text-gray-400">support@cryptotechx.com</li>
+                            <li class="text-gray-400">+1 (888) 888-8888</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
