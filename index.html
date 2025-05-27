@@ -11,11 +11,23 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 60%, #000000 100%);
+            background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 35%, #000000 70%);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
             width: 100%;
+        }
+
+        /* Remove any section-specific backgrounds */
+        section {
+            background: transparent !important;
+        }
+
+        /* Remove specific background colors */
+        [class*="bg-[#0B0B1E]"],
+        [class*="bg-[#0D1225]"],
+        [class*="bg-dark-light"] {
+            background: transparent !important;
         }
 
         /* Interactive overlay */
@@ -72,15 +84,16 @@
             transform: scale(1.05);
         }
         .feature-card {
-            background: rgba(15, 26, 51, 0.6);
-            border: 1px solid rgba(61, 184, 245, 0.2);
+            background: rgba(15, 26, 51, 0.3);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(61, 184, 245, 0.2);
             border-radius: 1rem;
             transition: all 0.3s ease;
         }
         .feature-card:hover {
             border-color: rgba(61, 184, 245, 0.4);
             transform: translateY(-5px);
+            background: rgba(15, 26, 51, 0.4);
         }
         .platform-preview {
             width: 100%;
@@ -569,99 +582,130 @@
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section class="py-20 relative bg-[#0B0B1E]">
+        <!-- Strategy Interface Showcase -->
+        <section class="py-20 relative">
             <div class="max-w-7xl mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-                    <!-- Left Column - What You Get -->
-                    <div class="space-y-8">
-                        <h3 class="text-2xl font-medium text-gray-400">You will get:</h3>
-                        <div class="space-y-6">
-                            <div class="feature-highlight">
-                                <p class="text-gray-300 text-lg leading-relaxed">
-                                    Complete automation of your trading strategies using advanced technical indicators like RSI, MACD, and Moving Averages.
-                                </p>
-                            </div>
-                            <div class="feature-highlight">
-                                <p class="text-gray-300 text-lg leading-relaxed">
-                                    Real-time market analysis and automatic execution, no manual intervention needed after setup.
-                                </p>
-                            </div>
-                            <div class="feature-highlight">
-                                <p class="text-gray-300 text-lg leading-relaxed">
-                                    Customizable strategy builder with multiple timeframes and risk management tools.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Column - Main Feature -->
-                    <div class="relative">
-                        <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full filter blur-3xl"></div>
-                        <div class="relative z-10">
-                            <h2 class="text-[4rem] leading-tight font-bold mb-8" style="font-family: 'Inter', sans-serif;">
-                                <span class="text-[#3DB8F5]">AUTOMATED</span><br/>
-                                <span class="text-[#3DB8F5]">TRADING</span><br/>
-                                <span class="text-[#3DB8F5]">STRATEGIES</span>
-                                <div class="relative inline-block">
-                                    <svg class="absolute -right-12 -top-8 w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                    </svg>
-                                </div>
-                            </h2>
-                            
-                            <div class="text-gray-400 space-y-4">
-                                <p class="text-xl">37+ Pre-built Strategies</p>
-                                <p class="text-lg">Designed for both beginners and experienced traders</p>
-                                <p class="text-lg">Fully customizable indicators and parameters</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-6">
+                        <span class="text-[#3DB8F5]">Advanced Strategy Builder</span>
+                    </h2>
+                    <p class="text-gray-400 text-xl max-w-3xl mx-auto">
+                        Create sophisticated trading strategies with our intuitive interface
+                    </p>
                 </div>
 
-                <!-- Bottom Stats -->
-                <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="feature-card p-8 border-primary/30">
-                        <div class="text-4xl font-bold text-primary mb-4">24/7</div>
-                        <h3 class="text-xl font-semibold mb-4">Continuous Trading</h3>
-                        <p class="text-gray-400">Never miss a trading opportunity with round-the-clock automated execution</p>
+                <div class="grid grid-cols-12 gap-8 items-start">
+                    <!-- Strategy Interface Image - Left Side (70%) -->
+                    <div class="col-span-8 relative group">
+                        <!-- Multiple layered shadows for depth -->
+                        <div class="absolute inset-0 bg-[#3DB8F5]/5 rounded-xl blur-2xl transform scale-105 group-hover:bg-[#3DB8F5]/10 transition-all duration-500"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#3DB8F5]/20 to-transparent rounded-xl transform -rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
+                        <div class="absolute inset-0 bg-gradient-to-tr from-transparent to-[#3DB8F5]/20 rounded-xl transform rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
+                        
+                        <!-- Main image container -->
+                        <div class="relative bg-[#0D1225] p-1 rounded-xl border border-[#3DB8F5]/20 overflow-hidden">
+                            <!-- Animated gradient border -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#3DB8F5]/20 to-transparent animate-shimmer"></div>
+                            
+                            <!-- Image -->
+                            <img 
+                                src="Images/Strats.png" 
+                                alt="Trading Strategy Interface" 
+                                class="rounded-lg w-full shadow-2xl relative z-10 transform group-hover:scale-[1.02] transition-transform duration-500"
+                            >
+                            
+                            <!-- Overlay glow on hover -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#3DB8F5]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
+                        </div>
                     </div>
 
-                    <div class="feature-card p-8 border-primary/30">
-                        <div class="text-4xl font-bold text-primary mb-4">100%</div>
-                        <h3 class="text-xl font-semibold mb-4">Automated</h3>
-                        <p class="text-gray-400">Set your strategy once and let the bot handle everything else</p>
-                    </div>
+                    <!-- Features List - Right Side (30%) -->
+                    <div class="col-span-4 space-y-8">
+                        <!-- Strategy 1 -->
+                        <div class="transform transition-all duration-300 hover:translate-x-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-10 h-10 rounded-full bg-[#3DB8F5]/10 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Trend Following</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm pl-[3.25rem]">Captures market momentum using Moving Averages and trend indicators</p>
+                        </div>
 
-                    <div class="feature-card p-8 border-primary/30">
-                        <div class="text-4xl font-bold text-primary mb-4">15+</div>
-                        <h3 class="text-xl font-semibold mb-4">Indicators</h3>
-                        <p class="text-gray-400">Access to all major technical indicators for comprehensive analysis</p>
+                        <!-- Strategy 2 -->
+                        <div class="transform transition-all duration-300 hover:translate-x-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-10 h-10 rounded-full bg-[#3DB8F5]/10 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Mean Reversion</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm pl-[3.25rem]">Profits from price corrections using RSI and Bollinger Bands</p>
+                        </div>
+
+                        <!-- Strategy 3 -->
+                        <div class="transform transition-all duration-300 hover:translate-x-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-10 h-10 rounded-full bg-[#3DB8F5]/10 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Breakout Trading</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm pl-[3.25rem]">Capitalizes on strong price movements through support/resistance levels</p>
+                        </div>
+
+                        <!-- Strategy 4 -->
+                        <div class="transform transition-all duration-300 hover:translate-x-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-10 h-10 rounded-full bg-[#3DB8F5]/10 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">MACD Crossover</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm pl-[3.25rem]">Identifies momentum shifts using Moving Average Convergence Divergence</p>
+                        </div>
+
+                        <!-- More Options -->
+                        <div class="transform transition-all duration-300 hover:translate-x-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-10 h-10 rounded-full bg-[#3DB8F5]/10 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Plus 30+ More</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm pl-[3.25rem]">Including Grid Trading, Scalping, and custom strategy combinations</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <style>
-                .feature-highlight {
-                    position: relative;
-                    padding-left: 1.5rem;
+                @keyframes shimmer {
+                    0% {
+                        transform: translateX(-100%);
+                    }
+                    100% {
+                        transform: translateX(100%);
+                    }
                 }
-                .feature-highlight::before {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    width: 4px;
-                    height: 100%;
-                    background: linear-gradient(to bottom, #3DB8F5, #2CA8E5);
-                    border-radius: 2px;
+                .animate-shimmer {
+                    animation: shimmer 3s infinite;
                 }
             </style>
         </section>
 
         <!-- Account Types Section -->
-        <section class="py-20 relative bg-[#0B0B1E]">
+        <section class="py-20 relative">
             <div class="max-w-7xl mx-auto px-4">
                 <!-- Header -->
                 <div class="text-center mb-16">
@@ -685,7 +729,7 @@
                 <!-- Account Cards Container -->
                 <div class="grid md:grid-cols-2 gap-8">
                     <!-- Standard Account Card -->
-                    <div class="relative p-8 rounded-2xl bg-[#0D1225] border border-[#1a2036] group hover:border-[#3DFCF8]/30 transition-all duration-300">
+                    <div class="relative p-8 rounded-2xl bg-[#0D1225] border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
                         <div class="absolute inset-0 bg-gradient-to-b from-[#3DFCF8]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         
                         <div class="relative z-10">
@@ -839,7 +883,7 @@
         </section>
 
         <!-- Products Section -->
-        <section id="products" class="py-20 relative bg-dark-light/20">
+        <section id="products" class="py-20 relative">
             <div class="max-w-7xl mx-auto px-4">
                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
                     <span class="gradient-text">One platform</span>
@@ -886,7 +930,7 @@
         </section>
 
         <!-- Solutions Section -->
-        <section id="solutions" class="py-20 relative bg-dark-light/20">
+        <section id="solutions" class="py-20 relative">
             <div class="max-w-7xl mx-auto px-4">
                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
                     <span class="gradient-text">One platform</span>
@@ -962,6 +1006,95 @@
                         <div class="mt-4 text-gray-400">
                             We support a wide range of cryptocurrencies including Bitcoin, Ethereum, and other major altcoins, with new assets being added regularly.
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profit Calculator Section -->
+        <section class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4">
+                <h2 class="text-5xl font-bold text-center mb-8">Estimate Your Profit</h2>
+                <p class="text-center text-gray-400 text-xl mb-16">HOW MUCH WILL YOU TRADE MONTHLY?</p>
+                
+                <!-- Calculator Display -->
+                <div class="max-w-3xl mx-auto mb-16">
+                    <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20">
+                        <div class="bg-[#0F1A33] p-6 rounded-lg flex justify-center items-center space-x-2 text-6xl font-bold mb-8">
+                            <span class="text-[#3DB8F5]">$</span>
+                            <div class="flex items-center">
+                                <span class="text-white">238,042</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="relative h-4 bg-[#1E293B] rounded-full overflow-hidden mb-4">
+                            <div class="absolute left-0 top-0 h-full w-3/5 bg-gradient-to-r from-[#3DB8F5] to-[#2CA8E5] rounded-full"></div>
+                        </div>
+                        
+                        <!-- Trading Levels -->
+                        <div class="flex justify-between text-sm">
+                            <span class="text-[#3DB8F5]">FREE</span>
+                            <span class="text-[#3DB8F5]">HOBBYIST</span>
+                            <span class="text-white font-bold">TRADER</span>
+                            <span class="text-gray-400">PRO</span>
+                            <span class="text-gray-400">BUSINESS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Account Connection Guide -->
+        <section class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-12">
+                        <!-- Account Control -->
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <svg class="w-8 h-8 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                                <h3 class="text-2xl font-bold">Your Account, Your Control</h3>
+                            </div>
+                            <p class="text-gray-400">Your trading account remains entirely under your control, with withdrawals accessible only by you. We do not have access to withdrawals; our access is limited to executing trades via the bot.</p>
+                            <div class="bg-yellow-900/20 border border-yellow-500/20 rounded-lg p-4">
+                                <p class="text-yellow-500 font-medium">⚠️ Warning: DO NOT ENABLE WITHDRAWAL OPTION.</p>
+                            </div>
+                        </div>
+
+                        <!-- No Experience Needed -->
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <svg class="w-8 h-8 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                                <h3 class="text-2xl font-bold">No Trading Experience Needed</h3>
+                            </div>
+                            <p class="text-gray-400">You don't need any trading experience or knowledge. There are no complex settings to configure. Simply connect your account and let our advanced algorithms handle the rest.</p>
+                        </div>
+
+                        <!-- Bot Connection -->
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <svg class="w-8 h-8 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                <h3 class="text-2xl font-bold">Quick Setup Process</h3>
+                            </div>
+                            <p class="text-gray-400">We will connect the trading bot to your account via API keys and start automated trading within 24 hours. Monitor your trading records, profits, and balances anytime, from anywhere.</p>
+                        </div>
+
+                        <a href="#" class="inline-block bg-[#3DB8F5] text-black font-semibold px-8 py-4 rounded-lg hover:bg-[#2CA8E5] transition-colors">
+                            Get Started Now
+                        </a>
+                    </div>
+
+                    <!-- Dashboard Preview -->
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#3DB8F5]/10 via-transparent to-[#3DB8F5]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="images/dashboard.png" alt="Trading Dashboard" class="rounded-xl shadow-2xl">
                     </div>
                 </div>
             </div>
