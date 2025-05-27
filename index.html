@@ -27,13 +27,16 @@
             right: 0;
             bottom: 0;
             background: radial-gradient(
-                circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                rgba(61, 184, 245, 0.04),
-                transparent 60%
+                circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(61, 184, 245, 0.08) 0%,
+                rgba(61, 184, 245, 0.03) 10%,
+                rgba(255, 255, 255, 0.01) 20%,
+                transparent 35%
             );
             pointer-events: none;
             z-index: 1;
-            transition: opacity 0.3s ease;
+            transition: all 0.2s ease;
+            mix-blend-mode: soft-light;
         }
 
         main {
@@ -144,17 +147,17 @@
         }
         .ticker-container {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 4rem);
+            max-width: 1200px;
             z-index: 10;
             background: rgba(61, 184, 245, 0.1);
             border: 1px solid rgba(61, 184, 245, 0.2);
             border-radius: 16px;
             overflow: hidden;
             height: 60px;
-            margin: 0 2rem;
-            width: calc(100% - 4rem);
         }
         .ticker {
             display: flex;
@@ -162,6 +165,7 @@
             align-items: center;
             animation: ticker 30s linear infinite;
             will-change: transform;
+            width: max-content;
         }
         .ticker:hover {
             animation-play-state: paused;
@@ -174,24 +178,25 @@
             color: #fff;
             font-size: 0.875rem;
             border-right: 1px solid rgba(61, 184, 245, 0.2);
-            min-width: 240px;
+            min-width: 200px;
+            justify-content: space-between;
         }
         .ticker-symbol {
             font-weight: 600;
             margin-right: 0.5rem;
-            width: 100px;
+            width: 80px;
         }
         .ticker-price {
             color: rgba(255, 255, 255, 0.7);
             margin-right: 0.5rem;
-            width: 80px;
+            width: 70px;
             text-align: right;
         }
         .ticker-change {
             display: flex;
             align-items: center;
             font-weight: 500;
-            width: 70px;
+            width: 60px;
             justify-content: flex-end;
         }
         .ticker-change.positive {
@@ -213,8 +218,39 @@
         }
         @media (max-width: 768px) {
             .ticker-container {
-                margin: 0 1rem;
+                bottom: 1rem;
                 width: calc(100% - 2rem);
+            }
+            .ticker-item {
+                padding: 0 1rem;
+                min-width: 180px;
+            }
+            .ticker-symbol {
+                width: 70px;
+            }
+            .ticker-price {
+                width: 65px;
+            }
+            .ticker-change {
+                width: 55px;
+            }
+        }
+        @media (max-width: 480px) {
+            .ticker-item {
+                min-width: 160px;
+                padding: 0 0.75rem;
+            }
+            .ticker-symbol {
+                width: 60px;
+                font-size: 0.8rem;
+            }
+            .ticker-price {
+                width: 60px;
+                font-size: 0.8rem;
+            }
+            .ticker-change {
+                width: 50px;
+                font-size: 0.8rem;
             }
         }
         .nav-link {
@@ -382,6 +418,17 @@
             .floating-image {
                 max-width: min(150px, 35vw);
             }
+        }
+
+        /* Add mouse trail effect */
+        .mouse-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
         }
     </style>
     <script>
@@ -803,14 +850,29 @@
             updateNavbar();
             window.addEventListener('scroll', updateNavbar, { passive: true });
 
-            // Mouse move handler for interactive background
+            // Enhanced mouse move handler
             document.addEventListener('mousemove', function(e) {
                 const x = (e.clientX / window.innerWidth) * 100;
                 const y = (e.clientY / window.innerHeight) * 100;
                 
                 document.documentElement.style.setProperty('--mouse-x', `${x}%`);
                 document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+
+                // Add slight brightness where mouse moves
+                const trail = document.querySelector('.mouse-trail');
+                if (trail) {
+                    trail.style.background = `radial-gradient(
+                        circle at ${e.clientX}px ${e.clientY}px,
+                        rgba(255, 255, 255, 0.03) 0%,
+                        transparent 25%
+                    )`;
+                }
             });
+
+            // Create mouse trail element
+            const trail = document.createElement('div');
+            trail.className = 'mouse-trail';
+            document.body.appendChild(trail);
 
             // Navigation active state
             const navLinks = document.querySelectorAll('.nav-link');
@@ -904,8 +966,9 @@
                     tickerHTML += createTickerItem(symbol, data);
                 });
                 
-                // Double the content for seamless scrolling
-                tickerContainer.innerHTML = tickerHTML + tickerHTML;
+                // Create enough copies to ensure smooth scrolling
+                const repeatedContent = tickerHTML.repeat(3);
+                tickerContainer.innerHTML = repeatedContent;
             }
 
             // Initial update
