@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purchase Complete - Cryptotech X</title>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 300 700;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 35%, #000000 70%);
@@ -19,6 +29,13 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+        /* Add logo font styling */
+        .logo-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            font-feature-settings: "ss01", "ss02", "cv01";
         }
         @keyframes checkmark {
             0% {
@@ -44,10 +61,50 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <a href="index.html" class="flex items-center space-x-3">
-                    <svg class="w-8 h-8 text-[#3DB8F5]" viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2"/>
+                    <svg class="w-8 h-8 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Main circular frame -->
+                        <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-opacity="0.2"/>
+                        
+                        <!-- Animated trading line -->
+                        <path d="M12 32C12 32 20 20 32 32C44 44 52 32 52 32" 
+                              stroke="currentColor" 
+                              stroke-width="3"
+                              stroke-linecap="round">
+                            <animate attributeName="d" 
+                                     dur="2s" 
+                                     repeatCount="indefinite"
+                                     values="M12 32C12 32 20 20 32 32C44 44 52 32 52 32;
+                                            M12 32C12 32 20 44 32 32C44 20 52 32 52 32;
+                                            M12 32C12 32 20 20 32 32C44 44 52 32 52 32"/>
+                        </path>
+
+                        <!-- Dots representing data points -->
+                        <circle cx="32" cy="32" r="2" fill="currentColor">
+                            <animate attributeName="cy"
+                                     dur="2s"
+                                     repeatCount="indefinite"
+                                     values="32;20;32"/>
+                        </circle>
+                        <circle cx="22" cy="32" r="2" fill="currentColor" fill-opacity="0.6">
+                            <animate attributeName="cy"
+                                     dur="2s"
+                                     repeatCount="indefinite"
+                                     values="32;44;32"/>
+                        </circle>
+                        <circle cx="42" cy="32" r="2" fill="currentColor" fill-opacity="0.6">
+                            <animate attributeName="cy"
+                                     dur="2s"
+                                     repeatCount="indefinite"
+                                     values="32;20;32"/>
+                        </circle>
+
+                        <!-- Abstract tech elements -->
+                        <path d="M32 8V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M32 50V56" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M8 32H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M50 32H56" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
-                    <span class="text-2xl font-semibold gradient-text">Cryptotech X</span>
+                    <span class="text-2xl logo-text gradient-text">Cryptotech X</span>
                 </a>
             </div>
         </div>
