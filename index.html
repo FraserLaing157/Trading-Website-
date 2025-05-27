@@ -340,7 +340,7 @@
             transform: translateY(1px);
         }
 
-        /* Remove animation and update floating image styles */
+        /* Background decorative images */
         .floating-image {
             position: absolute;
             opacity: 0.3;
@@ -362,6 +362,12 @@
             top: 140vh;
             right: max(-4%, calc(-50px + 2vw));
             transform: rotate(25deg);
+        }
+
+        .floating-image.bottom-left {
+            bottom: 20vh;
+            left: max(-4%, calc(-50px + 2vw));
+            transform: rotate(-20deg);
         }
 
         .floating-image img {
@@ -389,6 +395,10 @@
                 top: 145vh;
                 right: -30px;
             }
+            .floating-image.bottom-left {
+                bottom: 25vh;
+                left: -30px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -399,6 +409,10 @@
             .floating-image.middle-right {
                 top: 150vh;
                 right: -25px;
+            }
+            .floating-image.bottom-left {
+                bottom: 30vh;
+                left: -25px;
             }
         }
 
@@ -438,12 +452,15 @@
     </script>
 </head>
 <body class="min-h-screen text-white overflow-x-hidden antialiased">
-    <!-- Floating images -->
+    <!-- Floating background images -->
     <div class="floating-image top-right">
-        <img src="images/AdobeStock_519087125.png" alt="Decorative">
+        <img src="images/AdobeStock_519087125.png" alt="Decorative Shape 1">
     </div>
     <div class="floating-image middle-right">
-        <img src="images/AdobeStock_1348868299.png" alt="Decorative">
+        <img src="images/AdobeStock_1348868299.png" alt="Decorative Shape 2">
+    </div>
+    <div class="floating-image bottom-left">
+        <img src="images/AdobeStock_1002555427.png" alt="Decorative Shape 3">
     </div>
 
     <!-- Navigation -->
@@ -553,47 +570,272 @@
         </section>
 
         <!-- Features Section -->
-        <section id="features" class="py-20 relative">
+        <section class="py-20 relative bg-[#0B0B1E]">
             <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
-                    <span class="gradient-text">Powerful features</span>
-                    <span class="text-white">just for you</span>
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Feature 1 -->
-                    <div class="feature-card p-8">
-                        <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                    <!-- Left Column - What You Get -->
+                    <div class="space-y-8">
+                        <h3 class="text-2xl font-medium text-gray-400">You will get:</h3>
+                        <div class="space-y-6">
+                            <div class="feature-highlight">
+                                <p class="text-gray-300 text-lg leading-relaxed">
+                                    Complete automation of your trading strategies using advanced technical indicators like RSI, MACD, and Moving Averages.
+                                </p>
+                            </div>
+                            <div class="feature-highlight">
+                                <p class="text-gray-300 text-lg leading-relaxed">
+                                    Real-time market analysis and automatic execution, no manual intervention needed after setup.
+                                </p>
+                            </div>
+                            <div class="feature-highlight">
+                                <p class="text-gray-300 text-lg leading-relaxed">
+                                    Customizable strategy builder with multiple timeframes and risk management tools.
+                                </p>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-semibold mb-4">Real-time Trading</h3>
-                        <p class="text-gray-400">Execute trades instantly with advanced order types and real-time market data analysis.</p>
                     </div>
 
-                    <!-- Feature 2 -->
-                    <div class="feature-card p-8">
-                        <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
+                    <!-- Right Column - Main Feature -->
+                    <div class="relative">
+                        <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full filter blur-3xl"></div>
+                        <div class="relative z-10">
+                            <h2 class="text-[4rem] leading-tight font-bold mb-8" style="font-family: 'Inter', sans-serif;">
+                                <span class="text-[#3DB8F5]">AUTOMATED</span><br/>
+                                <span class="text-[#3DB8F5]">TRADING</span><br/>
+                                <span class="text-[#3DB8F5]">STRATEGIES</span>
+                                <div class="relative inline-block">
+                                    <svg class="absolute -right-12 -top-8 w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                    </svg>
+                                </div>
+                            </h2>
+                            
+                            <div class="text-gray-400 space-y-4">
+                                <p class="text-xl">37+ Pre-built Strategies</p>
+                                <p class="text-lg">Designed for both beginners and experienced traders</p>
+                                <p class="text-lg">Fully customizable indicators and parameters</p>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-semibold mb-4">Advanced Analytics</h3>
-                        <p class="text-gray-400">Deep market insights with customizable charts and technical indicators.</p>
+                    </div>
+                </div>
+
+                <!-- Bottom Stats -->
+                <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="feature-card p-8 border-primary/30">
+                        <div class="text-4xl font-bold text-primary mb-4">24/7</div>
+                        <h3 class="text-xl font-semibold mb-4">Continuous Trading</h3>
+                        <p class="text-gray-400">Never miss a trading opportunity with round-the-clock automated execution</p>
                     </div>
 
-                    <!-- Feature 3 -->
-                    <div class="feature-card p-8">
-                        <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-4">Secure Storage</h3>
-                        <p class="text-gray-400">Enterprise-grade security with multi-signature wallets and cold storage solutions.</p>
+                    <div class="feature-card p-8 border-primary/30">
+                        <div class="text-4xl font-bold text-primary mb-4">100%</div>
+                        <h3 class="text-xl font-semibold mb-4">Automated</h3>
+                        <p class="text-gray-400">Set your strategy once and let the bot handle everything else</p>
+                    </div>
+
+                    <div class="feature-card p-8 border-primary/30">
+                        <div class="text-4xl font-bold text-primary mb-4">15+</div>
+                        <h3 class="text-xl font-semibold mb-4">Indicators</h3>
+                        <p class="text-gray-400">Access to all major technical indicators for comprehensive analysis</p>
                     </div>
                 </div>
             </div>
+
+            <style>
+                .feature-highlight {
+                    position: relative;
+                    padding-left: 1.5rem;
+                }
+                .feature-highlight::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 4px;
+                    height: 100%;
+                    background: linear-gradient(to bottom, #3DB8F5, #2CA8E5);
+                    border-radius: 2px;
+                }
+            </style>
+        </section>
+
+        <!-- Account Types Section -->
+        <section class="py-20 relative bg-[#0B0B1E]">
+            <div class="max-w-7xl mx-auto px-4">
+                <!-- Header -->
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl font-bold mb-4">
+                        Trade with our
+                        <span class="text-[#3DFCF8]">accounts?</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg">A trading account suitable for all levels of traders</p>
+                </div>
+
+                <!-- Account Type Selector -->
+                <div class="flex justify-center gap-4 mb-12">
+                    <button class="bg-[#3DFCF8] text-[#0B0B1E] px-6 py-2 rounded-full font-medium hover:bg-[#3DFCF8]/90 transition-all">
+                        Standard
+                    </button>
+                    <button class="text-[#3DFCF8] px-6 py-2 rounded-full font-medium hover:bg-[#3DFCF8]/10 transition-all">
+                        Ecn
+                    </button>
+                </div>
+
+                <!-- Account Cards Container -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Standard Account Card -->
+                    <div class="relative p-8 rounded-2xl bg-[#0D1225] border border-[#1a2036] group hover:border-[#3DFCF8]/30 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-b from-[#3DFCF8]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-[#3DFCF8]">Standard Account</h3>
+                                <svg class="w-6 h-6 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="text-xl mb-2">
+                                    <span class="text-[#3DFCF8]">New traders</span> with
+                                    <span class="text-white">small volume</span>
+                                </h4>
+                                <p class="text-gray-400">Apply service of autotrader</p>
+                            </div>
+
+                            <button class="w-full bg-[#3DFCF8] text-[#0B0B1E] py-3 rounded-full font-medium hover:bg-[#3DFCF8]/90 transition-all mb-8">
+                                Open an account
+                            </button>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Spreads starting from 1.3 pips
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Ultra-fast execution
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Transparent trading environment
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Negative balance protection
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    No commission on trades (except indices)
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    No dealing desk
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- ECN Account Card -->
+                    <div class="relative p-8 rounded-2xl bg-[#0D1225] border border-[#1a2036] group hover:border-[#3DFCF8]/30 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-b from-[#3DFCF8]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-[#3DFCF8]">Ecn Account</h3>
+                                <svg class="w-6 h-6 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="text-xl mb-2">
+                                    For <span class="text-[#3DFCF8]">high-volume</span>
+                                    <span class="text-white">with traders</span>
+                                </h4>
+                                <p class="text-gray-400">Apply service of autotrader</p>
+                            </div>
+
+                            <button class="w-full bg-[#3DFCF8] text-[#0B0B1E] py-3 rounded-full font-medium hover:bg-[#3DFCF8]/90 transition-all mb-8">
+                                Open an account
+                            </button>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Spreads starting from 0.0 pips
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Ultra-fast execution
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    In-depth market Insights
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Transparent trading environment
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Negative balance protection
+                                </li>
+                                <li class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Commission of $7 per lot traded
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .account-card {
+                    position: relative;
+                    overflow: hidden;
+                }
+                .account-card::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 1px;
+                    background: linear-gradient(90deg, transparent, #3DFCF8, transparent);
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                }
+                .account-card:hover::before {
+                    opacity: 1;
+                }
+            </style>
         </section>
 
         <!-- Products Section -->
@@ -740,12 +982,12 @@
                                       stroke="currentColor" 
                                       stroke-width="3"
                                       stroke-linecap="round">
-                                    <animate attributeName="d" 
-                                             dur="2s" 
-                                             repeatCount="indefinite"
-                                             values="M12 32C12 32 20 20 32 32C44 44 52 32 52 32;
-                                                    M12 32C12 32 20 44 32 32C44 20 52 32 52 32;
-                                                    M12 32C12 32 20 20 32 32C44 44 52 32 52 32"/>
+                                <animate attributeName="d" 
+                                         dur="2s" 
+                                         repeatCount="indefinite"
+                                         values="M12 32C12 32 20 20 32 32C44 44 52 32 52 32;
+                                                M12 32C12 32 20 44 32 32C44 20 52 32 52 32;
+                                                M12 32C12 32 20 20 32 32C44 44 52 32 52 32"/>
                             </path>
 
                             <!-- Dots representing data points -->
@@ -776,34 +1018,35 @@
                         </svg>
                         <span class="text-xl font-semibold tracking-tight gradient-text">Cryptotech X</span>
                     </a>
-                            <p class="text-gray-400">Building the future of crypto trading.</p>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-semibold mb-4">Navigate</h3>
-                            <ul class="space-y-3">
-                                <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
-                                <li><a href="#" class="text-gray-400 hover:text-white">Products</a></li>
-                                <li><a href="#" class="text-gray-400 hover:text-white">Solutions</a></li>
-                                <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
-                            </ul>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-semibold mb-4">Legal</h3>
-                            <ul class="space-y-3">
-                                <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-                                <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
-                                <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
-                            </ul>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-semibold mb-4">Contact</h3>
-                            <ul class="space-y-3">
-                                <li class="text-gray-400">support@cryptotechx.com</li>
-                                <li class="text-gray-400">+1 (888) 888-8888</li>
-                            </ul>
+                                <p class="text-gray-400">Building the future of crypto trading.</p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">Navigate</h3>
+                                <ul class="space-y-3">
+                                    <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
+                                    <li><a href="#" class="text-gray-400 hover:text-white">Products</a></li>
+                                    <li><a href="#" class="text-gray-400 hover:text-white">Solutions</a></li>
+                                    <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                                <ul class="space-y-3">
+                                    <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                                    <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                                    <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                                <ul class="space-y-3">
+                                    <li class="text-gray-400">support@cryptotechx.com</li>
+                                    <li class="text-gray-400">+1 (888) 888-8888</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -900,7 +1143,7 @@
             }
         }, 16); // ~60fps
 
-        // Optimized ticker functionality
+        // Initial data with base USD prices
         const initialData = {
             'XAUUSD': { price: 2015.50, change: 0.45, name: 'Gold' },
             'XAGUSD': { price: 23.15, change: -0.32, name: 'Silver' },
@@ -954,7 +1197,7 @@
                     tickerUpdateTimeout = null;
                 });
             }
-        }, 100); // Debounce ticker updates
+        }, 100);
 
         // WebSocket connection with optimized message handling
         const ws = new WebSocket('wss://ws.finnhub.io/ws');
@@ -969,7 +1212,6 @@
             });
         };
 
-        // Optimized WebSocket message handling
         ws.onmessage = function(event) {
             const data = JSON.parse(event.data);
             if (data.type === 'trade' && data.data) {
