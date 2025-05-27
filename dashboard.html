@@ -92,7 +92,20 @@
                         <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
                         <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Pricing</a>
                         <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
-                        <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors font-medium active">Profile</a>
+                        <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors font-medium active" style="display: none;">Profile</a>
+                        <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">
+                            Sign In
+                        </button>
+                        <div class="relative">
+                            <a href="cart.html" class="cart-button group">
+                                <div class="cart-container">
+                                    <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                    </svg>
+                                    <div class="cart-badge" id="cartCount">0</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -226,6 +239,25 @@
     </footer>
 
     <script>
+        // Navbar scroll behavior
+        const navbar = document.getElementById('navbar');
+        function updateNavbar() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 50) {
+                navbar.style.backgroundColor = 'rgba(11, 11, 30, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+                navbar.style.borderBottom = '1px solid rgba(61, 184, 245, 0.1)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.backgroundColor = 'transparent';
+                navbar.style.backdropFilter = 'none';
+                navbar.style.borderBottom = 'none';
+                navbar.style.boxShadow = 'none';
+            }
+        }
+        window.addEventListener('scroll', updateNavbar);
+        updateNavbar();
+
         // Check if user is logged in
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) {

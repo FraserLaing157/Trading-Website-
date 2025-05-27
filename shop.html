@@ -557,128 +557,152 @@
                 <p class="text-gray-400 max-w-2xl mx-auto">Select the perfect package that matches your trading needs. Each tier comes with prepackaged strategies and varying levels of backtesting capabilities.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-8">
                 <!-- Basic Package -->
-                <div class="package-card p-8">
-                    <div class="text-center mb-8">
-                        <h2 class="text-2xl font-bold mb-2">Basic</h2>
-                        <div class="text-3xl font-bold mb-4">
-                            <span class="gradient-text">£49.99</span>
-                            <span class="text-sm text-gray-400">/month</span>
+                <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300 flex flex-col h-full">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Basic</h3>
+                        <div class="text-4xl font-bold mb-6">
+                            <span>$49.99</span>
+                            <span class="text-sm font-normal text-gray-400">/month</span>
                         </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                3 Months of Historical Data for Backtesting
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Basic Strategy Templates
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Email Support
+                            </li>
+                            <li class="flex items-center text-gray-300 opacity-50">
+                                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                Custom Indicators
+                            </li>
+                            <li class="flex items-center text-gray-300 opacity-50">
+                                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                API Access
+                            </li>
+                        </ul>
                     </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>5,000 Candles for Backtesting</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Basic Strategy Templates</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Email Support</span>
-                        </li>
-                    </ul>
-                    <button onclick="purchasePackage('basic')" class="w-full buy-btn text-white font-semibold py-3 px-6 rounded-lg">
-                        Get Started
-                    </button>
+                    <div class="mt-auto">
+                        <button onclick="purchasePackage('basic')" class="w-full bg-[#3DB8F5] text-black font-semibold px-8 py-4 rounded-lg hover:bg-[#2CA8E5] transition-colors">
+                            Get Started
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Pro Package -->
-                <div class="package-card popular-package p-8 relative">
+                <div class="bg-[#0D1225] p-8 rounded-xl border-2 border-[#3DB8F5] hover:border-[#3DB8F5] transition-all duration-300 relative flex flex-col h-full" style="box-shadow: 0 0 20px rgba(61, 184, 245, 0.3), 0 0 40px rgba(61, 184, 245, 0.2), 0 0 60px rgba(61, 184, 245, 0.1);">
                     <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-primary text-white px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
+                        <span class="bg-[#3DB8F5] text-black px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
                     </div>
-                    <div class="text-center mb-8">
-                        <h2 class="text-2xl font-bold mb-2">Pro</h2>
-                        <div class="text-3xl font-bold mb-4">
-                            <span class="gradient-text">£69.99</span>
-                            <span class="text-sm text-gray-400">/month</span>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Pro</h3>
+                        <div class="text-4xl font-bold mb-6">
+                            <span>$69.99</span>
+                            <span class="text-sm font-normal text-gray-400">/month</span>
                         </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                1 Year of Historical Data for Backtesting
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Advanced Strategy Templates
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Priority Support
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Custom Indicators
+                            </li>
+                            <li class="flex items-center text-gray-300 opacity-50">
+                                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                API Access
+                            </li>
+                        </ul>
                     </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>15,000 Candles for Backtesting</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Advanced Strategy Templates</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Priority Support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Custom Indicators</span>
-                        </li>
-                    </ul>
-                    <button onclick="purchasePackage('pro')" class="w-full buy-btn text-white font-semibold py-3 px-6 rounded-lg">
-                        Get Started
-                    </button>
+                    <div class="mt-auto">
+                        <button onclick="purchasePackage('pro')" class="w-full bg-[#3DB8F5] text-black font-semibold px-8 py-4 rounded-lg hover:bg-[#2CA8E5] transition-colors">
+                            Get Started
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Business Package -->
-                <div class="package-card p-8">
-                    <div class="text-center mb-8">
-                        <h2 class="text-2xl font-bold mb-2">Business</h2>
-                        <div class="text-3xl font-bold mb-4">
-                            <span class="gradient-text">£99.99</span>
-                            <span class="text-sm text-gray-400">/month</span>
+                <div class="bg-[#0D1225] p-8 rounded-xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300 flex flex-col h-full">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Business</h3>
+                        <div class="text-4xl font-bold mb-6">
+                            <span>$99.99</span>
+                            <span class="text-sm font-normal text-gray-400">/month</span>
                         </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Unlimited Historical Data for Backtesting
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Enterprise Strategy Templates
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                24/7 Dedicated Support
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Custom Strategy Development
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 mr-3 text-[#3DB8F5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                API Access
+                            </li>
+                        </ul>
                     </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>1 Million Candles for Backtesting</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Enterprise Strategy Templates</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>24/7 Dedicated Support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Custom Strategy Development</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>API Access</span>
-                        </li>
-                    </ul>
-                    <button onclick="purchasePackage('business')" class="w-full buy-btn text-white font-semibold py-3 px-6 rounded-lg">
-                        Get Started
-                    </button>
+                    <div class="mt-auto">
+                        <button onclick="purchasePackage('business')" class="w-full bg-[#3DB8F5] text-black font-semibold px-8 py-4 rounded-lg hover:bg-[#2CA8E5] transition-colors">
+                            Get Started
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -772,32 +796,46 @@
     </footer>
 
     <script>
+        // Navbar scroll behavior
+        const navbar = document.getElementById('navbar');
+        function updateNavbar() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 50) {
+                navbar.style.backgroundColor = 'rgba(11, 11, 30, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+                navbar.style.borderBottom = '1px solid rgba(61, 184, 245, 0.1)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.backgroundColor = 'transparent';
+                navbar.style.backdropFilter = 'none';
+                navbar.style.borderBottom = 'none';
+                navbar.style.boxShadow = 'none';
+            }
+        }
+        window.addEventListener('scroll', updateNavbar);
+        updateNavbar();
+
         // Handle package purchase
         async function purchasePackage(packageType) {
             try {
-                const user = JSON.parse(localStorage.getItem('user'));
+                // Initialize cart if it doesn't exist
+                let cart = JSON.parse(localStorage.getItem('cart')) || { items: [], total: 0 };
                 
-                if (!user || !user.email) {
-                    alert('Please log in to purchase a package');
-                    window.location.href = 'login.html';
-                    return;
-                }
-
                 const packageDetails = {
                     basic: {
                         price: 49.99,
-                        candles: 5000,
-                        name: 'Basic'
+                        candles: "3 Months",
+                        name: 'Basic Package'
                     },
                     pro: {
                         price: 69.99,
-                        candles: 15000,
-                        name: 'Pro'
+                        candles: "1 Year",
+                        name: 'Pro Package'
                     },
                     business: {
                         price: 99.99,
-                        candles: 1000000,
-                        name: 'Business'
+                        candles: "Unlimited",
+                        name: 'Business Package'
                     }
                 };
 
@@ -812,9 +850,19 @@
                     candles: selectedPackage.candles
                 });
                 
-                saveCart();
+                // Update cart total
+                cart.total = cart.items.reduce((sum, item) => sum + item.price, 0);
                 
-                alert(`Added ${selectedPackage.name} package to cart!`);
+                // Save cart to localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                // Update cart badge
+                const cartBadge = document.getElementById('cartCount');
+                if (cartBadge) {
+                    cartBadge.textContent = cart.items.length;
+                }
+                
+                alert(`Added ${selectedPackage.name} to cart!`);
                 window.location.href = 'cart.html';
                 
             } catch (error) {
@@ -822,6 +870,15 @@
                 alert('Failed to add package to cart. Please try again.');
             }
         }
+
+        // Initialize cart badge on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || { items: [], total: 0 };
+            const cartBadge = document.getElementById('cartCount');
+            if (cartBadge) {
+                cartBadge.textContent = cart.items.length;
+            }
+        });
     </script>
 </body>
 </html> 
