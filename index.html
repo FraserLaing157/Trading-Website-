@@ -448,6 +448,34 @@
                 max-width: min(150px, 35vw);
             }
         }
+
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in-hidden {
+            opacity: 0;
+            transform: translateX(-100%);
+            transition: all 1s ease-out;
+        }
+
+        .slide-in-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-slide {
+            transform: translateX(var(--slide-distance, -100%));
+            transition: none;
+            will-change: transform;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -705,182 +733,112 @@
             </style>
         </section>
 
-        <!-- Tokens Section (Account Types) -->
+        <!-- Tokens Section -->
         <section id="tokens" class="py-20 relative">
             <div class="max-w-7xl mx-auto px-4">
                 <!-- Header -->
                 <div class="text-center mb-16">
                     <h2 class="text-5xl font-bold mb-4">
-                        Trade with our
-                        <span class="text-[#3DFCF8]">accounts?</span>
+                        Purchase
+                        <span class="text-[#3DFCF8]">Tokens</span>
                     </h2>
-                    <p class="text-gray-400 text-lg">A trading account suitable for all levels of traders</p>
+                    <p class="text-gray-400 text-lg">Choose the number of tokens that suit your trading needs</p>
                 </div>
 
-                <!-- Account Type Selector -->
-                <div class="flex justify-center gap-4 mb-12">
-                    <button class="bg-[#3DFCF8] text-[#0B0B1E] px-6 py-2 rounded-full font-medium hover:bg-[#3DFCF8]/90 transition-all">
-                        Standard
-                    </button>
-                    <button class="text-[#3DFCF8] px-6 py-2 rounded-full font-medium hover:bg-[#3DFCF8]/10 transition-all">
-                        Ecn
-                    </button>
-                </div>
-
-                <!-- Account Cards Container -->
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Standard Account Card -->
-                    <div class="relative p-8 rounded-2xl bg-[#0D1225] border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-b from-[#3DFCF8]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-[#3DFCF8]">Standard Account</h3>
-                                <svg class="w-6 h-6 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
+                <!-- Token Calculator -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-[#0D1225] p-8 rounded-2xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
+                        <!-- Token Input Section -->
+                        <div class="mb-8">
+                            <label class="block text-[#3DFCF8] text-lg mb-4">Number of Tokens</label>
+                            <div class="flex items-center space-x-4">
+                                <button id="decrementBtn" class="bg-[#0D1225] border border-[#3DFCF8] text-[#3DFCF8] w-12 h-12 rounded-lg flex items-center justify-center hover:bg-[#3DFCF8]/10 transition-all">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                                    </svg>
+                                </button>
+                                <input type="number" id="tokenInput" value="10" min="1" class="bg-[#0D1225] border border-[#3DFCF8]/30 text-white text-center text-2xl w-32 h-12 rounded-lg focus:outline-none focus:border-[#3DFCF8]">
+                                <button id="incrementBtn" class="bg-[#0D1225] border border-[#3DFCF8] text-[#3DFCF8] w-12 h-12 rounded-lg flex items-center justify-center hover:bg-[#3DFCF8]/10 transition-all">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                </button>
                             </div>
-
-                            <div class="mb-6">
-                                <h4 class="text-xl mb-2">
-                                    <span class="text-[#3DFCF8]">New traders</span> with
-                                    <span class="text-white">small volume</span>
-                                </h4>
-                                <p class="text-gray-400">Apply service of autotrader</p>
-                            </div>
-
-                            <button class="w-full bg-[#3DFCF8] text-[#0B0B1E] py-3 rounded-full font-medium hover:bg-[#3DFCF8]/90 transition-all mb-8">
-                                Open an account
-                            </button>
-
-                            <ul class="space-y-4">
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Spreads starting from 1.3 pips
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Ultra-fast execution
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Transparent trading environment
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Negative balance protection
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    No commission on trades (except indices)
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    No dealing desk
-                                </li>
-                            </ul>
                         </div>
+
+                        <!-- Price Display -->
+                        <div class="bg-[#0F1A33] p-6 rounded-xl mb-8">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-gray-400 mb-1">Total Price</p>
+                                    <p class="text-3xl font-bold text-white">$<span id="priceDisplay">100</span></p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-gray-400 mb-1">Price per Token</p>
+                                    <p class="text-xl text-[#3DFCF8]">$10.00</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Features Grid -->
+                        <div class="grid md:grid-cols-2 gap-6 mb-8">
+                            <div class="space-y-3">
+                                <div class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    1 Token = 1 Day of Trading
+                                </div>
+                                <div class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    24/7 Trading Access
+                                </div>
+                                <div class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Real-time Market Data
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Unlimited Trades
+                                </div>
+                                <div class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Advanced Analytics
+                                </div>
+                                <div class="flex items-center text-gray-300">
+                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Priority Support
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Purchase Button -->
+                        <button class="w-full bg-[#3DFCF8] text-[#0B0B1E] py-4 rounded-xl font-bold text-lg hover:bg-[#3DFCF8]/90 transition-all">
+                            Purchase Tokens
+                        </button>
                     </div>
 
-                    <!-- ECN Account Card -->
-                    <div class="relative p-8 rounded-2xl bg-[#0D1225] border border-[#1a2036] group hover:border-[#3DFCF8]/30 transition-all duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-b from-[#3DFCF8]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-[#3DFCF8]">Ecn Account</h3>
-                                <svg class="w-6 h-6 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </div>
-
-                            <div class="mb-6">
-                                <h4 class="text-xl mb-2">
-                                    For <span class="text-[#3DFCF8]">high-volume</span>
-                                    <span class="text-white">with traders</span>
-                                </h4>
-                                <p class="text-gray-400">Apply service of autotrader</p>
-                            </div>
-
-                            <button class="w-full bg-[#3DFCF8] text-[#0B0B1E] py-3 rounded-full font-medium hover:bg-[#3DFCF8]/90 transition-all mb-8">
-                                Open an account
-                            </button>
-
-                            <ul class="space-y-4">
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Spreads starting from 0.0 pips
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Ultra-fast execution
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    In-depth market Insights
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Transparent trading environment
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Negative balance protection
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Commission of $7 per lot traded
-                                </li>
-                            </ul>
-                        </div>
+                    <!-- Volume Discount Notice -->
+                    <div class="mt-6 text-center">
+                        <p class="text-gray-400">
+                            <span class="text-[#3DFCF8]">💡</span>
+                            Buy more tokens to unlock volume discounts of up to 20%
+                        </p>
                     </div>
                 </div>
             </div>
-
-            <style>
-                .account-card {
-                    position: relative;
-                    overflow: hidden;
-                }
-                .account-card::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 1px;
-                    background: linear-gradient(90deg, transparent, #3DFCF8, transparent);
-                    opacity: 0;
-                    transition: opacity 0.3s;
-                }
-                .account-card:hover::before {
-                    opacity: 1;
-                }
-            </style>
         </section>
 
         <!-- FAQ Section -->
@@ -1135,7 +1093,62 @@
     </main>
 
     <script>
+        // Move token calculator functions outside the DOMContentLoaded event
+        function updatePrice() {
+            const tokenInput = document.getElementById('tokenInput');
+            const priceDisplay = document.getElementById('priceDisplay');
+            const tokens = parseInt(tokenInput.value) || 0; // Handle NaN case
+            
+            // Base price per token
+            let pricePerToken = 10;
+            
+            // Volume discount logic
+            if (tokens >= 100) {
+                pricePerToken = 8; // 20% discount
+            } else if (tokens >= 50) {
+                pricePerToken = 9; // 10% discount
+            }
+            
+            const totalPrice = tokens * pricePerToken;
+            priceDisplay.textContent = totalPrice.toFixed(2);
+        }
+
+        function incrementTokens() {
+            const tokenInput = document.getElementById('tokenInput');
+            tokenInput.value = (parseInt(tokenInput.value) || 0) + 1;
+            updatePrice();
+        }
+
+        function decrementTokens() {
+            const tokenInput = document.getElementById('tokenInput');
+            const currentValue = parseInt(tokenInput.value) || 0;
+            if (currentValue > 1) {
+                tokenInput.value = currentValue - 1;
+                updatePrice();
+            }
+        }
+
+        // Initialize everything when the DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Token calculator initialization
+            updatePrice();
+
+            // Add event listeners to buttons
+            const decrementBtn = document.querySelector('#decrementBtn');
+            const incrementBtn = document.querySelector('#incrementBtn');
+            const tokenInput = document.getElementById('tokenInput');
+
+            if (decrementBtn) {
+                decrementBtn.addEventListener('click', decrementTokens);
+            }
+            if (incrementBtn) {
+                incrementBtn.addEventListener('click', incrementTokens);
+            }
+            if (tokenInput) {
+                tokenInput.addEventListener('input', updatePrice);
+                tokenInput.addEventListener('change', updatePrice);
+            }
+
             // Navbar scroll behavior
             const navbar = document.getElementById('navbar');
             let lastScrollTop = 0;
@@ -1167,71 +1180,72 @@
                 document.documentElement.style.setProperty('--mouse-y', `${y}%`);
             });
 
-            // Restore crypto ticker functionality
+            // Crypto ticker functionality
             const tickerContainer = document.getElementById('crypto-ticker');
-            
-            // Initial static data
-            const initialData = {
-                'XAUUSD': { price: 2015.50, change: 0.45, name: 'Gold' },
-                'XAGUSD': { price: 23.15, change: -0.32, name: 'Silver' },
-                'WTIUSD': { price: 76.80, change: 1.25, name: 'Crude Oil' },
-                'NGUSD': { price: 2.85, change: -0.75, name: 'Natural Gas' },
-                'PLUSD': { price: 925.30, change: 0.28, name: 'Platinum' },
-                'CUUSD': { price: 3.85, change: 0.65, name: 'Copper' }
-            };
+            if (tickerContainer) {
+                // Initial static data
+                const initialData = {
+                    'BTC/USD': { price: 65420.50, change: 2.45, name: 'Bitcoin' },
+                    'ETH/USD': { price: 3215.75, change: -1.32, name: 'Ethereum' },
+                    'SOL/USD': { price: 146.80, change: 3.25, name: 'Solana' },
+                    'BNB/USD': { price: 485.35, change: -0.75, name: 'Binance' },
+                    'ADA/USD': { price: 0.72, change: 1.28, name: 'Cardano' },
+                    'XRP/USD': { price: 0.85, change: 0.65, name: 'Ripple' }
+                };
 
-            const prices = { ...initialData };
+                const prices = { ...initialData };
 
-            function formatPrice(price) {
-                return parseFloat(price).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-            }
+                function formatPrice(price) {
+                    return parseFloat(price).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                }
 
-            function formatChange(change) {
-                return (change > 0 ? '+' : '') + change.toFixed(2) + '%';
-            }
+                function formatChange(change) {
+                    return (change > 0 ? '+' : '') + change.toFixed(2) + '%';
+                }
 
-            function createTickerItem(symbol, data) {
-                const changeClass = data.change >= 0 ? 'positive' : 'negative';
-                const arrow = data.change >= 0 ? '↑' : '↓';
-                
-                return `
-                    <div class="ticker-item">
-                        <span class="ticker-symbol">${data.name}</span>
-                        <span class="ticker-price">$${formatPrice(data.price)}</span>
-                        <span class="ticker-change ${changeClass}">
-                            <span class="ticker-arrow">${arrow}</span>
-                            ${formatChange(data.change)}
-                        </span>
-                    </div>
-                `;
-            }
+                function createTickerItem(symbol, data) {
+                    const changeClass = data.change >= 0 ? 'positive' : 'negative';
+                    const arrow = data.change >= 0 ? '↑' : '↓';
+                    
+                    return `
+                        <div class="ticker-item">
+                            <span class="ticker-symbol">${data.name}</span>
+                            <span class="ticker-price">$${formatPrice(data.price)}</span>
+                            <span class="ticker-change ${changeClass}">
+                                <span class="ticker-arrow">${arrow}</span>
+                                ${formatChange(data.change)}
+                            </span>
+                        </div>
+                    `;
+                }
 
-            function updateTicker() {
-                let tickerHTML = '';
-                Object.entries(prices).forEach(([symbol, data]) => {
-                    tickerHTML += createTickerItem(symbol, data);
-                });
-                
-                // Double the content for seamless scrolling
-                tickerContainer.innerHTML = tickerHTML + tickerHTML;
-            }
+                function updateTicker() {
+                    let tickerHTML = '';
+                    Object.entries(prices).forEach(([symbol, data]) => {
+                        tickerHTML += createTickerItem(symbol, data);
+                    });
+                    
+                    // Double the content for seamless scrolling
+                    tickerContainer.innerHTML = tickerHTML + tickerHTML;
+                }
 
-            // Initial update
-            updateTicker();
-
-            // Simulate price updates
-            setInterval(() => {
-                Object.keys(prices).forEach(symbol => {
-                    // Simulate small random price movements
-                    const randomChange = (Math.random() - 0.5) * 0.2;
-                    prices[symbol].price *= (1 + randomChange/100);
-                    prices[symbol].change = randomChange;
-                });
+                // Initial update
                 updateTicker();
-            }, 2000);
+
+                // Simulate price updates
+                setInterval(() => {
+                    Object.keys(prices).forEach(symbol => {
+                        // Simulate small random price movements
+                        const randomChange = (Math.random() - 0.5) * 0.5;
+                        prices[symbol].price *= (1 + randomChange/100);
+                        prices[symbol].change = randomChange;
+                    });
+                    updateTicker();
+                }, 2000);
+            }
         });
     </script>
 </body>
