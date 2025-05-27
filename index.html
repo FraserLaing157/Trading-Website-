@@ -618,6 +618,22 @@
         .hover-glow:hover::before {
             transform: scale(1);
         }
+
+        .cart-counter {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #3DB8F5;
+            color: #0B0B1E;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 
     <!-- Add floating elements container right after body tag -->
@@ -703,8 +719,16 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#home" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
                     <a href="#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-                    <a href="#tokens" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Tokens</a>
+                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Tokens</a>
                     <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
+                    <div class="relative">
+                        <button id="cartBtn" class="p-2 rounded-full hover:bg-white/10 transition-colors relative">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                            </svg>
+                            <span class="cart-counter" id="cartCount">0</span>
+                        </button>
+                    </div>
                     <a href="#" class="get-started-btn">Get Early access</a>
                 </div>
             </div>
@@ -893,146 +917,42 @@
                         Purchase
                         <span class="text-[#3DFCF8]">Tokens</span>
                     </h2>
-                    <p class="text-gray-400 text-lg">Choose the number of tokens that suit your trading needs</p>
+                    <p class="text-gray-400 text-lg mb-8">Choose the perfect token package for your trading needs</p>
+                    <a href="shop.html" class="inline-block bg-[#3DFCF8] text-[#0B0B1E] py-4 px-8 rounded-xl font-bold text-lg hover:bg-[#3DFCF8]/90 transition-all">
+                        View Token Packages
+                    </a>
                 </div>
 
-                <!-- Token Calculator -->
-                <div class="max-w-4xl mx-auto">
-                    <div class="bg-[#0D1225] p-8 rounded-2xl border border-[#3DB8F5]/20 hover:border-[#3DB8F5]/40 transition-all duration-300">
-                        <!-- Token Input Section -->
-                        <div class="mb-8">
-                            <label class="block text-[#3DFCF8] text-lg mb-4">Number of Tokens</label>
-                            <div class="flex items-center space-x-4">
-                                <button id="decrementBtn" class="bg-[#0D1225] border border-[#3DFCF8] text-[#3DFCF8] w-12 h-12 rounded-lg flex items-center justify-center hover:bg-[#3DFCF8]/10 transition-all">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
-                                    </svg>
-                                </button>
-                                <input type="number" id="tokenInput" value="10" min="1" class="bg-[#0D1225] border border-[#3DFCF8]/30 text-white text-center text-2xl w-32 h-12 rounded-lg focus:outline-none focus:border-[#3DFCF8]">
-                                <button id="incrementBtn" class="bg-[#0D1225] border border-[#3DFCF8] text-[#3DFCF8] w-12 h-12 rounded-lg flex items-center justify-center hover:bg-[#3DFCF8]/10 transition-all">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                    </svg>
-                                </button>
-                            </div>
+                <!-- Features Grid -->
+                <div class="grid md:grid-cols-3 gap-8 mt-16">
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-[#3DFCF8]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
                         </div>
+                        <h3 class="text-xl font-bold mb-2">Volume Discounts</h3>
+                        <p class="text-gray-400">Save up to 20% with our volume discount packages</p>
+                    </div>
 
-                        <!-- Price Display -->
-                        <div class="bg-[#0F1A33] p-6 rounded-xl mb-8">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="text-gray-400 mb-1">Total Price</p>
-                                    <p class="text-3xl font-bold text-white">$<span id="priceDisplay">100</span></p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-gray-400 mb-1">Price per Token</p>
-                                    <p class="text-xl text-[#3DFCF8]">$10.00</p>
-                                </div>
-                            </div>
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-[#3DFCF8]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
                         </div>
+                        <h3 class="text-xl font-bold mb-2">Instant Access</h3>
+                        <p class="text-gray-400">Start trading immediately after purchase</p>
+                    </div>
 
-                        <!-- Features Grid -->
-                        <div class="grid md:grid-cols-2 gap-6 mb-8">
-                            <div class="space-y-3">
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    1 Token = 1 Day of Trading
-                                </div>
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    24/7 Trading Access
-                                </div>
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Real-time Market Data
-                                </div>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Unlimited Trades
-                                </div>
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Advanced Analytics
-                                </div>
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 mr-3 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Priority Support
-                                </div>
-                            </div>
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-[#3DFCF8]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-[#3DFCF8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
                         </div>
-
-                        <!-- Volume Discount Notice -->
-                        <div class="mt-6 space-y-4">
-                            <div class="text-center">
-                                <p class="text-gray-400 mb-2">
-                                    <span class="text-[#3DFCF8]">💎</span>
-                                    Volume Discounts Available
-                                </p>
-                                <div class="flex justify-center space-x-8">
-                                    <div class="text-sm">
-                                        <span class="text-[#3DFCF8]">10% OFF</span>
-                                        <p class="text-gray-400">50+ Tokens</p>
-                                    </div>
-                                    <div class="text-sm">
-                                        <span class="text-[#3DFCF8]">20% OFF</span>
-                                        <p class="text-gray-400">100+ Tokens</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="bg-[#0F1A33]/50 p-6 rounded-xl">
-                                <h4 class="text-lg font-semibold mb-3 text-[#3DFCF8]">What One Token Provides:</h4>
-                                <ul class="space-y-3 text-gray-300">
-                                    <li class="flex items-start">
-                                        <svg class="w-5 h-5 mr-3 text-[#3DFCF8] mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                        <span>24 hours of continuous trading with up to 3 active strategies simultaneously</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <svg class="w-5 h-5 mr-3 text-[#3DFCF8] mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                        <span>Trade across any supported cryptocurrency pairs within your strategies</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <svg class="w-5 h-5 mr-3 text-[#3DFCF8] mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                        <span>Real-time strategy adjustments and position management</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <svg class="w-5 h-5 mr-3 text-[#3DFCF8] mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                        <span>Detailed performance analytics and trade reports</span>
-                                    </li>
-                                </ul>
-                                <p class="mt-4 text-sm text-gray-400">
-                                    <span class="text-[#3DFCF8]">💡 Pro Tip:</span>
-                                    Most users purchase 30 tokens to start, allowing a full month of trading while benefiting from our volume pricing.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Purchase Button -->
-                        <button class="w-full bg-[#3DFCF8] text-[#0B0B1E] py-4 rounded-xl font-bold text-lg hover:bg-[#3DFCF8]/90 transition-all">
-                            Purchase Tokens
-                        </button>
+                        <h3 class="text-xl font-bold mb-2">Secure Trading</h3>
+                        <p class="text-gray-400">Enterprise-grade security for all transactions</p>
                     </div>
                 </div>
             </div>
@@ -1290,60 +1210,60 @@
     </main>
 
     <script>
-        // Move token calculator functions outside the DOMContentLoaded event
-        function updatePrice() {
-            const tokenInput = document.getElementById('tokenInput');
-            const priceDisplay = document.getElementById('priceDisplay');
-            const tokens = parseInt(tokenInput.value) || 0; // Handle NaN case
-            
-            // Base price per token
-            let pricePerToken = 10;
-            
-            // Volume discount logic
-            if (tokens >= 100) {
-                pricePerToken = 8; // 20% discount
-            } else if (tokens >= 50) {
-                pricePerToken = 9; // 10% discount
-            }
-            
-            const totalPrice = tokens * pricePerToken;
-            priceDisplay.textContent = totalPrice.toFixed(2);
-        }
+        // Initialize cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || {
+            items: [],
+            total: 0
+        };
 
-        function incrementTokens() {
-            const tokenInput = document.getElementById('tokenInput');
-            tokenInput.value = (parseInt(tokenInput.value) || 0) + 1;
-            updatePrice();
-        }
-
-        function decrementTokens() {
-            const tokenInput = document.getElementById('tokenInput');
-            const currentValue = parseInt(tokenInput.value) || 0;
-            if (currentValue > 1) {
-                tokenInput.value = currentValue - 1;
-                updatePrice();
+        // Update cart counter
+        function updateCartCounter() {
+            const cartCount = document.getElementById('cartCount');
+            if (cartCount) {
+                cartCount.textContent = cart.items.length;
             }
         }
+
+        // Save cart to localStorage
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCounter();
+        }
+
+        // Make cart functions available globally
+        window.addToCart = function(package, price, tokens) {
+            cart.items.push({
+                package: package,
+                price: price,
+                tokens: tokens
+            });
+            cart.total += price;
+            saveCart();
+            
+            // Show success message if we're on the shop page
+            const btn = event.target;
+            if (btn && btn.tagName === 'BUTTON') {
+                const originalText = btn.textContent;
+                btn.textContent = 'Added to Cart!';
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            }
+        };
 
         // Initialize everything when the DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Token calculator initialization
-            updatePrice();
+            // Initialize cart counter
+            updateCartCounter();
 
-            // Add event listeners to buttons
-            const decrementBtn = document.querySelector('#decrementBtn');
-            const incrementBtn = document.querySelector('#incrementBtn');
-            const tokenInput = document.getElementById('tokenInput');
-
-            if (decrementBtn) {
-                decrementBtn.addEventListener('click', decrementTokens);
-            }
-            if (incrementBtn) {
-                incrementBtn.addEventListener('click', incrementTokens);
-            }
-            if (tokenInput) {
-                tokenInput.addEventListener('input', updatePrice);
-                tokenInput.addEventListener('change', updatePrice);
+            // Add click handler for cart button
+            const cartBtn = document.getElementById('cartBtn');
+            if (cartBtn) {
+                cartBtn.addEventListener('click', () => {
+                    window.location.href = 'shop.html#cart';
+                });
             }
 
             // Navbar scroll behavior
@@ -1443,485 +1363,6 @@
                     updateTicker();
                 }, 2000);
             }
-        });
-
-        // WebGL Decision Matrix
-        const canvas = document.getElementById('decision-matrix');
-        const gl = canvas.getContext('webgl', { alpha: true });
-        const formulaContainer = document.getElementById('formula-container');
-
-        if (!gl) {
-            console.error('Unable to initialize WebGL. Your browser may not support it.');
-        } else {
-            // Set initial canvas size
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                gl.viewport(0, 0, canvas.width, canvas.height);
-            }
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-
-            // Clear to transparent
-            gl.clearColor(0.0, 0.0, 0.0, 0.0);
-
-            // Vertex shader program
-            const vsSource = `
-                attribute vec4 aVertexPosition;
-                attribute vec2 aTextureCoord;
-                
-                uniform mat4 uModelViewMatrix;
-                uniform mat4 uProjectionMatrix;
-                
-                varying vec2 vTextureCoord;
-                
-                void main() {
-                    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-                    vTextureCoord = aTextureCoord;
-                }
-            `;
-
-            // Fragment shader program
-            const fsSource = `
-                precision mediump float;
-                
-                varying vec2 vTextureCoord;
-                uniform float uTime;
-                
-                float random(vec2 st) {
-                    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-                }
-                
-                void main() {
-                    vec2 st = vTextureCoord;
-                    
-                    // Create grid
-                    vec2 grid = fract(st * 100.0);
-                    float cell = step(0.9, grid.x) + step(0.9, grid.y);
-                    
-                    // Time-based animation
-                    float t = uTime * 0.001;
-                    float activity = random(floor(st * 100.0) + floor(t));
-                    
-                    // Decision colors
-                    vec3 buyColor = vec3(0.24, 0.72, 0.96);  // #3DB8F5
-                    vec3 sellColor = vec3(0.94, 0.27, 0.27); // #EF4444
-                    vec3 holdColor = vec3(0.06, 0.73, 0.51); // #10B981
-                    
-                    // Choose color based on activity
-                    vec3 color;
-                    if (activity < 0.33) {
-                        color = buyColor;
-                    } else if (activity < 0.66) {
-                        color = sellColor;
-                    } else {
-                        color = holdColor;
-                    }
-                    
-                    // Add pulsing effect
-                    float pulse = sin(t + random(st) * 6.28) * 0.5 + 0.5;
-                    color *= 0.3 + 0.7 * pulse;
-                    
-                    // Add grid lines
-                    color = mix(color, vec3(1.0), cell * 0.1);
-                    
-                    gl_FragColor = vec4(color, activity * 0.15);
-                }
-            `;
-
-            // Initialize shader program
-            function initShaderProgram(gl, vsSource, fsSource) {
-                const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-                const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
-
-                const shaderProgram = gl.createProgram();
-                gl.attachShader(shaderProgram, vertexShader);
-                gl.attachShader(shaderProgram, fragmentShader);
-                gl.linkProgram(shaderProgram);
-
-                return shaderProgram;
-            }
-
-            function loadShader(gl, type, source) {
-                const shader = gl.createShader(type);
-                gl.shaderSource(shader, source);
-                gl.compileShader(shader);
-                return shader;
-            }
-
-            // Initialize buffers
-            function initBuffers(gl) {
-                const positions = [
-                    -1.0,  1.0,
-                     1.0,  1.0,
-                    -1.0, -1.0,
-                     1.0, -1.0,
-                ];
-
-                const textureCoordinates = [
-                    0.0,  0.0,
-                    1.0,  0.0,
-                    0.0,  1.0,
-                    1.0,  1.0,
-                ];
-
-                const positionBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-
-                const textureCoordBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
-
-                return {
-                    position: positionBuffer,
-                    textureCoord: textureCoordBuffer,
-                };
-            }
-
-            // Trading formulas and indicators
-            const tradingFormulas = [
-                "RSI = 100 - (100 / (1 + RS))",
-                "MACD = EMA12 - EMA26",
-                "BB_Upper = MA20 + (2 × σ20)",
-                "ROC = ((Close - Close[-n]) / Close[-n]) × 100",
-                "ATR = max(H-L, H-Cp, L-Cp)",
-                "OBV = OBV[-1] ± Volume",
-                "ADX = ((+DI - -DI) / (+DI + -DI)) × 100",
-                "Stoch = ((Close - Low14) / (High14 - Low14)) × 100",
-                "CMF = Σ((Close - Low) - (High - Close)) / (High - Low) × Volume",
-                "MFI = 100 - (100 / (1 + MR))"
-            ];
-
-            // Create floating formulas
-            function createFloatingFormula() {
-                const formula = document.createElement('div');
-                formula.className = 'floating-formula';
-                formula.textContent = tradingFormulas[Math.floor(Math.random() * tradingFormulas.length)];
-                
-                // Random position - considering full document height
-                const maxHeight = Math.max(
-                    document.body.scrollHeight,
-                    document.documentElement.scrollHeight
-                );
-                formula.style.left = Math.random() * window.innerWidth + 'px';
-                formula.style.top = Math.random() * maxHeight + 'px';
-                
-                formulaContainer.appendChild(formula);
-
-                // Animate
-                let opacity = 0;
-                let direction = 1;
-                let speed = 0.5 + Math.random() * 0.5;
-
-                function animate() {
-                    opacity += 0.01 * direction * speed;
-                    
-                    if (opacity >= 1) {
-                        direction = -1;
-                    } else if (opacity <= 0) {
-                        formula.remove();
-                        return;
-                    }
-                    
-                    formula.style.opacity = opacity;
-                    requestAnimationFrame(animate);
-                }
-
-                animate();
-            }
-
-            // Periodically create new formulas - adjusted timing and check viewport
-            function createFormulaIfInView() {
-                const viewportWidth = window.innerWidth;
-                const documentHeight = Math.max(
-                    document.body.scrollHeight,
-                    document.documentElement.scrollHeight,
-                    document.body.offsetHeight,
-                    document.documentElement.offsetHeight,
-                    document.body.clientHeight,
-                    document.documentElement.clientHeight
-                );
-                
-                const formula = document.createElement('div');
-                formula.className = 'floating-formula';
-                formula.textContent = tradingFormulas[Math.floor(Math.random() * tradingFormulas.length)];
-                
-                // Calculate position relative to document center, not viewport
-                const centerX = viewportWidth / 2;
-                const maxOffset = Math.min(viewportWidth * 0.4, 600);
-                
-                // Position randomly across the entire document height
-                formula.style.left = (centerX + (Math.random() - 0.5) * maxOffset * 2) + 'px';
-                formula.style.top = (Math.random() * documentHeight) + 'px';
-                
-                formulaContainer.appendChild(formula);
-
-                // Start with 0 opacity
-                formula.style.opacity = '0';
-                
-                // Force a reflow to ensure the transition works
-                formula.offsetHeight;
-                
-                // Fade in
-                setTimeout(() => {
-                    formula.style.opacity = '1';
-                }, 100);
-
-                // Slower fade out after a random duration
-                setTimeout(() => {
-                    formula.style.opacity = '0';
-                    // Remove element after fade out completes
-                    setTimeout(() => {
-                        formula.remove();
-                    }, 2000);
-                }, 5000 + Math.random() * 5000);
-            }
-
-            // Create formulas less frequently and ensure container height updates
-            function updateFormulaContainer() {
-                const documentHeight = Math.max(
-                    document.body.scrollHeight,
-                    document.documentElement.scrollHeight,
-                    document.body.offsetHeight,
-                    document.documentElement.offsetHeight,
-                    document.body.clientHeight,
-                    document.documentElement.clientHeight
-                );
-                document.getElementById('formula-container').style.height = documentHeight + 'px';
-            }
-
-            // Update container height when window resizes
-            window.addEventListener('resize', updateFormulaContainer);
-
-            // Update container height periodically
-            setInterval(updateFormulaContainer, 1000);
-
-            // Initial container height
-            updateFormulaContainer();
-
-            // Create formulas periodically
-            setInterval(createFormulaIfInView, 3000);
-
-            // Create initial formulas
-            for(let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    createFormulaIfInView();
-                }, i * 1000);
-            }
-
-            // Animation loop
-            function render(time) {
-                // Update canvas size
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-                
-                if (canvas.width !== width || canvas.height !== height) {
-                    canvas.width = width;
-                    canvas.height = height;
-                    gl.viewport(0, 0, width, height);
-                }
-
-                // Clear canvas
-                gl.clear(gl.COLOR_BUFFER_BIT);
-
-                // Update uniforms
-                gl.uniform1f(programInfo.uniformLocations.time, time);
-
-                // Draw
-                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-
-                requestAnimationFrame(render);
-            }
-
-            // Initialize WebGL
-            const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
-            const buffers = initBuffers(gl);
-
-            const programInfo = {
-                program: shaderProgram,
-                attribLocations: {
-                    vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-                    textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
-                },
-                uniformLocations: {
-                    projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-                    modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-                    time: gl.getUniformLocation(shaderProgram, 'uTime'),
-                },
-            };
-
-            // Set up WebGL state
-            gl.useProgram(programInfo.program);
-            gl.enable(gl.BLEND);
-            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-            // Start animation
-            requestAnimationFrame(render);
-        }
-
-        // Add this after your existing script content
-
-        class CircuitNode {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.connections = [];
-                this.element = document.createElement('div');
-                this.element.className = 'node';
-                this.element.style.left = x + 'px';
-                this.element.style.top = y + 'px';
-            }
-
-            pulse() {
-                this.element.classList.add('pulse');
-                setTimeout(() => {
-                    this.element.classList.remove('pulse');
-                }, 2000);
-            }
-        }
-
-        class CircuitPath {
-            constructor(startNode, endNode) {
-                this.startNode = startNode;
-                this.endNode = endNode;
-                this.element = document.createElement('div');
-                this.element.className = 'circuit-path';
-                this.updatePosition();
-            }
-
-            updatePosition() {
-                const dx = this.endNode.x - this.startNode.x;
-                const dy = this.endNode.y - this.startNode.y;
-                const length = Math.sqrt(dx * dx + dy * dy);
-                const angle = Math.atan2(dy, dx);
-
-                this.element.style.width = length + 'px';
-                this.element.style.left = this.startNode.x + 'px';
-                this.element.style.top = this.startNode.y + 'px';
-                this.element.style.transform = `rotate(${angle}rad)`;
-            }
-
-            createDataPacket() {
-                const packet = document.createElement('div');
-                packet.className = 'data-packet';
-                packet.style.left = this.startNode.x + 'px';
-                packet.style.top = this.startNode.y + 'px';
-
-                const dx = this.endNode.x - this.startNode.x;
-                const dy = this.endNode.y - this.startNode.y;
-                const duration = Math.sqrt(dx * dx + dy * dy) * 10; // Speed based on distance
-
-                packet.animate([
-                    { left: this.startNode.x + 'px', top: this.startNode.y + 'px' },
-                    { left: this.endNode.x + 'px', top: this.endNode.y + 'px' }
-                ], {
-                    duration: duration,
-                    easing: 'linear'
-                }).onfinish = () => {
-                    packet.remove();
-                    this.endNode.pulse();
-                };
-
-                return packet;
-            }
-        }
-
-        function initializeCircuit() {
-            const container = document.createElement('div');
-            container.id = 'circuit-container';
-            document.body.appendChild(container);
-
-            const nodes = [];
-            const paths = [];
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            // Create nodes in a grid pattern
-            const gridSize = 6;
-            for (let i = 0; i < gridSize; i++) {
-                for (let j = 0; j < gridSize; j++) {
-                    const x = (viewportWidth * (i + 1)) / (gridSize + 1);
-                    const y = (viewportHeight * (j + 1)) / (gridSize + 1);
-                    const node = new CircuitNode(x, y);
-                    nodes.push(node);
-                    container.appendChild(node.element);
-                }
-            }
-
-            // Connect nodes
-            nodes.forEach((node, i) => {
-                const possibleConnections = nodes.filter((n, index) => {
-                    if (index === i) return false;
-                    const dx = n.x - node.x;
-                    const dy = n.y - node.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    return distance < viewportWidth / gridSize * 1.5;
-                });
-
-                // Connect to 2-3 nearest nodes
-                const connections = possibleConnections
-                    .sort((a, b) => {
-                        const distA = Math.hypot(a.x - node.x, a.y - node.y);
-                        const distB = Math.hypot(b.x - node.x, b.y - node.y);
-                        return distA - distB;
-                    })
-                    .slice(0, 2 + Math.floor(Math.random() * 2));
-
-                connections.forEach(target => {
-                    const path = new CircuitPath(node, target);
-                    paths.push(path);
-                    container.appendChild(path.element);
-                    node.connections.push(path);
-                });
-            });
-
-            // Animate data packets
-            function animateCircuit() {
-                const randomPath = paths[Math.floor(Math.random() * paths.length)];
-                const packet = randomPath.createDataPacket();
-                container.appendChild(packet);
-            }
-
-            // Start animations
-            setInterval(animateCircuit, 1000);
-
-            // Handle window resize
-            window.addEventListener('resize', () => {
-                container.innerHTML = '';
-                initializeCircuit();
-            });
-        }
-
-        // Initialize the circuit when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', initializeCircuit);
-
-        // Parallax scroll effect
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.parallax');
-            
-            parallaxElements.forEach(element => {
-                const speed = element.dataset.speed || 0.5;
-                const yPos = -(scrolled * speed);
-                element.style.transform = `translateY(${yPos}px)`;
-            });
-        });
-
-        // Intersection Observer for fade-in animations
-        const fadeElements = document.querySelectorAll('.fade-in');
-        const fadeObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
-
-        fadeElements.forEach(element => {
-            fadeObserver.observe(element);
         });
     </script>
 
