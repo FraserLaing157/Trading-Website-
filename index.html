@@ -340,14 +340,13 @@
             transform: translateY(1px);
         }
 
-        /* Restore floating images */
+        /* Remove animation and update floating image styles */
         .floating-image {
             position: absolute;
             opacity: 0.3;
             pointer-events: none;
             z-index: 1;
             filter: brightness(0.9) saturate(1.4);
-            animation: float 6s ease-in-out infinite;
             max-width: min(300px, 25vw);
             transition: all 0.3s ease;
             mix-blend-mode: screen;
@@ -357,23 +356,12 @@
             top: 5vh;
             right: max(-2%, calc(-30px + 2vw));
             transform: rotate(15deg);
-            animation-delay: 1s;
         }
 
         .floating-image.middle-right {
             top: 140vh;
             right: max(-4%, calc(-50px + 2vw));
             transform: rotate(25deg);
-            animation-delay: 0.5s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(var(--rotation)) scale(1);
-            }
-            50% {
-                transform: translateY(-20px) rotate(var(--rotation)) scale(1.02);
-            }
         }
 
         .floating-image img {
@@ -451,10 +439,10 @@
 </head>
 <body class="min-h-screen text-white overflow-x-hidden antialiased">
     <!-- Floating images -->
-    <div class="floating-image top-right" style="--rotation: 15deg;">
+    <div class="floating-image top-right">
         <img src="images/AdobeStock_519087125.png" alt="Decorative">
     </div>
-    <div class="floating-image middle-right" style="--rotation: 25deg;">
+    <div class="floating-image middle-right">
         <img src="images/AdobeStock_1348868299.png" alt="Decorative">
     </div>
 
@@ -788,34 +776,35 @@
                         </svg>
                         <span class="text-xl font-semibold tracking-tight gradient-text">Cryptotech X</span>
                     </a>
-                        <p class="text-gray-400">Building the future of crypto trading.</p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Navigate</h3>
-                        <ul class="space-y-3">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Products</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Solutions</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Legal</h3>
-                        <ul class="space-y-3">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Contact</h3>
-                        <ul class="space-y-3">
-                            <li class="text-gray-400">support@cryptotechx.com</li>
-                            <li class="text-gray-400">+1 (888) 888-8888</li>
-                        </ul>
+                            <p class="text-gray-400">Building the future of crypto trading.</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Navigate</h3>
+                            <ul class="space-y-3">
+                                <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
+                                <li><a href="#" class="text-gray-400 hover:text-white">Products</a></li>
+                                <li><a href="#" class="text-gray-400 hover:text-white">Solutions</a></li>
+                                <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                            <ul class="space-y-3">
+                                <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                                <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                                <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                            <ul class="space-y-3">
+                                <li class="text-gray-400">support@cryptotechx.com</li>
+                                <li class="text-gray-400">+1 (888) 888-8888</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -827,173 +816,169 @@
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Navbar scroll behavior
-            const navbar = document.getElementById('navbar');
-            let lastScrollTop = 0;
+        // Cache DOM elements and use RAF for smooth animations
+        const navbar = document.getElementById('navbar');
+        const tickerContainer = document.getElementById('crypto-ticker');
+        let ticking = false;
+        let animationFrameId = null;
+        let lastScrollTop = 0;
+        let mouseX = 50;
+        let mouseY = 50;
 
-            function updateNavbar() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const scrollThreshold = 50;
-
-                if (scrollTop > scrollThreshold) {
-                    navbar.style.backgroundColor = `rgba(0, 0, 0, ${Math.min((scrollTop - scrollThreshold) / 100, 0.8)})`;
-                    navbar.style.backdropFilter = 'blur(10px)';
-                } else {
-                    navbar.style.backgroundColor = 'transparent';
-                    navbar.style.backdropFilter = 'none';
-                }
-
-                lastScrollTop = scrollTop;
-            }
-
-            updateNavbar();
-            window.addEventListener('scroll', updateNavbar, { passive: true });
-
-            // Enhanced mouse move handler
-            document.addEventListener('mousemove', function(e) {
-                const x = (e.clientX / window.innerWidth) * 100;
-                const y = (e.clientY / window.innerHeight) * 100;
-                
-                document.documentElement.style.setProperty('--mouse-x', `${x}%`);
-                document.documentElement.style.setProperty('--mouse-y', `${y}%`);
-
-                // Add slight brightness where mouse moves
-                const trail = document.querySelector('.mouse-trail');
-                if (trail) {
-                    trail.style.background = `radial-gradient(
-                        circle at ${e.clientX}px ${e.clientY}px,
-                        rgba(255, 255, 255, 0.03) 0%,
-                        transparent 25%
-                    )`;
-                }
-            });
-
-            // Create mouse trail element
-            const trail = document.createElement('div');
-            trail.className = 'mouse-trail';
-            document.body.appendChild(trail);
-
-            // Navigation active state
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                });
-
-                // Add ripple effect
-                link.addEventListener('mouseenter', (e) => {
-                    const ripple = document.createElement('div');
-                    ripple.classList.add('nav-ripple');
-                    link.appendChild(ripple);
-                    setTimeout(() => ripple.remove(), 1000);
-                });
-            });
-
-            // Intersection Observer for sections
-            const sections = document.querySelectorAll('section[id]');
-            const observerOptions = {
-                threshold: 0.5,
-                rootMargin: '-50px'
+        // Debounce function for performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
             };
+        }
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        navLinks.forEach(link => {
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active');
-                            } else {
-                                link.classList.remove('active');
-                            }
-                        });
+        // Throttle function for performance
+        function throttle(func, limit) {
+            let inThrottle;
+            return function(...args) {
+                if (!inThrottle) {
+                    func.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        // Optimized navbar update using RAF
+        function updateNavbar() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollThreshold = 50;
+
+                    if (scrollTop > scrollThreshold) {
+                        const opacity = Math.min((scrollTop - scrollThreshold) / 100, 0.8);
+                        navbar.style.cssText = `
+                            background-color: rgba(0, 0, 0, ${opacity});
+                            backdrop-filter: blur(10px);
+                        `;
+                    } else {
+                        navbar.style.cssText = `
+                            background-color: transparent;
+                            backdrop-filter: none;
+                        `;
                     }
+
+                    lastScrollTop = scrollTop;
+                    ticking = false;
                 });
-            }, observerOptions);
+                ticking = true;
+            }
+        }
 
-            sections.forEach(section => observer.observe(section));
-        });
+        // Optimized mouse move handler using RAF
+        const updateMouseEffect = throttle((e) => {
+            mouseX = (e.clientX / window.innerWidth) * 100;
+            mouseY = (e.clientY / window.innerHeight) * 100;
 
-        // Crypto ticker functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const tickerContainer = document.getElementById('crypto-ticker');
+            if (!animationFrameId) {
+                animationFrameId = requestAnimationFrame(() => {
+                    document.documentElement.style.setProperty('--mouse-x', `${mouseX}%`);
+                    document.documentElement.style.setProperty('--mouse-y', `${mouseY}%`);
+
+                    const trail = document.querySelector('.mouse-trail');
+                    if (trail) {
+                        trail.style.background = `radial-gradient(
+                            circle at ${e.clientX}px ${e.clientY}px,
+                            rgba(255, 255, 255, 0.03) 0%,
+                            transparent 25%
+                        )`;
+                    }
+                    animationFrameId = null;
+                });
+            }
+        }, 16); // ~60fps
+
+        // Optimized ticker functionality
+        const initialData = {
+            'XAUUSD': { price: 2015.50, change: 0.45, name: 'Gold' },
+            'XAGUSD': { price: 23.15, change: -0.32, name: 'Silver' },
+            'WTIUSD': { price: 76.80, change: 1.25, name: 'Crude Oil' },
+            'NGUSD': { price: 2.85, change: -0.75, name: 'Natural Gas' },
+            'PLUSD': { price: 925.30, change: 0.28, name: 'Platinum' },
+            'CUUSD': { price: 3.85, change: 0.65, name: 'Copper' }
+        };
+
+        const prices = { ...initialData };
+        let tickerUpdateTimeout = null;
+
+        // Memoized price formatter
+        const priceFormatOptions = {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        };
+
+        function formatPrice(price) {
+            return parseFloat(price).toLocaleString('en-US', priceFormatOptions);
+        }
+
+        function formatChange(change) {
+            return (change > 0 ? '+' : '') + change.toFixed(2) + '%';
+        }
+
+        // Create ticker item with template literal for better performance
+        function createTickerItem(symbol, data) {
+            const changeClass = data.change >= 0 ? 'positive' : 'negative';
+            const arrow = data.change >= 0 ? '↑' : '↓';
             
-            // Initial static data to show immediately
-            const initialData = {
-                'XAUUSD': { price: 2015.50, change: 0.45, name: 'Gold' },
-                'XAGUSD': { price: 23.15, change: -0.32, name: 'Silver' },
-                'WTIUSD': { price: 76.80, change: 1.25, name: 'Crude Oil' },
-                'NGUSD': { price: 2.85, change: -0.75, name: 'Natural Gas' },
-                'PLUSD': { price: 925.30, change: 0.28, name: 'Platinum' },
-                'CUUSD': { price: 3.85, change: 0.65, name: 'Copper' }
-            };
+            return `<div class="ticker-item">
+                <span class="ticker-symbol">${data.name}</span>
+                <span class="ticker-price">$${formatPrice(data.price)}</span>
+                <span class="ticker-change ${changeClass}">
+                    <span class="ticker-arrow">${arrow}</span>${formatChange(data.change)}
+                </span>
+            </div>`;
+        }
 
-            const prices = { ...initialData };
-
-            function formatPrice(price) {
-                return parseFloat(price).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-            }
-
-            function formatChange(change) {
-                return (change > 0 ? '+' : '') + change.toFixed(2) + '%';
-            }
-
-            function createTickerItem(symbol, data) {
-                const changeClass = data.change >= 0 ? 'positive' : 'negative';
-                const arrow = data.change >= 0 ? '↑' : '↓';
-                
-                return `
-                    <div class="ticker-item">
-                        <span class="ticker-symbol">${data.name}</span>
-                        <span class="ticker-price">$${formatPrice(data.price)}</span>
-                        <span class="ticker-change ${changeClass}">
-                            <span class="ticker-arrow">${arrow}</span>
-                            ${formatChange(data.change)}
-                        </span>
-                    </div>
-                `;
-            }
-
-            // Show initial data immediately
-            function updateTicker() {
-                let tickerHTML = '';
-                Object.entries(prices).forEach(([symbol, data]) => {
-                    tickerHTML += createTickerItem(symbol, data);
-                });
-                
-                // Create enough copies to ensure smooth scrolling
-                const repeatedContent = tickerHTML.repeat(3);
-                tickerContainer.innerHTML = repeatedContent;
-            }
-
-            // Initial update
-            updateTicker();
-
-            // Connect to Finnhub WebSocket for real-time commodity data
-            const ws = new WebSocket('wss://ws.finnhub.io/ws');
-
-            ws.onopen = function() {
-                // Subscribe to commodity symbols
-                Object.keys(initialData).forEach(symbol => {
-                    ws.send(JSON.stringify({
-                        type: 'subscribe',
-                        symbol: symbol
-                    }));
-                });
-            };
-
-            ws.onmessage = function(event) {
-                const data = JSON.parse(event.data);
-                if (data.type === 'trade' && data.data) {
-                    const trade = data.data[0];
-                    const symbol = trade.s;
+        // Optimized ticker update with RAF and debouncing
+        const updateTicker = debounce(() => {
+            if (!tickerUpdateTimeout) {
+                tickerUpdateTimeout = requestAnimationFrame(() => {
+                    const tickerHTML = Object.entries(prices)
+                        .map(([symbol, data]) => createTickerItem(symbol, data))
+                        .join('');
                     
-                    if (prices[symbol]) {
+                    const repeatedContent = tickerHTML.repeat(3);
+                    tickerContainer.innerHTML = repeatedContent;
+                    tickerUpdateTimeout = null;
+                });
+            }
+        }, 100); // Debounce ticker updates
+
+        // WebSocket connection with optimized message handling
+        const ws = new WebSocket('wss://ws.finnhub.io/ws');
+        let wsUpdateTimeout;
+
+        ws.onopen = function() {
+            Object.keys(initialData).forEach(symbol => {
+                ws.send(JSON.stringify({
+                    type: 'subscribe',
+                    symbol: symbol
+                }));
+            });
+        };
+
+        // Optimized WebSocket message handling
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === 'trade' && data.data) {
+                const trade = data.data[0];
+                const symbol = trade.s;
+                
+                if (prices[symbol]) {
+                    clearTimeout(wsUpdateTimeout);
+                    wsUpdateTimeout = setTimeout(() => {
                         const oldPrice = prices[symbol].price;
                         const newPrice = trade.p;
                         const priceChange = ((newPrice - oldPrice) / oldPrice) * 100;
@@ -1005,99 +990,50 @@
                         };
                         
                         updateTicker();
-                    }
+                    }, 100); // Throttle WebSocket updates
                 }
-            };
+            }
+        };
 
-            ws.onerror = function(error) {
-                console.error('WebSocket error:', error);
-                // On error, continue showing static data
-                updateTicker();
-            };
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
+            updateTicker();
+        };
 
-            // Update static data periodically as fallback
-            setInterval(() => {
-                Object.keys(prices).forEach(symbol => {
-                    // Simulate small random price movements
-                    const randomChange = (Math.random() - 0.5) * 0.2;
-                    prices[symbol].price *= (1 + randomChange/100);
-                    prices[symbol].change = randomChange;
-                });
-                updateTicker();
-            }, 2000);
-
-            // Cleanup on page unload
-            window.addEventListener('beforeunload', function() {
-                if (ws) ws.close();
+        // Optimized fallback updates
+        const fallbackUpdate = throttle(() => {
+            Object.keys(prices).forEach(symbol => {
+                const randomChange = (Math.random() - 0.5) * 0.2;
+                prices[symbol].price *= (1 + randomChange/100);
+                prices[symbol].change = randomChange;
             });
+            updateTicker();
+        }, 2000);
+
+        // Event listeners with passive option for better scroll performance
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbar();
+            updateTicker();
+
+            // Create mouse trail element once
+            const trail = document.createElement('div');
+            trail.className = 'mouse-trail';
+            document.body.appendChild(trail);
+
+            // Add optimized event listeners
+            window.addEventListener('scroll', updateNavbar, { passive: true });
+            document.addEventListener('mousemove', updateMouseEffect, { passive: true });
+            
+            // Start fallback updates
+            setInterval(fallbackUpdate, 2000);
         });
 
-        // Smooth infinite scrolling for ticker
-        function setupTicker() {
-            const ticker = document.querySelector('.ticker-track');
-            const tickerContent = document.querySelector('.ticker-content');
-            
-            // Clone the content multiple times to ensure full coverage
-            const totalWidth = window.innerWidth;
-            const contentWidth = tickerContent.offsetWidth;
-            const numCopies = Math.ceil((totalWidth * 3) / contentWidth);
-            
-            // Remove existing clones
-            while (ticker.children.length > 1) {
-                ticker.removeChild(ticker.lastChild);
-            }
-            
-            // Add enough copies to cover the screen width
-            for (let i = 0; i < numCopies; i++) {
-                const clone = tickerContent.cloneNode(true);
-                ticker.appendChild(clone);
-            }
-
-            // Reset animation when it ends
-            function resetAnimation() {
-                ticker.style.animation = 'none';
-                ticker.offsetHeight; // Trigger reflow
-                ticker.style.animation = 'ticker 30s linear infinite';
-            }
-
-            ticker.addEventListener('animationend', resetAnimation);
-
-            // Pause on hover
-            ticker.addEventListener('mouseenter', () => {
-                ticker.style.animationPlayState = 'paused';
-            });
-            
-            ticker.addEventListener('mouseleave', () => {
-                ticker.style.animationPlayState = 'running';
-            });
-
-            // Update on window resize
-            window.addEventListener('resize', () => {
-                const newTotalWidth = window.innerWidth;
-                const newNumCopies = Math.ceil((newTotalWidth * 3) / contentWidth);
-                
-                if (newNumCopies !== ticker.children.length - 1) {
-                    // Remove existing clones
-                    while (ticker.children.length > 1) {
-                        ticker.removeChild(ticker.lastChild);
-                    }
-                    
-                    // Add new copies
-                    for (let i = 0; i < newNumCopies; i++) {
-                        const clone = tickerContent.cloneNode(true);
-                        ticker.appendChild(clone);
-                    }
-                }
-            });
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            setupCurrencyFormat();
-            setupTicker();
-            createParticles();
-            
-            // Existing event listeners...
+        // Cleanup
+        window.addEventListener('beforeunload', function() {
+            if (ws) ws.close();
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            if (tickerUpdateTimeout) cancelAnimationFrame(tickerUpdateTimeout);
+            clearTimeout(wsUpdateTimeout);
         });
     </script>
 </body>
