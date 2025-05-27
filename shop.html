@@ -818,52 +818,54 @@
         // Handle package purchase
         async function purchasePackage(packageType) {
             try {
-                // Initialize cart if it doesn't exist
-                let cart = JSON.parse(localStorage.getItem('cart')) || { items: [], total: 0 };
-                
                 const packageDetails = {
                     basic: {
                         price: 49.99,
                         candles: "3 Months",
-                        name: 'Basic Package'
+                        name: 'Basic Package',
+                        value: 300
                     },
                     pro: {
                         price: 69.99,
                         candles: "1 Year",
-                        name: 'Pro Package'
+                        name: 'Pro Package',
+                        value: 600
                     },
                     business: {
                         price: 99.99,
                         candles: "Unlimited",
-                        name: 'Business Package'
+                        name: 'Business Package',
+                        value: 1200
                     }
                 };
 
                 const selectedPackage = packageDetails[packageType];
                 
-                // Add package to cart
-                cart.items.push({
+                // Add package to cart using centralized function
+                addToCart({
                     type: 'subscription',
                     package: packageType,
                     name: selectedPackage.name,
                     price: selectedPackage.price,
-                    candles: selectedPackage.candles
+                    candles: selectedPackage.candles,
+                    value: selectedPackage.value
                 });
                 
-                // Update cart total
-                cart.total = cart.items.reduce((sum, item) => sum + item.price, 0);
+                // Show success message and redirect to cart
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-500 translate-y-full';
+                toast.innerHTML = `Added ${selectedPackage.name} to cart!`;
+                document.body.appendChild(toast);
                 
-                // Save cart to localStorage
-                localStorage.setItem('cart', JSON.stringify(cart));
+                // Animate toast in
+                setTimeout(() => {
+                    toast.style.transform = 'translateY(0)';
+                }, 100);
                 
-                // Update cart badge
-                const cartBadge = document.getElementById('cartCount');
-                if (cartBadge) {
-                    cartBadge.textContent = cart.items.length;
-                }
-                
-                alert(`Added ${selectedPackage.name} to cart!`);
-                window.location.href = 'cart.html';
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = 'cart.html';
+                }, 1500);
                 
             } catch (error) {
                 console.error('Error adding package to cart:', error);

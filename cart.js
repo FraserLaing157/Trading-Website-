@@ -6,12 +6,7 @@ let cart = JSON.parse(localStorage.getItem('cart')) || {
 
 // Update cart badge function
 function updateCartBadge() {
-    // Try both possible IDs
-    const cartBadges = [
-        document.getElementById('cartCount'),
-        document.getElementById('cartBadge')
-    ];
-    
+    const cartBadges = document.querySelectorAll('#cartCount');
     const count = cart.items.length;
     
     cartBadges.forEach(badge => {
@@ -37,6 +32,85 @@ function saveCart() {
     }));
 }
 
+// Update cart display in cart page
+function updateCartDisplay() {
+    const cartItems = document.getElementById('cartItems');
+    if (!cartItems) return; // Not on cart page
+
+    // Clear existing items
+    cartItems.innerHTML = '';
+
+    // Add each item
+    cart.items.forEach((item, index) => {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'payment-option rounded-xl p-4 flex items-center justify-between';
+        
+        // Format the package name and details
+        const packageName = item.name || item.package.charAt(0).toUpperCase() + item.package.slice(1);
+        const candlesText = item.candles ? `${item.candles}` : '';
+        const packageDetails = candlesText ? `${candlesText} of Historical Data` : '';
+        
+        itemElement.innerHTML = `
+            <div>
+                <h4 class="font-medium">${packageName} Package</h4>
+                <p class="text-sm text-gray-400">${packageDetails}</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span>$${item.price.toFixed(2)}</span>
+                <button onclick="removeItem(${index})" class="text-gray-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        `;
+        cartItems.appendChild(itemElement);
+    });
+
+    // Update totals
+    const subtotalElement = document.getElementById('subtotal');
+    const discountElement = document.getElementById('discount');
+    const totalElement = document.getElementById('total');
+
+    if (subtotalElement && discountElement && totalElement) {
+        // Calculate subtotal
+        const subtotalAmount = cart.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+        
+        // Calculate discount
+        let discountAmount = 0;
+        const totalPackageValue = cart.items.reduce((sum, item) => sum + (parseFloat(item.value) || 0), 0);
+
+        if (totalPackageValue >= 1000) {
+            discountAmount = subtotalAmount * 0.2; // 20% discount
+        } else if (totalPackageValue >= 500) {
+            discountAmount = subtotalAmount * 0.1; // 10% discount
+        }
+
+        // Calculate final total
+        const totalAmount = subtotalAmount - discountAmount;
+
+        // Update display
+        subtotalElement.textContent = `$${subtotalAmount.toFixed(2)}`;
+        discountElement.textContent = `-$${discountAmount.toFixed(2)}`;
+        totalElement.textContent = `$${totalAmount.toFixed(2)}`;
+    }
+}
+
+// Remove item from cart
+function removeItem(index) {
+    cart.items.splice(index, 1);
+    saveCart();
+    updateCartDisplay();
+}
+
+// Add item to cart
+function addToCart(item) {
+    cart.items.push(item);
+    cart.total = cart.items.reduce((sum, item) => sum + item.price, 0);
+    saveCart();
+    updateCartDisplay();
+}
+
 // Initialize cart functionality
 function initializeCart() {
     // Initialize cart from localStorage
@@ -46,22 +120,25 @@ function initializeCart() {
     };
     
     updateCartBadge();
+    updateCartDisplay();
     
-    // Add storage event listener to update cart badge when cart changes in other tabs/pages
+    // Add storage event listener to update cart when changed in other tabs/pages
     window.addEventListener('storage', function(e) {
         if (e.key === 'cart') {
             cart = JSON.parse(e.newValue || '{"items":[],"total":0}');
             updateCartBadge();
+            updateCartDisplay();
         }
     });
 
-    // Update cart badge every time the page is focused
+    // Update cart every time the page is focused
     window.addEventListener('focus', function() {
         cart = JSON.parse(localStorage.getItem('cart')) || {
             items: [],
             total: 0
         };
         updateCartBadge();
+        updateCartDisplay();
     });
 }
 
