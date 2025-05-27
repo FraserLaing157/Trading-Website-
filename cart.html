@@ -236,7 +236,7 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
                     <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Tokens</a>
+                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Pricing</a>
                     <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
                     <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors font-medium" style="display: none;">Profile</a>
                     <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">
@@ -506,11 +506,11 @@
             // Calculate totals
             const subtotalAmount = cart.items.reduce((sum, item) => sum + item.price, 0);
             let discountAmount = 0;
-            const totalTokens = cart.items.reduce((sum, item) => sum + item.tokens, 0);
+            const totalPackageValue = cart.items.reduce((sum, item) => sum + item.value, 0);
 
-            if (totalTokens >= 100) {
+            if (totalPackageValue >= 1000) {
                 discountAmount = subtotalAmount * 0.2; // 20% discount
-            } else if (totalTokens >= 50) {
+            } else if (totalPackageValue >= 500) {
                 discountAmount = subtotalAmount * 0.1; // 10% discount
             }
 
