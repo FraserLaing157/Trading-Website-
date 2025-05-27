@@ -59,8 +59,8 @@
         main {
             position: relative;
             z-index: 2;
+            min-height: 100vh;
             width: 100%;
-            overflow-x: hidden;
         }
         .glow {
             box-shadow: 0 0 30px rgba(61, 184, 245, 0.3);
@@ -149,12 +149,11 @@
         }
         .hero-grid {
             display: grid;
-            grid-template-columns: 0.8fr 1.2fr;
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
             align-items: center;
             max-width: 1400px;
             margin: 0 auto;
-            overflow: visible;
         }
         @media (max-width: 768px) {
             .hero-grid {
@@ -495,6 +494,140 @@
         input[type="number"] {
             -moz-appearance: textfield; /* Firefox */
         }
+
+        #neural-background,
+        #decision-matrix,
+        .floating-formula,
+        #formula-container {
+            display: none;
+        }
+
+        /* Add after the existing styles */
+        <style>
+            .floating-elements {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            .floating-element {
+                position: absolute;
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, rgba(61, 184, 245, 0.1), rgba(44, 168, 229, 0.05));
+                border: 1px solid rgba(61, 184, 245, 0.2);
+                border-radius: 12px;
+                backdrop-filter: blur(8px);
+                transform-style: preserve-3d;
+                animation: float 20s infinite linear;
+            }
+
+            .floating-element:nth-child(1) {
+                top: 15%;
+                left: 10%;
+                animation-delay: -2s;
+            }
+
+            .floating-element:nth-child(2) {
+                top: 60%;
+                right: 15%;
+                animation-delay: -5s;
+            }
+
+            .floating-element:nth-child(3) {
+                top: 80%;
+                left: 20%;
+                animation-delay: -8s;
+            }
+
+            @keyframes float {
+                0% {
+                    transform: rotate3d(1, 1, 1, 0deg) translateZ(0);
+                }
+                50% {
+                    transform: rotate3d(1, 1, 1, 180deg) translateZ(50px);
+                }
+                100% {
+                    transform: rotate3d(1, 1, 1, 360deg) translateZ(0);
+                }
+            }
+
+            /* Add glass morphism cards */
+            .glass-card {
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+                padding: 2rem;
+                transition: all 0.3s ease;
+            }
+
+            .glass-card:hover {
+                transform: translateY(-5px);
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+
+            /* Add text gradient animation */
+            .animated-gradient-text {
+                background: linear-gradient(
+                    to right,
+                    #3DB8F5,
+                    #2CA8E5,
+                    #3DB8F5
+                );
+                background-size: 200% auto;
+                color: transparent;
+                -webkit-background-clip: text;
+                background-clip: text;
+                animation: shine 3s linear infinite;
+            }
+
+            @keyframes shine {
+                to {
+                    background-position: 200% center;
+                }
+            }
+
+            /* Add hover effect for buttons */
+            .hover-glow {
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .hover-glow::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(
+                    circle,
+                    rgba(61, 184, 245, 0.1) 0%,
+                    transparent 70%
+                );
+                transform: scale(0);
+                transition: transform 0.5s ease;
+            }
+
+            .hover-glow:hover::before {
+                transform: scale(1);
+            }
+        </style>
+
+        <!-- Add floating elements container right after body tag -->
+        <body class="min-h-screen text-white overflow-x-hidden antialiased">
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
     </style>
     <script>
         tailwind.config = {
@@ -1312,6 +1445,562 @@
                 }, 2000);
             }
         });
+
+        // WebGL Decision Matrix
+        const canvas = document.getElementById('decision-matrix');
+        const gl = canvas.getContext('webgl', { alpha: true });
+        const formulaContainer = document.getElementById('formula-container');
+
+        if (!gl) {
+            console.error('Unable to initialize WebGL. Your browser may not support it.');
+        } else {
+            // Set initial canvas size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // Clear to transparent
+            gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+            // Vertex shader program
+            const vsSource = `
+                attribute vec4 aVertexPosition;
+                attribute vec2 aTextureCoord;
+                
+                uniform mat4 uModelViewMatrix;
+                uniform mat4 uProjectionMatrix;
+                
+                varying vec2 vTextureCoord;
+                
+                void main() {
+                    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+                    vTextureCoord = aTextureCoord;
+                }
+            `;
+
+            // Fragment shader program
+            const fsSource = `
+                precision mediump float;
+                
+                varying vec2 vTextureCoord;
+                uniform float uTime;
+                
+                float random(vec2 st) {
+                    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+                }
+                
+                void main() {
+                    vec2 st = vTextureCoord;
+                    
+                    // Create grid
+                    vec2 grid = fract(st * 100.0);
+                    float cell = step(0.9, grid.x) + step(0.9, grid.y);
+                    
+                    // Time-based animation
+                    float t = uTime * 0.001;
+                    float activity = random(floor(st * 100.0) + floor(t));
+                    
+                    // Decision colors
+                    vec3 buyColor = vec3(0.24, 0.72, 0.96);  // #3DB8F5
+                    vec3 sellColor = vec3(0.94, 0.27, 0.27); // #EF4444
+                    vec3 holdColor = vec3(0.06, 0.73, 0.51); // #10B981
+                    
+                    // Choose color based on activity
+                    vec3 color;
+                    if (activity < 0.33) {
+                        color = buyColor;
+                    } else if (activity < 0.66) {
+                        color = sellColor;
+                    } else {
+                        color = holdColor;
+                    }
+                    
+                    // Add pulsing effect
+                    float pulse = sin(t + random(st) * 6.28) * 0.5 + 0.5;
+                    color *= 0.3 + 0.7 * pulse;
+                    
+                    // Add grid lines
+                    color = mix(color, vec3(1.0), cell * 0.1);
+                    
+                    gl_FragColor = vec4(color, activity * 0.15);
+                }
+            `;
+
+            // Initialize shader program
+            function initShaderProgram(gl, vsSource, fsSource) {
+                const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+                const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+
+                const shaderProgram = gl.createProgram();
+                gl.attachShader(shaderProgram, vertexShader);
+                gl.attachShader(shaderProgram, fragmentShader);
+                gl.linkProgram(shaderProgram);
+
+                return shaderProgram;
+            }
+
+            function loadShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                return shader;
+            }
+
+            // Initialize buffers
+            function initBuffers(gl) {
+                const positions = [
+                    -1.0,  1.0,
+                     1.0,  1.0,
+                    -1.0, -1.0,
+                     1.0, -1.0,
+                ];
+
+                const textureCoordinates = [
+                    0.0,  0.0,
+                    1.0,  0.0,
+                    0.0,  1.0,
+                    1.0,  1.0,
+                ];
+
+                const positionBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+                const textureCoordBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
+
+                return {
+                    position: positionBuffer,
+                    textureCoord: textureCoordBuffer,
+                };
+            }
+
+            // Trading formulas and indicators
+            const tradingFormulas = [
+                "RSI = 100 - (100 / (1 + RS))",
+                "MACD = EMA12 - EMA26",
+                "BB_Upper = MA20 + (2 × σ20)",
+                "ROC = ((Close - Close[-n]) / Close[-n]) × 100",
+                "ATR = max(H-L, H-Cp, L-Cp)",
+                "OBV = OBV[-1] ± Volume",
+                "ADX = ((+DI - -DI) / (+DI + -DI)) × 100",
+                "Stoch = ((Close - Low14) / (High14 - Low14)) × 100",
+                "CMF = Σ((Close - Low) - (High - Close)) / (High - Low) × Volume",
+                "MFI = 100 - (100 / (1 + MR))"
+            ];
+
+            // Create floating formulas
+            function createFloatingFormula() {
+                const formula = document.createElement('div');
+                formula.className = 'floating-formula';
+                formula.textContent = tradingFormulas[Math.floor(Math.random() * tradingFormulas.length)];
+                
+                // Random position - considering full document height
+                const maxHeight = Math.max(
+                    document.body.scrollHeight,
+                    document.documentElement.scrollHeight
+                );
+                formula.style.left = Math.random() * window.innerWidth + 'px';
+                formula.style.top = Math.random() * maxHeight + 'px';
+                
+                formulaContainer.appendChild(formula);
+
+                // Animate
+                let opacity = 0;
+                let direction = 1;
+                let speed = 0.5 + Math.random() * 0.5;
+
+                function animate() {
+                    opacity += 0.01 * direction * speed;
+                    
+                    if (opacity >= 1) {
+                        direction = -1;
+                    } else if (opacity <= 0) {
+                        formula.remove();
+                        return;
+                    }
+                    
+                    formula.style.opacity = opacity;
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+            }
+
+            // Periodically create new formulas - adjusted timing and check viewport
+            function createFormulaIfInView() {
+                const viewportWidth = window.innerWidth;
+                const documentHeight = Math.max(
+                    document.body.scrollHeight,
+                    document.documentElement.scrollHeight,
+                    document.body.offsetHeight,
+                    document.documentElement.offsetHeight,
+                    document.body.clientHeight,
+                    document.documentElement.clientHeight
+                );
+                
+                const formula = document.createElement('div');
+                formula.className = 'floating-formula';
+                formula.textContent = tradingFormulas[Math.floor(Math.random() * tradingFormulas.length)];
+                
+                // Calculate position relative to document center, not viewport
+                const centerX = viewportWidth / 2;
+                const maxOffset = Math.min(viewportWidth * 0.4, 600);
+                
+                // Position randomly across the entire document height
+                formula.style.left = (centerX + (Math.random() - 0.5) * maxOffset * 2) + 'px';
+                formula.style.top = (Math.random() * documentHeight) + 'px';
+                
+                formulaContainer.appendChild(formula);
+
+                // Start with 0 opacity
+                formula.style.opacity = '0';
+                
+                // Force a reflow to ensure the transition works
+                formula.offsetHeight;
+                
+                // Fade in
+                setTimeout(() => {
+                    formula.style.opacity = '1';
+                }, 100);
+
+                // Slower fade out after a random duration
+                setTimeout(() => {
+                    formula.style.opacity = '0';
+                    // Remove element after fade out completes
+                    setTimeout(() => {
+                        formula.remove();
+                    }, 2000);
+                }, 5000 + Math.random() * 5000);
+            }
+
+            // Create formulas less frequently and ensure container height updates
+            function updateFormulaContainer() {
+                const documentHeight = Math.max(
+                    document.body.scrollHeight,
+                    document.documentElement.scrollHeight,
+                    document.body.offsetHeight,
+                    document.documentElement.offsetHeight,
+                    document.body.clientHeight,
+                    document.documentElement.clientHeight
+                );
+                document.getElementById('formula-container').style.height = documentHeight + 'px';
+            }
+
+            // Update container height when window resizes
+            window.addEventListener('resize', updateFormulaContainer);
+
+            // Update container height periodically
+            setInterval(updateFormulaContainer, 1000);
+
+            // Initial container height
+            updateFormulaContainer();
+
+            // Create formulas periodically
+            setInterval(createFormulaIfInView, 3000);
+
+            // Create initial formulas
+            for(let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFormulaIfInView();
+                }, i * 1000);
+            }
+
+            // Animation loop
+            function render(time) {
+                // Update canvas size
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                
+                if (canvas.width !== width || canvas.height !== height) {
+                    canvas.width = width;
+                    canvas.height = height;
+                    gl.viewport(0, 0, width, height);
+                }
+
+                // Clear canvas
+                gl.clear(gl.COLOR_BUFFER_BIT);
+
+                // Update uniforms
+                gl.uniform1f(programInfo.uniformLocations.time, time);
+
+                // Draw
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                requestAnimationFrame(render);
+            }
+
+            // Initialize WebGL
+            const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+            const buffers = initBuffers(gl);
+
+            const programInfo = {
+                program: shaderProgram,
+                attribLocations: {
+                    vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+                    textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
+                },
+                uniformLocations: {
+                    projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+                    modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+                    time: gl.getUniformLocation(shaderProgram, 'uTime'),
+                },
+            };
+
+            // Set up WebGL state
+            gl.useProgram(programInfo.program);
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+            // Start animation
+            requestAnimationFrame(render);
+        }
+
+        // Add this after your existing script content
+
+        class CircuitNode {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.connections = [];
+                this.element = document.createElement('div');
+                this.element.className = 'node';
+                this.element.style.left = x + 'px';
+                this.element.style.top = y + 'px';
+            }
+
+            pulse() {
+                this.element.classList.add('pulse');
+                setTimeout(() => {
+                    this.element.classList.remove('pulse');
+                }, 2000);
+            }
+        }
+
+        class CircuitPath {
+            constructor(startNode, endNode) {
+                this.startNode = startNode;
+                this.endNode = endNode;
+                this.element = document.createElement('div');
+                this.element.className = 'circuit-path';
+                this.updatePosition();
+            }
+
+            updatePosition() {
+                const dx = this.endNode.x - this.startNode.x;
+                const dy = this.endNode.y - this.startNode.y;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx);
+
+                this.element.style.width = length + 'px';
+                this.element.style.left = this.startNode.x + 'px';
+                this.element.style.top = this.startNode.y + 'px';
+                this.element.style.transform = `rotate(${angle}rad)`;
+            }
+
+            createDataPacket() {
+                const packet = document.createElement('div');
+                packet.className = 'data-packet';
+                packet.style.left = this.startNode.x + 'px';
+                packet.style.top = this.startNode.y + 'px';
+
+                const dx = this.endNode.x - this.startNode.x;
+                const dy = this.endNode.y - this.startNode.y;
+                const duration = Math.sqrt(dx * dx + dy * dy) * 10; // Speed based on distance
+
+                packet.animate([
+                    { left: this.startNode.x + 'px', top: this.startNode.y + 'px' },
+                    { left: this.endNode.x + 'px', top: this.endNode.y + 'px' }
+                ], {
+                    duration: duration,
+                    easing: 'linear'
+                }).onfinish = () => {
+                    packet.remove();
+                    this.endNode.pulse();
+                };
+
+                return packet;
+            }
+        }
+
+        function initializeCircuit() {
+            const container = document.createElement('div');
+            container.id = 'circuit-container';
+            document.body.appendChild(container);
+
+            const nodes = [];
+            const paths = [];
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Create nodes in a grid pattern
+            const gridSize = 6;
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const x = (viewportWidth * (i + 1)) / (gridSize + 1);
+                    const y = (viewportHeight * (j + 1)) / (gridSize + 1);
+                    const node = new CircuitNode(x, y);
+                    nodes.push(node);
+                    container.appendChild(node.element);
+                }
+            }
+
+            // Connect nodes
+            nodes.forEach((node, i) => {
+                const possibleConnections = nodes.filter((n, index) => {
+                    if (index === i) return false;
+                    const dx = n.x - node.x;
+                    const dy = n.y - node.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    return distance < viewportWidth / gridSize * 1.5;
+                });
+
+                // Connect to 2-3 nearest nodes
+                const connections = possibleConnections
+                    .sort((a, b) => {
+                        const distA = Math.hypot(a.x - node.x, a.y - node.y);
+                        const distB = Math.hypot(b.x - node.x, b.y - node.y);
+                        return distA - distB;
+                    })
+                    .slice(0, 2 + Math.floor(Math.random() * 2));
+
+                connections.forEach(target => {
+                    const path = new CircuitPath(node, target);
+                    paths.push(path);
+                    container.appendChild(path.element);
+                    node.connections.push(path);
+                });
+            });
+
+            // Animate data packets
+            function animateCircuit() {
+                const randomPath = paths[Math.floor(Math.random() * paths.length)];
+                const packet = randomPath.createDataPacket();
+                container.appendChild(packet);
+            }
+
+            // Start animations
+            setInterval(animateCircuit, 1000);
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                container.innerHTML = '';
+                initializeCircuit();
+            });
+        }
+
+        // Initialize the circuit when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeCircuit);
+
+        // Parallax scroll effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax');
+            
+            parallaxElements.forEach(element => {
+                const speed = element.dataset.speed || 0.5;
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        fadeElements.forEach(element => {
+            fadeObserver.observe(element);
+        });
     </script>
+
+    <style>
+        /* Add parallax and fade-in animation styles */
+        .parallax {
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Add smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Add animated border effect */
+        .animated-border {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .animated-border::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0%,
+                rgba(61, 184, 245, 0.2) 25%,
+                transparent 50%
+            );
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Add text reveal effect */
+        .text-reveal {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .text-reveal::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0B0B1E;
+            transform: scaleX(1);
+            transform-origin: right;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .text-reveal.visible::after {
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+    </style>
 </body>
 </html> 
