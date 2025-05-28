@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logging in...</title>
+    <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
+    <script src="header.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 35%, #000000 70%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .loading-container {
+            text-align: center;
+            padding: 2rem;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(61, 184, 245, 0.1);
+            border-left-color: #3DB8F5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .error-message {
+            color: #ff4444;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p id="statusMessage">Logging in... Please wait.</p>
+        <p id="errorMessage" class="error-message"></p>
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const statusMessage = document.getElementById('statusMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const spinner = document.querySelector('.loading-spinner');
+
+            // Clear any existing error state
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                urlParams.delete('error');
+                const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                window.history.replaceState({}, '', newUrl);
+            }
+
+            handleAuthentication()
+                .then((user) => {
+                    // Successful login
+                    statusMessage.textContent = 'Login successful! Redirecting...';
+                    spinner.style.borderLeftColor = '#4CAF50'; // Change spinner color to green
+                    // Small delay to show success message
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 500);
+                })
+                .catch(error => {
+                    if (error.error === 'login_required') {
+                        // This is not really an error, just redirect to login
+                        window.location.href = '/';
+                        return;
+                    }
+
+                    console.error('Authentication error:', error);
+                    statusMessage.textContent = 'Login failed.';
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = error.message || 'An error occurred during login.';
+                    spinner.style.display = 'none';
+                    
+                    // Redirect after showing error
+                    setTimeout(() => {
+                        window.location.href = '/?error=' + encodeURIComponent(error.message);
+                    }, 2000);
+                });
+        });
+    </script>
+</body>
+</html> 

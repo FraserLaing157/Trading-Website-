@@ -10,8 +10,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="auth.js"></script>
-    <script src="js/include-auth.js"></script>
+    
+    <!-- Auth0 SDK -->
+    <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
+    <script src="header.js"></script>
+    
+    <!-- Other scripts -->
     <script src="cart.js"></script>
     <script>
         tailwind.config = {
@@ -412,6 +416,7 @@
     <nav class="fixed w-full z-50 bg-[#0B0B1E]/80 backdrop-blur-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
                 <div class="flex items-center">
                     <a href="index.html" class="flex items-center space-x-3 relative logo-wrapper">
                         <div class="logo-particles">
@@ -430,24 +435,31 @@
                     </a>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
-                    <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Pricing</a>
-                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium active">Contact</a>
-                    <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors font-medium" style="display: none;">Profile</a>
-                    <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">
-                        Sign In
-                    </button>
-                    <div class="relative">
-                        <a href="cart.html" class="cart-button group">
-                            <div class="cart-container">
-                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                </svg>
-                                <div class="cart-badge" id="cartCount">0</div>
-                            </div>
-                        </a>
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center justify-between flex-1 ml-8">
+                    <div class="flex items-center space-x-6">
+                        <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors">Home</a>
+                        <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors">Features</a>
+                        <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors">Pricing</a>
+                        <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors">Contact</a>
+                    </div>
+                    
+                    <!-- Auth Container -->
+                    <div id="authContainer" class="flex items-center space-x-4">
+                        <span id="userWelcome" class="text-white whitespace-nowrap text-sm" style="display: none;"></span>
+                        <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors" style="display: none;">Profile</a>
+                        <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">Sign In</button>
+                        <button id="logoutBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors" style="display: none;">Sign Out</button>
+                        <div class="relative">
+                            <a href="cart.html" class="cart-button group">
+                                <div class="cart-container">
+                                    <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                    </svg>
+                                    <div class="cart-badge" id="cartCount">0</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

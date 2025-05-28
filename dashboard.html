@@ -7,9 +7,14 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="auth.js"></script>
-    <script src="js/include-auth.js"></script>
+    
+    <!-- Auth0 SDK -->
+    <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
+    <script src="header.js"></script>
+    
+    <!-- Other scripts -->
     <script src="cart.js"></script>
+    
     <script>
         tailwind.config = {
             theme: {
@@ -23,6 +28,17 @@
                 }
             }
         }
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isAuthenticated()) {
+                window.location.href = '/';
+            } else {
+                const userEmail = localStorage.getItem('user_email');
+                document.getElementById('userEmailDetails').textContent = userEmail;
+                document.getElementById('userName').textContent = userEmail.split('@')[0];
+            }
+        });
     </script>
     <style>
         body {
@@ -75,56 +91,55 @@
 </head>
 <body class="min-h-screen text-white">
     <!-- Navigation -->
-    <nav class="bg-[#0D1225] border-b border-gray-800">
+    <nav class="fixed w-full z-50 bg-[#0B0B1E]/80 backdrop-blur-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="index.html" class="flex items-center space-x-3">
-                        <svg class="w-8 h-8 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-opacity="0.2"/>
-                            <path d="M12 32C12 32 20 20 32 32C44 44 52 32 52 32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                            <circle cx="32" cy="32" r="2" fill="currentColor"/>
-                            <circle cx="22" cy="32" r="2" fill="currentColor" fill-opacity="0.6"/>
-                            <circle cx="42" cy="32" r="2" fill="currentColor" fill-opacity="0.6"/>
-                        </svg>
-                        <span class="text-xl font-bold gradient-text">Cryptotech X</span>
-                    </a>
-                    <div class="hidden md:flex items-center space-x-8">
-                        <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
-                        <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-                        <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Pricing</a>
-                        <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
-                        <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors font-medium active" style="display: none;">Profile</a>
-                        <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">
-                            Sign In
-                        </button>
-                        <div class="relative">
-                            <a href="cart.html" class="cart-button group">
-                                <div class="cart-container">
-                                    <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                    </svg>
-                                    <div class="cart-badge" id="cartCount">0</div>
-                                </div>
-                            </a>
+                    <a href="index.html" class="flex items-center space-x-3 relative logo-wrapper">
+                        <div class="logo-particles">
+                            <!-- Front particles -->
+                            <div class="particle front" style="--delay: 0s; --size: 4px; --color: #3DB8F5; --z: 2"></div>
+                            <div class="particle front" style="--delay: 1.5s; --size: 3px; --color: #3DB8F5; --z: 2"></div>
+                            <div class="particle front" style="--delay: 2.8s; --size: 5px; --color: #2CA8E5; --z: 2"></div>
+                            <!-- Back particles -->
+                            <div class="particle back" style="--delay: 0.7s; --size: 6px; --color: #2CA8E5; --z: 0"></div>
+                            <div class="particle back" style="--delay: 2.2s; --size: 4px; --color: #3DB8F5; --z: 0"></div>
+                            <div class="particle back" style="--delay: 3.5s; --size: 5px; --color: #2CA8E5; --z: 0"></div>
+                            <!-- Connection lines -->
+                            <div class="particle-trails"></div>
                         </div>
-                    </div>
+                        <span class="text-2xl logo-text gradient-text relative" style="z-index: 1">Cryptotech X</span>
+                    </a>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <span id="userEmail" class="text-gray-300"></span>
-                    <button onclick="logout()" class="text-gray-300 hover:text-white flex items-center space-x-2">
-                        <span>Logout</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                    </button>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors">Home</a>
+                    <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors">Features</a>
+                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors">Pricing</a>
+                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors">Contact</a>
+                    <span id="userWelcome" class="text-white" style="display: none;"></span>
+                    <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors active" style="display: none;">Profile</a>
+                    <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors">Sign In</button>
+                    <button id="logoutBtn" class="bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors" style="display: none;">Sign Out</button>
+                    <div class="relative">
+                        <a href="cart.html" class="cart-button group">
+                            <div class="cart-container">
+                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                </svg>
+                                <div class="cart-badge" id="cartCount">0</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <h1 class="text-3xl font-bold mb-8">Dashboard</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Token Balance Card -->
@@ -259,12 +274,6 @@
         }
         window.addEventListener('scroll', updateNavbar);
         updateNavbar();
-
-        // Check if user is logged in
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) {
-            window.location.href = 'index.html';
-        }
 
         // Update user interface with data
         async function updateUserInterface() {
