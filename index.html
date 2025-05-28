@@ -13,18 +13,143 @@
     
     <!-- Auth0 SDK -->
     <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
-    <script src="header.js"></script>
+    <script>
+        let auth0Client = null;
+
+        // Initialize Auth0 client
+        const initAuth0 = () => {
+            try {
+                // Determine if we're in local development or production
+                const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+                const redirectUri = isLocalDev 
+                    ? 'http://127.0.0.1:8080'
+                    : 'https://fraserlaing157.github.io/Trading-Website-';
+
+                auth0Client = new auth0.WebAuth({
+                    domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
+                    clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
+                    redirectUri: redirectUri,
+                    responseType: 'token id_token',
+                    scope: 'openid profile email'
+                });
+                console.log('Auth0 client initialized successfully');
+                
+                // Check if we're handling a callback
+                if (window.location.hash) {
+                    auth0Client.parseHash((err, authResult) => {
+                        if (authResult && authResult.accessToken && authResult.idToken) {
+                            setSession(authResult);
+                        } else if (err) {
+                            console.error('Error parsing hash:', err);
+                        }
+                        window.location.hash = '';
+                        updateUI();
+                    });
+                } else {
+                    updateUI();
+                }
+            } catch (err) {
+                console.error('Error initializing Auth0:', err);
+            }
+        };
+
+        // Set the session
+        const setSession = (authResult) => {
+            const expiresAt = JSON.stringify(
+                authResult.expiresIn * 1000 + new Date().getTime()
+            );
+            localStorage.setItem('access_token', authResult.accessToken);
+            localStorage.setItem('id_token', authResult.idToken);
+            localStorage.setItem('expires_at', expiresAt);
+        };
+
+        // Check if authenticated
+        const isAuthenticated = () => {
+            const expiresAt = JSON.parse(localStorage.getItem('expires_at') || '0');
+            return new Date().getTime() < expiresAt;
+        };
+
+        // Update UI based on authentication state
+        const updateUI = () => {
+            try {
+                const authenticated = isAuthenticated();
+                console.log('Is authenticated:', authenticated);
+                
+                const loginBtn = document.getElementById('loginBtn');
+                const logoutBtn = document.getElementById('logoutBtn');
+                const profileLink = document.getElementById('profileLink');
+                const userWelcome = document.getElementById('userWelcome');
+
+                if (loginBtn) loginBtn.style.display = !authenticated ? 'block' : 'none';
+                if (logoutBtn) logoutBtn.style.display = authenticated ? 'block' : 'none';
+                if (profileLink) profileLink.style.display = authenticated ? 'block' : 'none';
+                
+                if (authenticated && userWelcome) {
+                    auth0Client.client.userInfo(localStorage.getItem('access_token'), (err, user) => {
+                        if (err) {
+                            console.error('Error getting user info:', err);
+                            return;
+                        }
+                        userWelcome.textContent = `Welcome, ${user.email}`;
+                        userWelcome.style.display = 'block';
+                    });
+                }
+            } catch (err) {
+                console.error('Error updating UI:', err);
+            }
+        };
+
+        // Login handler
+        const login = () => {
+            try {
+                console.log('Starting login process...');
+                auth0Client.authorize();
+            } catch (err) {
+                console.error('Error during login:', err);
+            }
+        };
+
+        // Logout handler
+        const logout = () => {
+            try {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('id_token');
+                localStorage.removeItem('expires_at');
+                auth0Client.logout({
+                    returnTo: window.location.origin,
+                    clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK'
+                });
+            } catch (err) {
+                console.error('Error during logout:', err);
+            }
+        };
+
+        // Initialize when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Auth0
+            initAuth0();
+
+            // Add click handlers
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (loginBtn) {
+                loginBtn.addEventListener('click', login);
+            } else {
+                console.error('Login button not found');
+            }
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', logout);
+            } else {
+                console.error('Logout button not found');
+            }
+        });
+    </script>
     
     <!-- Other scripts -->
     <script src="cart.js"></script>
     <script src="ticker.js"></script>
-    
-    <!-- Ensure login function is available -->
-    <script>
-        // Make sure login function is globally available
-        window.login = login;
-        window.logout = logout;
-    </script>
     <style>
         @font-face {
             font-family: 'Inter';
