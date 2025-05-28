@@ -2,7 +2,7 @@
 const auth0Client = new auth0.WebAuth({
     domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
     clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
-    redirectUri: window.location.origin + '/callback.html',
+    redirectUri: 'https://fraserlaing157.github.io/Trading-Website-/callback.html',
     responseType: 'token id_token',
     scope: 'openid profile email'
 });
