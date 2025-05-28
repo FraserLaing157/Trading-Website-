@@ -87,6 +87,70 @@
         .nav-link:hover::before {
             width: 80%;
         }
+
+        .cart-button {
+            position: relative;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .cart-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .cart-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #3DB8F5 0%, #2CA8E5 100%);
+            color: white;
+            border-radius: 999px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center;
+            animation: cartBadgeAppear 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 10px rgba(61, 184, 245, 0.3);
+        }
+
+        @keyframes cartBadgeAppear {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .cart-button:hover .cart-badge {
+            animation: cartBadgePulse 1s infinite;
+        }
+
+        @keyframes cartBadgePulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen text-white">
