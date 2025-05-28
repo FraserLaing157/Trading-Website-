@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="css/nav.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Auth0 SDK -->
@@ -436,18 +437,18 @@
                 </div>
                 
                 <!-- Navigation Links -->
-                <div class="hidden md:flex items-center justify-between flex-1 ml-8">
-                    <div class="flex items-center space-x-6">
-                        <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors">Home</a>
-                        <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors">Features</a>
-                        <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors">Pricing</a>
-                        <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors">Contact</a>
+                <div class="nav-container">
+                    <div class="nav-links">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="index.html#features" class="nav-link">Features</a>
+                        <a href="shop.html" class="nav-link">Pricing</a>
+                        <a href="contact.html" class="nav-link active">Contact</a>
                     </div>
                     
                     <!-- Auth Container -->
-                    <div id="authContainer" class="flex items-center space-x-4">
+                    <div id="authContainer" class="auth-container">
                         <span id="userWelcome" class="text-white whitespace-nowrap text-sm" style="display: none;"></span>
-                        <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors" style="display: none;">Profile</a>
+                        <a href="dashboard.html" id="profileLink" class="nav-link" style="display: none;">Profile</a>
                         <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">Sign In</button>
                         <button id="logoutBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors" style="display: none;">Sign Out</button>
                         <div class="relative">

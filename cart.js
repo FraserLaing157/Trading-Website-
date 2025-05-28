@@ -67,31 +67,10 @@ function updateCartDisplay() {
         cartItems.appendChild(itemElement);
     });
 
-    // Update totals
-    const subtotalElement = document.getElementById('subtotal');
-    const discountElement = document.getElementById('discount');
+    // Update total
     const totalElement = document.getElementById('total');
-
-    if (subtotalElement && discountElement && totalElement) {
-        // Calculate subtotal
-        const subtotalAmount = cart.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
-        
-        // Calculate discount
-        let discountAmount = 0;
-        const totalPackageValue = cart.items.reduce((sum, item) => sum + (parseFloat(item.value) || 0), 0);
-
-        if (totalPackageValue >= 1000) {
-            discountAmount = subtotalAmount * 0.2; // 20% discount
-        } else if (totalPackageValue >= 500) {
-            discountAmount = subtotalAmount * 0.1; // 10% discount
-        }
-
-        // Calculate final total
-        const totalAmount = subtotalAmount - discountAmount;
-
-        // Update display
-        subtotalElement.textContent = `$${subtotalAmount.toFixed(2)}`;
-        discountElement.textContent = `-$${discountAmount.toFixed(2)}`;
+    if (totalElement) {
+        const totalAmount = cart.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
         totalElement.textContent = `$${totalAmount.toFixed(2)}`;
     }
 }

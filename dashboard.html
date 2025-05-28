@@ -6,6 +6,7 @@
     <title>Dashboard - Cryptotech X</title>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/nav.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Auth0 SDK -->
@@ -178,24 +179,30 @@
                 </div>
                 
                 <!-- Navigation Links -->
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors">Home</a>
-                    <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors">Features</a>
-                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors">Pricing</a>
-                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors">Contact</a>
-                    <span id="userWelcome" class="text-white" style="display: none;"></span>
-                    <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors active" style="display: none;">Profile</a>
-                    <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors">Sign In</button>
-                    <button id="logoutBtn" class="bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors" style="display: none;">Sign Out</button>
-                    <div class="relative">
-                        <a href="cart.html" class="cart-button group">
-                            <div class="cart-container">
-                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                </svg>
-                                <div class="cart-badge" id="cartCount">0</div>
-                            </div>
-                        </a>
+                <div class="nav-container">
+                    <div class="nav-links">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="index.html#features" class="nav-link">Features</a>
+                        <a href="shop.html" class="nav-link">Pricing</a>
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </div>
+                    
+                    <!-- Auth Container -->
+                    <div id="authContainer" class="auth-container">
+                        <span id="userWelcome" class="text-white whitespace-nowrap text-sm" style="display: none;"></span>
+                        <a href="dashboard.html" id="profileLink" class="nav-link active" style="display: none;">Profile</a>
+                        <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">Sign In</button>
+                        <button id="logoutBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors" style="display: none;">Sign Out</button>
+                        <div class="relative">
+                            <a href="cart.html" class="cart-button group">
+                                <div class="cart-container">
+                                    <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                    </svg>
+                                    <div class="cart-badge" id="cartCount">0</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -205,7 +212,7 @@
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <h1 class="text-3xl font-bold mb-8">Dashboard</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             <!-- Token Balance Card -->
             <div class="bg-[#0D1225] rounded-xl p-6 border border-gray-800">
                 <h3 class="text-xl font-semibold mb-4">Token Balance</h3>
@@ -233,17 +240,6 @@
                         Edit Details
                     </button>
                 </div>
-            </div>
-
-            <!-- Payment Methods Card -->
-            <div class="bg-[#0D1225] rounded-xl p-6 border border-gray-800">
-                <h3 class="text-xl font-semibold mb-4">Payment Methods</h3>
-                <div id="paymentMethods" class="space-y-3">
-                    <!-- Payment methods will be inserted here -->
-                </div>
-                <button onclick="addPaymentMethod()" class="text-primary hover:text-primary/80 text-sm mt-4">
-                    Add Payment Method
-                </button>
             </div>
         </div>
 
@@ -343,7 +339,7 @@
         async function updateUserInterface() {
             try {
                 console.log('Fetching user data for:', user.email);
-                const response = await fetch(`http://localhost:5000/api/get_user_data?email=${encodeURIComponent(user.email)}`);
+                const response = await fetch(`/api/get_user_data?email=${encodeURIComponent(user.email)}`);
                 console.log('Response status:', response.status);
                 
                 if (!response.ok) {
@@ -361,24 +357,6 @@
                 document.getElementById('userEmailDetails').textContent = userData.email;
                 document.getElementById('userName').textContent = userData.name;
                 document.getElementById('tokenBalance').textContent = userData.token_balance.toLocaleString();
-
-                // Update payment methods
-                const paymentMethods = document.getElementById('paymentMethods');
-                if (userData.payment_methods && userData.payment_methods.length > 0) {
-                    paymentMethods.innerHTML = userData.payment_methods.map(method => `
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                </svg>
-                                <span class="ml-3">•••• ${method.last4}</span>
-                            </div>
-                            <span class="text-gray-400">Expires ${method.expiry}</span>
-                        </div>
-                    `).join('');
-                } else {
-                    paymentMethods.innerHTML = '<p class="text-gray-400">No payment methods added</p>';
-                }
 
                 // Update trading history
                 const tradingHistory = document.getElementById('tradingHistory');
@@ -406,59 +384,12 @@
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                // Try to use cached data from localStorage if available
-                const cachedUser = JSON.parse(localStorage.getItem('user'));
-                if (cachedUser) {
-                    document.getElementById('userEmail').textContent = cachedUser.email;
-                    document.getElementById('userEmailDetails').textContent = cachedUser.email;
-                    document.getElementById('userName').textContent = cachedUser.name;
-                    document.getElementById('tokenBalance').textContent = cachedUser.token_balance.toLocaleString();
-                } else {
-                    alert('Error loading user data. Please try logging in again.');
-                    logout();
-                }
+                alert('Error loading user data. Please try logging in again.');
             }
         }
 
         // Call updateUserInterface when the page loads
         updateUserInterface();
-
-        // Add payment method function
-        async function addPaymentMethod() {
-            try {
-                const user = JSON.parse(localStorage.getItem('user'));
-                if (!user || !user.email) {
-                    throw new Error('User not logged in');
-                }
-
-                const response = await fetch('http://localhost:5000/api/add_payment_method', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: user.email,
-                        payment_method: {
-                            type: 'card',
-                            last4: '4242',
-                            expiry: '12/24'
-                        }
-                    })
-                });
-
-                if (!response.ok) {
-                    const data = await response.json();
-                    throw new Error(data.error || 'Failed to add payment method');
-                }
-
-                // Refresh the UI
-                await updateUserInterface();
-                alert('Payment method added successfully!');
-            } catch (error) {
-                console.error('Error adding payment method:', error);
-                alert('Error adding payment method. Please try again.');
-            }
-        }
 
         // Edit details function
         function editDetails() {
