@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processing Login...</title>
+    <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
+    <script src="auth.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 35%, #000000 70%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .loading {
+            text-align: center;
+        }
+        .spinner {
+            border: 4px solid rgba(61, 184, 245, 0.1);
+            border-left-color: #3DB8F5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <div class="spinner"></div>
+        <p>Processing login, please wait...</p>
+    </div>
+
+    <script>
+        // Handle the authentication response
+        window.addEventListener('load', () => {
+            const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+            const redirectBase = isLocalDev 
+                ? 'http://127.0.0.1:8080'
+                : 'https://fraserlaing157.github.io/Trading-Website-';
+
+            auth0Client.parseHash((err, authResult) => {
+                if (authResult && authResult.accessToken && authResult.idToken) {
+                    // Set session
+                    const expiresAt = JSON.stringify(
+                        authResult.expiresIn * 1000 + new Date().getTime()
+                    );
+                    localStorage.setItem('access_token', authResult.accessToken);
+                    localStorage.setItem('id_token', authResult.idToken);
+                    localStorage.setItem('expires_at', expiresAt);
+                    
+                    // Redirect back to the main page
+                    window.location.href = redirectBase + '/index.html';
+                } else if (err) {
+                    console.error('Authentication error:', err);
+                    window.location.href = redirectBase + '/index.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

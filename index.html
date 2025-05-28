@@ -10,146 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Auth0 SDK -->
     <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
-    <script>
-        let auth0Client = null;
-
-        // Initialize Auth0 client
-        const initAuth0 = () => {
-            try {
-                // Determine if we're in local development or production
-                const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-                const redirectUri = isLocalDev 
-                    ? 'http://127.0.0.1:8080'
-                    : 'https://fraserlaing157.github.io/Trading-Website-';
-
-                auth0Client = new auth0.WebAuth({
-                    domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
-                    clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
-                    redirectUri: redirectUri,
-                    responseType: 'token id_token',
-                    scope: 'openid profile email'
-                });
-                console.log('Auth0 client initialized successfully');
-                
-                // Check if we're handling a callback
-                if (window.location.hash) {
-                    auth0Client.parseHash((err, authResult) => {
-                        if (authResult && authResult.accessToken && authResult.idToken) {
-                            setSession(authResult);
-                        } else if (err) {
-                            console.error('Error parsing hash:', err);
-                        }
-                        window.location.hash = '';
-                        updateUI();
-                    });
-                } else {
-                    updateUI();
-                }
-            } catch (err) {
-                console.error('Error initializing Auth0:', err);
-            }
-        };
-
-        // Set the session
-        const setSession = (authResult) => {
-            const expiresAt = JSON.stringify(
-                authResult.expiresIn * 1000 + new Date().getTime()
-            );
-            localStorage.setItem('access_token', authResult.accessToken);
-            localStorage.setItem('id_token', authResult.idToken);
-            localStorage.setItem('expires_at', expiresAt);
-        };
-
-        // Check if authenticated
-        const isAuthenticated = () => {
-            const expiresAt = JSON.parse(localStorage.getItem('expires_at') || '0');
-            return new Date().getTime() < expiresAt;
-        };
-
-        // Update UI based on authentication state
-        const updateUI = () => {
-            try {
-                const authenticated = isAuthenticated();
-                console.log('Is authenticated:', authenticated);
-                
-                const loginBtn = document.getElementById('loginBtn');
-                const logoutBtn = document.getElementById('logoutBtn');
-                const profileLink = document.getElementById('profileLink');
-                const userWelcome = document.getElementById('userWelcome');
-
-                if (loginBtn) loginBtn.style.display = !authenticated ? 'block' : 'none';
-                if (logoutBtn) logoutBtn.style.display = authenticated ? 'block' : 'none';
-                if (profileLink) profileLink.style.display = authenticated ? 'block' : 'none';
-                
-                if (authenticated && userWelcome) {
-                    auth0Client.client.userInfo(localStorage.getItem('access_token'), (err, user) => {
-                        if (err) {
-                            console.error('Error getting user info:', err);
-                            return;
-                        }
-                        userWelcome.textContent = `Welcome, ${user.email}`;
-                        userWelcome.style.display = 'block';
-                    });
-                }
-            } catch (err) {
-                console.error('Error updating UI:', err);
-            }
-        };
-
-        // Login handler
-        const login = () => {
-            try {
-                console.log('Starting login process...');
-                auth0Client.authorize();
-            } catch (err) {
-                console.error('Error during login:', err);
-            }
-        };
-
-        // Logout handler
-        const logout = () => {
-            try {
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('id_token');
-                localStorage.removeItem('expires_at');
-                auth0Client.logout({
-                    returnTo: window.location.origin,
-                    clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK'
-                });
-            } catch (err) {
-                console.error('Error during logout:', err);
-            }
-        };
-
-        // Initialize when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Auth0
-            initAuth0();
-
-            // Add click handlers
-            const loginBtn = document.getElementById('loginBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
-
-            if (loginBtn) {
-                loginBtn.addEventListener('click', login);
-            } else {
-                console.error('Login button not found');
-            }
-
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', logout);
-            } else {
-                console.error('Logout button not found');
-            }
-        });
-    </script>
-    
-    <!-- Other scripts -->
-    <script src="cart.js"></script>
+    <script src="auth.js"></script>
     <script src="ticker.js"></script>
+    <script src="cart.js"></script>
     <style>
         @font-face {
             font-family: 'Inter';
@@ -774,7 +638,7 @@
         .download-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             background: rgba(11, 11, 30, 0.6);
             border: 1px solid rgba(61, 184, 245, 0.5);
             padding: 12px 24px;
@@ -799,14 +663,11 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: currentColor;
-            flex-shrink: 0;
         }
 
         .os-icon svg {
             width: 100%;
             height: 100%;
-            fill: currentColor;
         }
 
         .cart-button {
@@ -927,10 +788,9 @@
 </head>
 <body class="min-h-screen text-white overflow-x-hidden antialiased">
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-[#0B0B1E]/80 backdrop-blur-lg">
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
                 <div class="flex items-center">
                     <a href="index.html" class="flex items-center space-x-3 relative logo-wrapper">
                         <div class="logo-particles">
@@ -949,31 +809,27 @@
                     </a>
                 </div>
                 
-                <!-- Navigation Links -->
-                <div class="hidden md:flex items-center justify-between flex-1 ml-8">
-                    <div class="flex items-center space-x-6">
-                        <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors">Home</a>
-                        <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors">Features</a>
-                        <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors">Pricing</a>
-                        <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors">Contact</a>
-                    </div>
-                    
-                    <!-- Auth Container -->
-                    <div id="authContainer" class="flex items-center space-x-4">
-                        <span id="userWelcome" class="text-white whitespace-nowrap text-sm" style="display: none;"></span>
-                        <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors" style="display: none;">Profile</a>
-                        <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">Sign In</button>
-                        <button id="logoutBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors" style="display: none;">Sign Out</button>
-                        <div class="relative">
-                            <a href="cart.html" class="cart-button group">
-                                <div class="cart-container">
-                                    <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                    </svg>
-                                    <div class="cart-badge" id="cartCount">0</div>
-                                </div>
-                            </a>
-                        </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium active">Home</a>
+                    <a href="#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
+                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Pricing</a>
+                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
+                    <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors font-medium" style="display: none;">Profile</a>
+                    <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">
+                        Sign In
+                    </button>
+                    <button id="logoutBtn" onclick="logout()" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors" style="display: none;">
+                        Sign Out
+                    </button>
+                    <div class="relative">
+                        <a href="cart.html" class="cart-button group">
+                            <div class="cart-container">
+                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                </svg>
+                                <div class="cart-badge" id="cartCount">0</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -982,13 +838,13 @@
 
     <!-- Floating background images -->
     <div class="floating-image top-right">
-        <img src="./Images/Inital%20ADobe/AdobeStock_519087125.png" alt="Decorative Shape 1">
+        <img src="Images/Inital ADobe/AdobeStock_519087125.png" alt="Decorative Shape 1">
     </div>
     <div class="floating-image middle-right">
-        <img src="./Images/Inital%20ADobe/AdobeStock_1348868299.png" alt="Decorative Shape 2">
+        <img src="Images/Inital ADobe/AdobeStock_1348868299.png" alt="Decorative Shape 2">
     </div>
     <div class="floating-image bottom-left">
-        <img src="./Images/Inital%20ADobe/AdobeStock_1002555427.png" alt="Decorative Shape 3">
+        <img src="Images/Inital ADobe/AdobeStock_1002555427.png" alt="Decorative Shape 3">
     </div>
 
     <main>
@@ -1008,12 +864,8 @@
                     </p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <a href="#" class="download-btn">
-                            <span class="os-icon">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
-                                </svg>
-                            </span>
-                            <span>Download Bot</span>
+                            <span class="os-icon"></span>
+                            Download Bot
                         </a>
                         <button class="inline-flex items-center px-6 py-3 text-base font-medium rounded-md text-white bg-transparent border border-white/20 hover:bg-white/10 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -1026,7 +878,7 @@
 
                 <!-- Trading Bot Interface Image -->
                 <div class="platform-preview">
-                    <img src="./Images/trading%20interface.png" alt="Trading Bot Interface" class="rounded-lg shadow-2xl">
+                    <img src="images/trading interface.png" alt="Trading Bot Interface" class="rounded-lg shadow-2xl">
                 </div>
             </div>
 
@@ -1445,8 +1297,6 @@
         </footer>
     </main>
 
-    <!-- No login modal needed as we're using Auth0 -->
-
     <script>
         // Initialize cart from localStorage
         let cart = JSON.parse(localStorage.getItem('cart')) || {
@@ -1508,6 +1358,8 @@
             window.addEventListener('scroll', updateNavbar);
             updateNavbar();
 
+            // OS detection and icon update
+            detectOS();
             checkLoginState();
         });
 
@@ -1518,37 +1370,28 @@
             let os = 'unknown';
             let icon = '';
             
-            // Check if the user is on Windows
             if (platform.includes('win') || userAgent.includes('windows')) {
                 os = 'windows';
                 icon = `<svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
                 </svg>`;
-            } 
-            // Check if the user is on macOS
-            else if (platform.includes('mac') || userAgent.includes('mac')) {
+            } else if (platform.includes('mac') || userAgent.includes('mac')) {
                 os = 'mac';
                 icon = `<svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                 </svg>`;
-            } 
-            // Check if the user is on Linux
-            else if (platform.includes('linux') || userAgent.includes('linux')) {
+            } else if (platform.includes('linux') || userAgent.includes('linux')) {
                 os = 'linux';
                 icon = `<svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.601-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202-.01-.065-.016-.132-.018-.199v-.02a1.844 1.844 0 01.12-.742 1.38 1.38 0 01.717-.733c.128-.067.27-.1.368-.1zm-2.183.667c.128 0 .27.032.4.132.146.053.27.152.374.252.104.09.183.2.284.334.01.008.022.02.034.03-.018.006-.035.014-.05.024-.08.054-.158.098-.25.135a2.757 2.757 0 00-.35.15 2.135 2.135 0 00.216-.536c.005-.02.01-.038.014-.058a1.229 1.229 0 00-.003-.331 1.465 1.465 0 00-.117-.334c-.085-.133-.182-.2-.262-.2h-.016c-.08 0-.147.067-.23.2a1.46 1.46 0 00-.149.334c-.05.134-.082.264-.095.331a2.135 2.135 0 00-.176.536.704.704 0 00-.016.058c-.087-.054-.18-.1-.27-.149a.933.933 0 01-.232-.135c.015-.01.027-.022.038-.03.102-.134.18-.244.284-.334.104-.1.228-.199.374-.252.13-.1.272-.132.4-.132zm-3.85 6.233c-.143 0-.273.224-.389.47-.158.329-.25.608-.283.815-.13.404-.096.584.064.584.063-.001.133-.112.219-.246.086-.135.182-.271.27-.271.09 0 .185.136.271.271.087.134.156.247.22.247.16 0 .195-.182.066-.584-.033-.207-.125-.486-.284-.815-.116-.246-.245-.47zm7.944 0c-.144 0-.273.224-.39.47-.157.329-.25.608-.282.815-.131.404-.096.584.063.584.064-.001.134-.112.22-.246.085-.135.182-.271.27-.271.089 0 .185.136.27.271.088.134.157.247.22.247.16 0 .196-.182.066-.584-.033-.207-.125-.486-.283-.815-.117-.246-.245-.47zm-6.573.925c.027.02.054.052.08.09a.8.8 0 01.028.454c-.012.049-.029.095-.052.133-.03.059-.067.104-.121.104-.053 0-.097-.037-.121-.104a.7.7 0 01-.052-.133c-.044-.18-.014-.345.028-.454.027-.038.054-.071.081-.09.034-.023.076-.039.129-.039.053 0 .095.016.129.039zm5.201 0c.027.02.054.052.081.09a.8.8 0 01.027.454.7.7 0 01-.052.133c-.03.059-.067.104-.121.104-.053 0-.097-.037-.121-.104a.7.7 0 01-.052-.133c-.043-.18-.013-.345.029-.454.027-.038.053-.071.08-.09.034-.023.077-.039.13-.039.052 0 .094.016.129.039zm-2.809 2.721c.049.073.095.137.145.197.108.14.216.26.358.26s.25-.12.358-.26c.05-.06.097-.124.145-.197.145-.192.263-.401.263-.401 0-.299-.375-.515-.766-.515s-.766.216-.766.515c.001 0 .119.209.263.401z"/>
                 </svg>`;
             }
             
-            // Update all download buttons with the appropriate icon and text
+            // Update all download buttons with the appropriate icon
             document.querySelectorAll('.download-btn').forEach(btn => {
                 const iconSpan = btn.querySelector('.os-icon');
-                const textSpan = btn.querySelector('.download-text');
                 if (iconSpan) {
                     iconSpan.innerHTML = icon;
-                }
-                if (textSpan) {
-                    textSpan.textContent = `Download for ${os.charAt(0).toUpperCase() + os.slice(1)}`;
                 }
             });
         }
@@ -1617,46 +1460,6 @@
                 });
             });
         });
-
-        async function purchasePackage(packageType) {
-            try {
-                const packageDetails = {
-                    basic: {
-                        price: 49.99,
-                        candles: "3 Months",
-                        name: 'Basic',
-                        value: 300
-                    },
-                    pro: {
-                        price: 69.99,
-                        candles: "1 Year",
-                        name: 'Pro',
-                        value: 600
-                    },
-                    business: {
-                        price: 99.99,
-                        candles: "Unlimited",
-                        name: 'Business',
-                        value: 1200
-                    }
-                };
-
-                const selectedPackage = packageDetails[packageType];
-                
-                // Add package to cart using centralized function
-                addToCart({
-                    type: 'subscription',
-                    package: packageType,
-                    name: selectedPackage.name,
-                    price: selectedPackage.price,
-                    candles: selectedPackage.candles,
-                    value: selectedPackage.value
-                });
-            } catch (error) {
-                console.error('Error purchasing package:', error);
-                alert('Failed to purchase package. Please try again.');
-            }
-        }
     </script>
 
     <style>
