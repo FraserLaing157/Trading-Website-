@@ -85,7 +85,7 @@ function logout() {
     localStorage.removeItem('user_email');
     
     auth0Client.logout({
-        returnTo: window.location.origin,
+        returnTo: 'https://fraserlaing157.github.io/Trading-Website-/',
         clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK'
     });
 }
@@ -111,13 +111,16 @@ function handleAuthentication() {
                 auth0Client.client.userInfo(authResult.accessToken, (error, user) => {
                     if (!error && user) {
                         localStorage.setItem('user_email', user.email);
+                        window.location.href = 'https://fraserlaing157.github.io/Trading-Website-/';
                     } else {
                         localStorage.setItem('user_email', 'User');
+                        window.location.href = 'https://fraserlaing157.github.io/Trading-Website-/';
                     }
                     resolve(true);
                 });
             } else if (err) {
-                console.log('Authentication error:', err);
+                console.error('Authentication error:', err);
+                window.location.href = 'https://fraserlaing157.github.io/Trading-Website-/';
                 resolve(false);
             } else {
                 resolve(false);
@@ -130,21 +133,15 @@ function handleAuthentication() {
 document.addEventListener('DOMContentLoaded', function() {
     configureClient();
     
-    // Handle callback if on callback page
-    if (window.location.pathname === '/callback.html') {
-        handleAuthentication().then(success => {
-            window.location.href = '/';
-        });
+    // Check if we're on the callback page
+    if (window.location.pathname.includes('callback.html')) {
+        handleAuthentication();
         return;
     }
     
     // Check for hash on main page (in case callback failed to process)
     if (window.location.hash) {
-        handleAuthentication().then(success => {
-            if (success) {
-                updateAuthUI();
-            }
-        });
+        handleAuthentication();
     }
     
     updateAuthUI();

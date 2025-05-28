@@ -39,5 +39,15 @@
         <div class="loading-spinner"></div>
         <p>Processing login...</p>
     </div>
+
+    <script>
+        // Initialize Auth0 and handle the callback immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!auth0Client) {
+                configureClient();
+            }
+            handleAuthentication();
+        });
+    </script>
 </body>
 </html> 
