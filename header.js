@@ -1,11 +1,15 @@
 // Initialize Auth0 client
-const auth0Client = new auth0.WebAuth({
-    domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
-    clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
-    redirectUri: window.location.origin + '/callback.html',
-    responseType: 'token id_token',
-    scope: 'openid profile email'
-});
+let auth0Client = null;
+
+function configureClient() {
+    auth0Client = new auth0.WebAuth({
+        domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
+        clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
+        redirectUri: `${window.location.origin}/callback.html`,
+        responseType: 'token id_token',
+        scope: 'openid profile email'
+    });
+}
 
 // Function to check if user is authenticated
 function isAuthenticated() {
@@ -62,20 +66,24 @@ function updateAuthUI() {
 
 // Function to handle login
 function login() {
-    auth0Client.authorize({
-        prompt: 'login'
-    });
+    if (!auth0Client) {
+        configureClient();
+    }
+    auth0Client.authorize();
 }
 
 // Function to handle logout
 function logout() {
+    if (!auth0Client) {
+        configureClient();
+    }
+    
     // Clear all auth-related items from localStorage
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('user_email');
     
-    // Use Auth0's logout method
     auth0Client.logout({
         returnTo: window.location.origin,
         clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK'
@@ -84,90 +92,71 @@ function logout() {
 
 // Function to handle authentication callback
 function handleAuthentication() {
+    if (!auth0Client) {
+        configureClient();
+    }
+
     return new Promise((resolve, reject) => {
         auth0Client.parseHash((err, authResult) => {
-            if (err) {
-                // Check if this is a login_required error, which isn't really an error
-                if (err.error === 'login_required') {
-                    resolve(null);
-                    return;
-                }
-                console.error('Authentication error:', err);
-                reject(err);
-                return;
-            }
-            
             if (authResult && authResult.accessToken && authResult.idToken) {
+                window.location.hash = '';
                 const expiresAt = JSON.stringify(
                     authResult.expiresIn * 1000 + new Date().getTime()
                 );
+                
                 localStorage.setItem('access_token', authResult.accessToken);
                 localStorage.setItem('id_token', authResult.idToken);
                 localStorage.setItem('expires_at', expiresAt);
                 
-                // Get user info using the access token
                 auth0Client.client.userInfo(authResult.accessToken, (error, user) => {
-                    if (error) {
-                        console.error('Error getting user info:', error);
-                        reject(error);
-                        return;
+                    if (!error && user) {
+                        localStorage.setItem('user_email', user.email);
+                    } else {
+                        localStorage.setItem('user_email', 'User');
                     }
-                    
-                    localStorage.setItem('user_email', user.email);
-                    resolve(user);
+                    resolve(true);
                 });
+            } else if (err) {
+                console.log('Authentication error:', err);
+                resolve(false);
             } else {
-                // No auth result but also no error means we're just not logged in
-                resolve(null);
+                resolve(false);
             }
         });
     });
 }
 
-// Add event listeners when DOM is loaded
+// Initialize when the page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Clear any error parameters from the URL
-    if (window.location.search.includes('error=')) {
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.delete('error');
-        const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
-        window.history.replaceState({}, '', newUrl);
-    }
+    configureClient();
     
-    // Check if we're on the callback page
+    // Handle callback if on callback page
     if (window.location.pathname === '/callback.html') {
-        handleAuthentication()
-            .then((user) => {
-                if (user) {
-                    window.location.href = '/';
-                } else {
-                    // Not logged in, redirect to home page
-                    window.location.href = '/';
-                }
-            })
-            .catch(error => {
-                console.error('Error during authentication:', error);
-                window.location.href = '/?error=' + encodeURIComponent(error.message);
-            });
+        handleAuthentication().then(success => {
+            window.location.href = '/';
+        });
         return;
     }
-
-    // Update UI based on current auth state
+    
+    // Check for hash on main page (in case callback failed to process)
+    if (window.location.hash) {
+        handleAuthentication().then(success => {
+            if (success) {
+                updateAuthUI();
+            }
+        });
+    }
+    
     updateAuthUI();
-
-    // Add click handlers for login/logout buttons
+    
+    // Add click handlers
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     
-    if (loginBtn) {
-        loginBtn.addEventListener('click', login);
-    }
+    if (loginBtn) loginBtn.addEventListener('click', login);
+    if (logoutBtn) logoutBtn.addEventListener('click', logout);
     
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', logout);
-    }
-
-    // Listen for storage events to sync auth state across tabs
+    // Handle auth state changes across tabs
     window.addEventListener('storage', function(e) {
         if (e.key === 'user_email' || e.key === 'expires_at') {
             updateAuthUI();
