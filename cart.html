@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="js/include-auth.js"></script>
     <script src="auth.js"></script>
     <script src="cart.js"></script>
     <style>
@@ -329,32 +330,39 @@
     </main>
 
     <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
-        <div class="bg-[#0F1A33] p-8 rounded-xl max-w-md w-full mx-4">
+    <div id="loginModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-[#0D1225] rounded-xl p-8 w-full max-w-md mx-4 relative">
+            <button onclick="toggleLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            
             <!-- Login Form -->
             <div id="loginForm">
-                <h2 class="text-2xl font-bold mb-6">Sign In</h2>
+                <h2 class="text-2xl font-bold mb-6 gradient-text">Sign In to Your Account</h2>
                 <form onsubmit="handleLogin(event)" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2">Email</label>
-                        <input type="email" id="email" required class="w-full px-4 py-2 rounded-lg bg-[#0B0B1E] border border-gray-700 focus:border-[#3DB8F5] focus:outline-none">
+                        <label class="block text-gray-300 mb-2" for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2">Password</label>
-                        <input type="password" id="password" required class="w-full px-4 py-2 rounded-lg bg-[#0B0B1E] border border-gray-700 focus:border-[#3DB8F5] focus:outline-none">
+                        <label class="block text-gray-300 mb-2" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="w-full bg-[#1E293B] rounded-lg border border-gray-600 p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" required>
                     </div>
-                    <button type="submit" class="w-full bg-[#3DB8F5] text-white py-2 rounded-lg font-medium hover:bg-[#3DB8F5]/90 transition-all">
+                    <button type="submit" class="w-full bg-[#3DB8F5] hover:bg-[#3DB8F5]/90 text-white py-3 rounded-lg font-semibold transition-colors">
                         Sign In
                     </button>
                 </form>
                 <p class="mt-4 text-center text-gray-400">
                     Don't have an account? 
-                    <button onclick="showRegister()" class="text-[#3DB8F5] hover:underline">Register</button>
+                    <button onclick="showRegister()" class="text-[#3DB8F5] hover:text-[#3DB8F5]/80">Register</button>
                 </p>
             </div>
 
             <!-- Register Form -->
             <div id="registerForm" class="hidden">
+                <h2 class="text-2xl font-bold mb-6 gradient-text">Create Your Account</h2>
                 <h2 class="text-2xl font-bold mb-6">Create Account</h2>
                 <form class="space-y-4">
                     <div>
@@ -418,7 +426,7 @@
         const registerForm = document.getElementById('registerForm');
         const loginBtn = document.getElementById('loginBtn');
 
-        loginBtn.addEventListener('click', toggleLogin);
+        // Authentication is handled by auth.js and include-auth.js
 
         function toggleLogin() {
             loginModal.classList.toggle('hidden');
