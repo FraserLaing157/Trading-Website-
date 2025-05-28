@@ -2,10 +2,16 @@ let auth0Client = null;
 
 // Initialize Auth0 client
 const initAuth0 = () => {
+    // Determine if we're in local development or production
+    const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+    const redirectUri = isLocalDev 
+        ? 'http://127.0.0.1:8080/callback.html'
+        : 'https://fraserlaing157.github.io/Trading-Website-/callback.html';
+
     auth0Client = new auth0.WebAuth({
         domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
         clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
-        redirectUri: window.location.origin + '/callback.html',
+        redirectUri: redirectUri,
         responseType: 'token id_token',
         scope: 'openid profile email'
     });
