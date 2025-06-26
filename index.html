@@ -953,7 +953,11 @@
                     </p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <a href="#" class="download-btn">
-                            <span class="os-icon"></span>
+                            <span class="os-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 48 48" style="vertical-align:middle;">
+                                    <path fill="#00ADEF" d="M4 8.7L22.5 6v17.2H4zm18.5 17.9V42L4 39.3V26.6zm2.1-20.7L44 4v19.2H24.6zm19.9 20.1V44l-19.9-2.7V26.6z"/>
+                                </svg>
+                            </span>
                             Download Bot
                         </a>
                         <button class="inline-flex items-center px-6 py-3 text-base font-medium rounded-md text-white bg-transparent border border-white/20 hover:bg-white/10 transition-colors">
@@ -977,6 +981,33 @@
                     <!-- Ticker items will be inserted here by JavaScript -->
                 </div>
             </div>
+        </section>
+
+        <!-- About Bot Section -->
+        <section id="about-bot" class="py-20 relative">
+          <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-12">
+              <h2 class="text-4xl font-bold mb-4 gradient-text">What is Cryptotech X Bot?</h2>
+              <p class="text-gray-400 text-xl max-w-3xl mx-auto">
+                Cryptotech X is an all-in-one automated trading platform for <span class="text-[#3DB8F5] font-semibold">cryptocurrencies, stocks, and commodities</span>. 
+                Simply connect your broker, choose your strategy, and let our advanced algorithms trade for you—24/7, hands-free.
+              </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+              <div class="feature-card p-6 text-center">
+                <h3 class="text-xl font-bold mb-2 text-[#3DB8F5]">Multi-Asset Support</h3>
+                <p class="text-gray-300">Trade crypto, stocks, and commodities from a single dashboard. We launch with 3 top brokers, and will expand to support any broker you choose.</p>
+              </div>
+              <div class="feature-card p-6 text-center">
+                <h3 class="text-xl font-bold mb-2 text-[#3DB8F5]">Easy Broker Connection</h3>
+                <p class="text-gray-300">Connect your broker account in minutes. No coding or complex setup—just log in, authorize, and you're ready to trade.</p>
+              </div>
+              <div class="feature-card p-6 text-center">
+                <h3 class="text-xl font-bold mb-2 text-[#3DB8F5]">Automated Strategies</h3>
+                <p class="text-gray-300">Choose from proven strategies or customize your own. Our bot executes trades automatically, so you never miss an opportunity.</p>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- Features Section (Advanced Strategy Builder) -->
@@ -1122,15 +1153,51 @@
                     </div>
 
                     <div class="feature-card p-6">
-                        <button class="flex justify-between items-center w-full">
-                            <span class="text-lg font-medium">What cryptocurrencies do you support?</span>
-                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="mt-4 text-gray-400">
-                            We support a wide range of cryptocurrencies including Bitcoin, Ethereum, and other major altcoins, with new assets being added regularly.
-                        </div>
+                      <button class="flex justify-between items-center w-full">
+                        <span class="text-lg font-medium">What assets can I trade with Cryptotech X?</span>
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="mt-4 text-gray-400">
+                        You can trade a wide range of <span class="text-[#3DB8F5] font-semibold">cryptocurrencies</span> (like Bitcoin, Ethereum, and more), <span class="text-[#3DB8F5] font-semibold">stocks</span> (major US and global equities), and <span class="text-[#3DB8F5] font-semibold">commodities</span> (such as gold, oil, and more). We launch with support for 3 major brokers, and will expand to any broker you connect.
+                      </div>
+                    </div>
+
+                    <div class="feature-card p-6">
+                      <button class="flex justify-between items-center w-full">
+                        <span class="text-lg font-medium">How do I connect my broker?</span>
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="mt-4 text-gray-400">
+                        Connecting your broker is simple: select your broker from our list, log in securely, and authorize access. We'll handle the rest. As we add more brokers, you'll be able to connect any supported account.
+                      </div>
+                    </div>
+
+                    <div class="feature-card p-6">
+                      <button class="flex justify-between items-center w-full">
+                        <span class="text-lg font-medium">What strategies does the bot use?</span>
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="mt-4 text-gray-400">
+                        Our bot offers a range of strategies: trend following, mean reversion, breakout trading, MACD crossovers, and more. You can use our templates or build your own custom strategy—no coding required.
+                      </div>
+                    </div>
+
+                    <div class="feature-card p-6">
+                      <button class="flex justify-between items-center w-full">
+                        <span class="text-lg font-medium">Is my account secure?</span>
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="mt-4 text-gray-400">
+                        Yes! Your account and funds remain with your broker. We use secure, read-only API connections and never have access to withdraw your funds.
+                      </div>
                     </div>
                 </div>
             </div>
