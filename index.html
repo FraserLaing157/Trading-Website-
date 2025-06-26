@@ -9,8 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="css/nav.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
+    <script src="header.js"></script>
     <script src="auth.js"></script>
     <script src="ticker.js"></script>
     <script src="cart.js"></script>
@@ -767,6 +769,152 @@
         .animated-input-wrapper:focus-within::after {
             display: none !important;
         }
+
+        /* Add parallax and fade-in animation styles */
+        .parallax {
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Add smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Add animated border effect */
+        .animated-border {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .animated-border::before {
+            content: '';
+            position: absolute;
+             top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0%,
+                rgba(61, 184, 245, 0.2) 25%,
+                transparent 50%
+            );
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Add text reveal effect */
+        .text-reveal {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .text-reveal::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0B0B1E;
+            transform: scaleX(1);
+            transform-origin: right;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .text-reveal.visible::after {
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        /* Logo Particles Animation */
+        .logo-particles {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            left: -50%;
+            top: -50%;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            width: var(--size);
+            height: var(--size);
+            background: var(--color);
+            filter: blur(1px);
+            z-index: var(--z);
+        }
+
+        .particle.front {
+            animation: floatParticleFront 8s infinite;
+            animation-delay: var(--delay);
+        }
+
+        .particle.back {
+            animation: floatParticleBack 10s infinite;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes floatParticleFront {
+            0% { transform: translate(0%, 0%) scale(1); }
+            25% { transform: translate(120%, -30%) scale(1.2); }
+            50% { transform: translate(80%, 100%) scale(0.8); }
+            75% { transform: translate(-50%, 50%) scale(1.1); }
+            100% { transform: translate(0%, 0%) scale(1); }
+        }
+
+        @keyframes floatParticleBack {
+            0% { transform: translate(0%, 0%) scale(1); }
+            25% { transform: translate(-80%, 60%) scale(1.4); }
+            50% { transform: translate(100%, -50%) scale(0.9); }
+            75% { transform: translate(30%, 100%) scale(1.2); }
+            100% { transform: translate(0%, 0%) scale(1); }
+        }
+
+        .particle-trails {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%,
+                rgba(61, 184, 245, 0.1) 0%,
+                rgba(44, 168, 229, 0.05) 50%,
+                transparent 70%);
+            animation: pulseTrails 4s infinite ease-in-out;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes pulseTrails {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.5;
+            }
+        }
     </style>
     <script>
         tailwind.config = {
@@ -788,48 +936,41 @@
 </head>
 <body class="min-h-screen text-white overflow-x-hidden antialiased">
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+    <nav class="fixed w-full z-50 bg-[#0B0B1E]/80 backdrop-blur-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
                 <div class="flex items-center">
                     <a href="index.html" class="flex items-center space-x-3 relative logo-wrapper">
-                        <div class="logo-particles">
-                            <!-- Front particles -->
-                            <div class="particle front" style="--delay: 0s; --size: 4px; --color: #3DB8F5; --z: 2"></div>
-                            <div class="particle front" style="--delay: 1.5s; --size: 3px; --color: #3DB8F5; --z: 2"></div>
-                            <div class="particle front" style="--delay: 2.8s; --size: 5px; --color: #2CA8E5; --z: 2"></div>
-                            <!-- Back particles -->
-                            <div class="particle back" style="--delay: 0.7s; --size: 6px; --color: #2CA8E5; --z: 0"></div>
-                            <div class="particle back" style="--delay: 2.2s; --size: 4px; --color: #3DB8F5; --z: 0"></div>
-                            <div class="particle back" style="--delay: 3.5s; --size: 5px; --color: #2CA8E5; --z: 0"></div>
-                            <!-- Connection lines -->
-                            <div class="particle-trails"></div>
-                        </div>
                         <span class="text-2xl logo-text gradient-text relative" style="z-index: 1">Cryptotech X</span>
                     </a>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium active">Home</a>
-                    <a href="#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Pricing</a>
-                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
-                    <a href="dashboard.html" id="profileLink" class="nav-link text-gray-300 hover:text-white transition-colors font-medium" style="display: none;">Profile</a>
-                    <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">
-                        Sign In
-                    </button>
-                    <button id="logoutBtn" onclick="logout()" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors" style="display: none;">
-                        Sign Out
-                    </button>
-                    <div class="relative">
-                        <a href="cart.html" class="cart-button group">
-                            <div class="cart-container">
-                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                </svg>
-                                <div class="cart-badge" id="cartCount">0</div>
-                            </div>
-                        </a>
+                <!-- Navigation Links -->
+                <div class="nav-container">
+                    <div class="nav-links">
+                        <a href="index.html" class="nav-link active">Home</a>
+                        <a href="#features" class="nav-link">Features</a>
+                        <a href="shop.html" class="nav-link">Pricing</a>
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </div>
+                    
+                    <!-- Auth Container -->
+                    <div id="authContainer" class="auth-container">
+                        <span id="userWelcome" class="text-white whitespace-nowrap text-sm" style="display: none;"></span>
+                        <a href="dashboard.html" id="profileLink" class="nav-link" style="display: none;">Profile</a>
+                        <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">Sign In</button>
+                        <button id="logoutBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors" style="display: none;">Sign Out</button>
+                        <div class="relative">
+                            <a href="cart.html" class="cart-button group">
+                                <div class="cart-container">
+                                    <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                    </svg>
+                                    <div class="cart-badge" id="cartCount">0</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1340,7 +1481,7 @@
             });
 
             // Navbar scroll behavior
-            const navbar = document.getElementById('navbar');
+            const navbar = document.querySelector('nav');
             function updateNavbar() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 if (scrollTop > 50) {
