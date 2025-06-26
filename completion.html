@@ -10,9 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="auth.js"></script>
-    <script src="js/include-auth.js"></script>
-    <script src="cart.js"></script>
+    <!-- Auth0 SDK -->
+    <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
+    <script src="ticker.js"></script>
+    <link href="css/nav.css" rel="stylesheet">
     <style>
         @font-face {
             font-family: 'Inter';
@@ -58,76 +59,30 @@
         }
     </style>
 </head>
-<body class="text-white">
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-[#0B0B1E]/80 backdrop-blur-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <a href="index.html" class="flex items-center space-x-3">
-                    <svg class="w-8 h-8 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Main circular frame -->
-                        <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-opacity="0.2"/>
-                        
-                        <!-- Animated trading line -->
-                        <path d="M12 32C12 32 20 20 32 32C44 44 52 32 52 32" 
-                              stroke="currentColor" 
-                              stroke-width="3"
-                              stroke-linecap="round">
-                            <animate attributeName="d" 
-                                     dur="2s" 
-                                     repeatCount="indefinite"
-                                     values="M12 32C12 32 20 20 32 32C44 44 52 32 52 32;
-                                            M12 32C12 32 20 44 32 32C44 20 52 32 52 32;
-                                            M12 32C12 32 20 20 32 32C44 44 52 32 52 32"/>
-                        </path>
-
-                        <!-- Dots representing data points -->
-                        <circle cx="32" cy="32" r="2" fill="currentColor">
-                            <animate attributeName="cy"
-                                     dur="2s"
-                                     repeatCount="indefinite"
-                                     values="32;20;32"/>
-                        </circle>
-                        <circle cx="22" cy="32" r="2" fill="currentColor" fill-opacity="0.6">
-                            <animate attributeName="cy"
-                                     dur="2s"
-                                     repeatCount="indefinite"
-                                     values="32;44;32"/>
-                        </circle>
-                        <circle cx="42" cy="32" r="2" fill="currentColor" fill-opacity="0.6">
-                            <animate attributeName="cy"
-                                     dur="2s"
-                                     repeatCount="indefinite"
-                                     values="32;20;32"/>
-                        </circle>
-
-                        <!-- Abstract tech elements -->
-                        <path d="M32 8V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M32 50V56" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M8 32H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M50 32H56" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <span class="text-2xl logo-text gradient-text">Cryptotech X</span>
-                </a>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Home</a>
-                    <a href="index.html#features" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-                    <a href="shop.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Pricing</a>
-                    <a href="contact.html" class="nav-link text-gray-300 hover:text-white transition-colors font-medium">Contact</a>
-                    <div class="relative">
-                        <a href="cart.html" class="cart-button group">
-                            <div class="cart-container">
-                                <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                </svg>
-                                <span id="cartCount" class="absolute -top-2 -right-2 bg-primary text-xs text-white rounded-full w-5 h-5 flex items-center justify-center animate-cartBadgeAppear">0</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+<body class="min-h-screen text-white overflow-x-hidden antialiased">
+    <div id="header"></div>
+    <script>
+    fetch('header.html')
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('header').innerHTML = html;
+            
+            // Wait for Auth0 SDK to be available
+            function waitForAuth0() {
+                if (typeof auth0 !== 'undefined') {
+                    var script = document.createElement('script');
+                    script.src = 'header.js';
+                    script.onload = function() {
+                        if (window.setupHeaderAuthListeners) window.setupHeaderAuthListeners();
+                    };
+                    document.body.appendChild(script);
+                } else {
+                    setTimeout(waitForAuth0, 100);
+                }
+            }
+            waitForAuth0();
+        });
+    </script>
 
     <!-- Main Content -->
     <main class="min-h-screen flex items-center justify-center px-4">

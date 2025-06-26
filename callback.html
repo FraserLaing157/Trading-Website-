@@ -1,69 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Processing Login...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticating... - Cryptotech X</title>
     <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
-    <script src="auth.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(180deg, #0B0B1E 0%, #0F1A33 35%, #000000 70%);
-            margin: 0;
-            padding: 0;
+            color: white;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            color: white;
-        }
-        .loading {
-            text-align: center;
-        }
-        .spinner {
-            border: 4px solid rgba(61, 184, 245, 0.1);
-            border-left-color: #3DB8F5;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            justify-content: center;
         }
     </style>
 </head>
 <body>
-    <div class="loading">
-        <div class="spinner"></div>
-        <p>Processing login, please wait...</p>
+    <div>
+        <h1>Authenticating...</h1>
+        <p>Please wait while we complete your sign-in.</p>
     </div>
-
     <script>
-        // Handle the authentication response
-        window.addEventListener('load', () => {
+        let auth0Client = null;
+        
+        function configureClient() {
             const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-            const redirectBase = isLocalDev 
-                ? 'http://127.0.0.1:8080'
-                : 'https://fraserlaing157.github.io/Trading-Website-';
-
-            auth0Client.parseHash((err, authResult) => {
-                if (authResult && authResult.accessToken && authResult.idToken) {
-                    // Set session
-                    const expiresAt = JSON.stringify(
-                        authResult.expiresIn * 1000 + new Date().getTime()
-                    );
-                    localStorage.setItem('access_token', authResult.accessToken);
-                    localStorage.setItem('id_token', authResult.idToken);
-                    localStorage.setItem('expires_at', expiresAt);
-                    
-                    // Redirect back to the main page
-                    window.location.href = redirectBase + '/index.html';
-                } else if (err) {
-                    console.error('Authentication error:', err);
-                    window.location.href = redirectBase + '/index.html';
-                }
+            const baseUrl = isLocalDev ? 'http://127.0.0.1:8000' : 'https://fraserlaing157.github.io/Trading-Website-';
+            
+            auth0Client = new auth0.WebAuth({
+                domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
+                clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
+                redirectUri: `${baseUrl}/callback.html`,
+                responseType: 'token id_token',
+                scope: 'openid profile email'
             });
+        }
+        
+        function setSession(authResult) {
+            const expiresAt = JSON.stringify(
+                authResult.expiresIn * 1000 + new Date().getTime()
+            );
+            localStorage.setItem('access_token', authResult.accessToken);
+            localStorage.setItem('id_token', authResult.idToken);
+            localStorage.setItem('expires_at', expiresAt);
+        }
+        
+        function handleAuthentication() {
+            return new Promise((resolve) => {
+                auth0Client.parseHash((err, authResult) => {
+                    if (authResult && authResult.accessToken && authResult.idToken) {
+                        setSession(authResult);
+                        const expiresAt = JSON.stringify(
+                            authResult.expiresIn * 1000 + new Date().getTime()
+                        );
+                        localStorage.setItem('expires_at', expiresAt);
+                        
+                        auth0Client.client.userInfo(authResult.accessToken, (error, user) => {
+                            const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+                            const baseUrl = isLocalDev ? 'http://127.0.0.1:8000' : 'https://fraserlaing157.github.io/Trading-Website-';
+                            
+                            if (!error && user) {
+                                localStorage.setItem('user_email', user.email);
+                                window.location.href = baseUrl;
+                            } else {
+                                localStorage.setItem('user_email', 'User');
+                                window.location.href = baseUrl;
+                            }
+                            resolve(true);
+                        });
+                    } else if (err) {
+                        console.error('Authentication error:', err);
+                        const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+                        const baseUrl = isLocalDev ? 'http://127.0.0.1:8000' : 'https://fraserlaing157.github.io/Trading-Website-';
+                        window.location.href = baseUrl;
+                        resolve(false);
+                    } else {
+                        resolve(false);
+                    }
+                });
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            configureClient();
+            handleAuthentication();
         });
     </script>
 </body>

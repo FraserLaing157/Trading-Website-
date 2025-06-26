@@ -1,0 +1,33 @@
+<!-- Auth0 SDK -->
+<script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
+
+<nav class="header-bar">
+    <div class="header-inner">
+        <!-- Logo -->
+        <div>
+            <a href="index.html" class="logo-text">Cryptotech X</a>
+        </div>
+        <!-- Navigation Links -->
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link" id="nav-home">Home</a>
+                <a href="index.html#features" class="nav-link" id="nav-features">Features</a>
+                <a href="shop.html" class="nav-link" id="nav-pricing">Pricing</a>
+                <a href="contact.html" class="nav-link" id="nav-contact">Contact</a>
+            </div>
+            <div class="auth-container">
+                <button id="loginBtn" class="header-btn">Sign In</button>
+                <a href="dashboard.html" id="profileLink" class="nav-link" style="display:none;">Profile</a>
+                <button id="logoutBtn" class="header-btn" style="display:none;">Sign Out</button>
+                <a href="cart.html" class="cart-button">
+                    <div class="cart-container">
+                        <svg class="cart-icon" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        <div class="cart-badge" id="cartCount">0</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav> 

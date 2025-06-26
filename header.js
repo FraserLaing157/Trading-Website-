@@ -1,95 +1,85 @@
-// Initialize Auth0 client
+// Placeholder for authentication logic. No Auth0 code present.
+
 let auth0Client = null;
 
 function configureClient() {
+    console.log('Configuring Auth0 client...');
     // Determine if we're in local development or production
     const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-    const baseUrl = isLocalDev ? 'http://127.0.0.1:8080' : 'https://fraserlaing157.github.io/Trading-Website-';
-
-    auth0Client = new auth0.WebAuth({
-        domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
-        clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
-        redirectUri: `${baseUrl}/callback.html`,
-        responseType: 'token id_token',
-        scope: 'openid profile email'
-    });
+    const baseUrl = isLocalDev ? 'http://127.0.0.1:8000' : 'https://fraserlaing157.github.io/Trading-Website-';
+    
+    console.log('Base URL:', baseUrl);
+    console.log('Auth0 object available:', typeof auth0 !== 'undefined');
+    
+    try {
+        auth0Client = new auth0.WebAuth({
+            domain: 'dev-nqri4nz4x4oogsjx.us.auth0.com',
+            clientID: 'Yq3CJuF67GyOygYVl7XAkjvJTGUdT9oK',
+            redirectUri: `${baseUrl}/callback.html`,
+            responseType: 'token id_token',
+            scope: 'openid profile email'
+        });
+        console.log('Auth0 client configured successfully:', auth0Client);
+    } catch (error) {
+        console.error('Error configuring Auth0 client:', error);
+    }
 }
 
-// Function to check if user is authenticated
+function setSession(authResult) {
+    const expiresAt = JSON.stringify(
+        authResult.expiresIn * 1000 + new Date().getTime()
+    );
+    localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem('expires_at', expiresAt);
+}
+
 function isAuthenticated() {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at') || '0');
     return new Date().getTime() < expiresAt;
 }
 
-// Function to update UI based on auth state
 function updateAuthUI() {
-    const isAuthed = isAuthenticated();
-    const userEmail = localStorage.getItem('user_email');
-    
-    // Get all relevant elements
+    const authenticated = isAuthenticated();
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const profileLink = document.getElementById('profileLink');
-    const userWelcome = document.getElementById('userWelcome');
-    const authContainer = document.getElementById('authContainer');
     
-    if (isAuthed && userEmail) {
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'block';
-        if (profileLink) profileLink.style.display = 'block';
-        if (userWelcome) {
-            userWelcome.textContent = `Welcome, ${userEmail}`;
-            userWelcome.style.display = 'block';
-        }
-        if (authContainer) authContainer.classList.add('logged-in');
-    } else {
-        if (loginBtn) loginBtn.style.display = 'block';
-        if (logoutBtn) logoutBtn.style.display = 'none';
-        if (profileLink) profileLink.style.display = 'none';
-        if (userWelcome) userWelcome.style.display = 'none';
-        if (authContainer) authContainer.classList.remove('logged-in');
+    if (loginBtn) loginBtn.style.display = !authenticated ? 'block' : 'none';
+    if (logoutBtn) logoutBtn.style.display = authenticated ? 'block' : 'none';
+    if (profileLink) profileLink.style.display = authenticated ? 'block' : 'none';
+    
+    if (authenticated && profileLink) {
+        auth0Client.client.userInfo(localStorage.getItem('access_token'), (err, user) => {
+            if (!err && user) {
+                profileLink.textContent = user.email || 'Profile';
+            }
+        });
     }
-
-    // Apply consistent button styles
-    const buttons = document.querySelectorAll('#loginBtn, #logoutBtn');
-    buttons.forEach(button => {
-        button.style.minWidth = '100px';
-        button.style.padding = '0.5rem 1.5rem';
-        button.style.fontSize = '0.875rem';
-        button.style.fontWeight = '600';
-    });
-
-    // Apply consistent nav styles
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.style.padding = '0.5rem 1rem';
-        link.style.fontSize = '0.875rem';
-        link.style.fontWeight = '500';
-    });
 }
 
-// Function to handle login
 function login() {
+    console.log('Login function called');
+    console.log('Auth0 client:', auth0Client);
     if (!auth0Client) {
-        configureClient();
+        console.error('Auth0 client not initialized');
+        return;
     }
-    auth0Client.authorize();
+    try {
+        auth0Client.authorize();
+        console.log('Auth0 authorize called successfully');
+    } catch (error) {
+        console.error('Error calling auth0Client.authorize():', error);
+    }
 }
 
-// Function to handle logout
 function logout() {
-    if (!auth0Client) {
-        configureClient();
-    }
-    
-    // Clear all auth-related items from localStorage
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
-    localStorage.removeItem('user_email');
     
     const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-    const baseUrl = isLocalDev ? 'http://127.0.0.1:8080' : 'https://fraserlaing157.github.io/Trading-Website-';
+    const baseUrl = isLocalDev ? 'http://127.0.0.1:8000' : 'https://fraserlaing157.github.io/Trading-Website-';
     
     auth0Client.logout({
         returnTo: baseUrl,
@@ -97,27 +87,19 @@ function logout() {
     });
 }
 
-// Function to handle authentication callback
 function handleAuthentication() {
-    if (!auth0Client) {
-        configureClient();
-    }
-
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         auth0Client.parseHash((err, authResult) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
-                window.location.hash = '';
+                setSession(authResult);
                 const expiresAt = JSON.stringify(
                     authResult.expiresIn * 1000 + new Date().getTime()
                 );
-                
-                localStorage.setItem('access_token', authResult.accessToken);
-                localStorage.setItem('id_token', authResult.idToken);
                 localStorage.setItem('expires_at', expiresAt);
                 
                 auth0Client.client.userInfo(authResult.accessToken, (error, user) => {
                     const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-                    const baseUrl = isLocalDev ? 'http://127.0.0.1:8080' : 'https://fraserlaing157.github.io/Trading-Website-';
+                    const baseUrl = isLocalDev ? 'http://127.0.0.1:8000' : 'https://fraserlaing157.github.io/Trading-Website-';
                     
                     if (!error && user) {
                         localStorage.setItem('user_email', user.email);
@@ -131,7 +113,7 @@ function handleAuthentication() {
             } else if (err) {
                 console.error('Authentication error:', err);
                 const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-                const baseUrl = isLocalDev ? 'http://127.0.0.1:8080' : 'https://fraserlaing157.github.io/Trading-Website-';
+                const baseUrl = isLocalDev ? 'http://127.0.0.1:8000' : 'https://fraserlaing157.github.io/Trading-Website-';
                 window.location.href = baseUrl;
                 resolve(false);
             } else {
@@ -141,41 +123,31 @@ function handleAuthentication() {
     });
 }
 
-// Initialize when the page loads
-document.addEventListener('DOMContentLoaded', function() {
+function setupHeaderAuthListeners() {
     configureClient();
     
-    // Check if we're on the callback page
-    if (window.location.pathname.includes('callback.html')) {
-        handleAuthentication();
-        return;
-    }
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const profileLink = document.getElementById('profileLink');
     
-    // Check for hash on main page (in case callback failed to process)
-    if (window.location.hash) {
-        handleAuthentication();
+    if (loginBtn) loginBtn.onclick = login;
+    if (logoutBtn) logoutBtn.onclick = logout;
+    if (profileLink) profileLink.onclick = function(e) { e.preventDefault(); };
+    
+    // Highlight active nav link
+    const path = window.location.pathname;
+    if (path.endsWith('index.html') || path === '/' || path === '') {
+        const navHome = document.getElementById('nav-home');
+        if (navHome) navHome.classList.add('active');
+    } else if (path.endsWith('shop.html')) {
+        const navPricing = document.getElementById('nav-pricing');
+        if (navPricing) navPricing.classList.add('active');
+    } else if (path.endsWith('contact.html')) {
+        const navContact = document.getElementById('nav-contact');
+        if (navContact) navContact.classList.add('active');
     }
     
     updateAuthUI();
-    
-    // Add click handlers
-    const loginBtn = document.getElementById('loginBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    
-    if (loginBtn) loginBtn.addEventListener('click', login);
-    if (logoutBtn) logoutBtn.addEventListener('click', logout);
-    
-    // Handle auth state changes across tabs
-    window.addEventListener('storage', function(e) {
-        if (e.key === 'user_email' || e.key === 'expires_at') {
-            updateAuthUI();
-        }
-    });
+}
 
-    // Add consistent header styles
-    const header = document.querySelector('nav');
-    if (header) {
-        header.style.height = '80px';
-        header.style.borderBottom = '1px solid rgba(61, 184, 245, 0.1)';
-    }
-}); 
+window.setupHeaderAuthListeners = setupHeaderAuthListeners; 

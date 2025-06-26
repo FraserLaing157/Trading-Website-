@@ -11,13 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="css/nav.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Auth0 -->
+    <!-- Auth0 SDK -->
     <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
-    <script src="header.js"></script>
+    <script src="ticker.js"></script>
     
     <!-- Other scripts -->
-    <script src="js/include-auth.js"></script>
     <script src="cart.js"></script>
     <script>
         tailwind.config = {
@@ -501,6 +499,30 @@
     </style>
 </head>
 <body class="min-h-screen text-white overflow-x-hidden antialiased">
+    <div id="header"></div>
+    <script>
+    fetch('header.html')
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('header').innerHTML = html;
+            
+            // Wait for Auth0 SDK to be available
+            function waitForAuth0() {
+                if (typeof auth0 !== 'undefined') {
+                    var script = document.createElement('script');
+                    script.src = 'header.js';
+                    script.onload = function() {
+                        if (window.setupHeaderAuthListeners) window.setupHeaderAuthListeners();
+                    };
+                    document.body.appendChild(script);
+                } else {
+                    setTimeout(waitForAuth0, 100);
+                }
+            }
+            waitForAuth0();
+        });
+    </script>
+
     <!-- Floating Coin Background -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <img src="Images/New Coins/AdobeStock_1260349542.png" alt="Crypto Coin" class="floating-coin">
@@ -509,60 +531,6 @@
         <img src="Images/New Coins/AdobeStock_1260349542.png" alt="Crypto Coin" class="floating-coin">
         <img src="Images/New Coins/AdobeStock_1280498909.png" alt="Crypto Coin" class="floating-coin">
     </div>
-
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-[#0B0B1E]/80 backdrop-blur-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <a href="index.html" class="flex items-center space-x-3 relative logo-wrapper">
-                        <div class="logo-particles">
-                            <!-- Front particles -->
-                            <div class="particle front" style="--delay: 0s; --size: 4px; --color: #3DB8F5; --z: 2"></div>
-                            <div class="particle front" style="--delay: 1.5s; --size: 3px; --color: #3DB8F5; --z: 2"></div>
-                            <div class="particle front" style="--delay: 2.8s; --size: 5px; --color: #2CA8E5; --z: 2"></div>
-                            <!-- Back particles -->
-                            <div class="particle back" style="--delay: 0.7s; --size: 6px; --color: #2CA8E5; --z: 0"></div>
-                            <div class="particle back" style="--delay: 2.2s; --size: 4px; --color: #3DB8F5; --z: 0"></div>
-                            <div class="particle back" style="--delay: 3.5s; --size: 5px; --color: #2CA8E5; --z: 0"></div>
-                            <!-- Connection lines -->
-                            <div class="particle-trails"></div>
-                        </div>
-                        <span class="text-2xl logo-text gradient-text relative" style="z-index: 1">Cryptotech X</span>
-                    </a>
-                </div>
-                
-                <!-- Navigation Links -->
-                <div class="nav-container">
-                    <div class="nav-links">
-                        <a href="index.html" class="nav-link">Home</a>
-                        <a href="index.html#features" class="nav-link">Features</a>
-                        <a href="shop.html" class="nav-link active">Pricing</a>
-                        <a href="contact.html" class="nav-link">Contact</a>
-                    </div>
-                    
-                    <!-- Auth Container -->
-                    <div id="authContainer" class="auth-container">
-                        <span id="userWelcome" class="text-white whitespace-nowrap text-sm" style="display: none;"></span>
-                        <a href="dashboard.html" id="profileLink" class="nav-link" style="display: none;">Profile</a>
-                        <button id="loginBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">Sign In</button>
-                        <button id="logoutBtn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors" style="display: none;">Sign Out</button>
-                        <div class="relative">
-                            <a href="cart.html" class="cart-button group">
-                                <div class="cart-container">
-                                    <svg class="w-6 h-6 text-gray-300 transition-colors group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                    </svg>
-                                    <div class="cart-badge" id="cartCount">0</div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
 
     <main class="pt-32 pb-20 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

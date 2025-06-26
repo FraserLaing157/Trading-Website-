@@ -6,10 +6,11 @@
     <title>Cryptotech X - Mobile</title>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/nav.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="auth.js"></script>
-    <script src="js/include-auth.js"></script>
-    <script src="cart.js"></script>
+    <!-- Auth0 SDK -->
+    <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
+    <script src="ticker.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -67,34 +68,32 @@
     </style>
 </head>
 <body class="text-white">
-    <!-- Mobile Navigation -->
-    <nav class="fixed top-0 left-0 right-0 bg-[#0B0B1E]/80 mobile-nav z-50">
-        <div class="flex items-center justify-between px-4 h-full">
-            <a href="#" class="text-xl font-semibold gradient-text">Cryptotech X</a>
-            <button id="menuBtn" class="p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="fixed inset-y-0 right-0 w-4/5 bg-[#0B0B1E] mobile-menu z-50">
-        <div class="p-6 space-y-6">
-            <a href="#home" class="block text-lg py-2">Home</a>
-            <a href="#features" class="block text-lg py-2">Features</a>
-            <a href="shop.html" class="block text-lg py-2">Pricing</a>
-            <a href="contact.html" class="block text-lg py-2">Contact</a>
-            <a href="cart.html" class="flex items-center space-x-2 py-2">
-                <span>Cart</span>
-                <span id="cartCount" class="bg-primary px-2 py-1 rounded-full text-sm">0</span>
-            </a>
-        </div>
-    </div>
+    <div id="header"></div>
+    <script>
+    fetch('header.html')
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('header').innerHTML = html;
+            
+            // Wait for Auth0 SDK to be available
+            function waitForAuth0() {
+                if (typeof auth0 !== 'undefined') {
+                    var script = document.createElement('script');
+                    script.src = 'header.js';
+                    script.onload = function() {
+                        if (window.setupHeaderAuthListeners) window.setupHeaderAuthListeners();
+                    };
+                    document.body.appendChild(script);
+                } else {
+                    setTimeout(waitForAuth0, 100);
+                }
+            }
+            waitForAuth0();
+        });
+    </script>
 
     <!-- Main Content -->
-    <main class="pt-[60px]">
+    <main class="pt-32">
         <!-- Hero Section -->
         <section class="px-4 py-8">
             <h1 class="text-4xl font-bold mb-4">
@@ -151,20 +150,7 @@
     </main>
 
     <script>
-        // Mobile menu functionality
-        const menuBtn = document.getElementById('menuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                mobileMenu.classList.remove('active');
-            }
-        });
+        // Mobile menu functionality is now handled by the dynamic header
     </script>
 </body>
 </html> 
