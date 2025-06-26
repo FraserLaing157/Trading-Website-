@@ -36,6 +36,13 @@ function setSession(authResult) {
 
 function isAuthenticated() {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at') || '0');
+    console.log('Auth check:', {
+        access_token: localStorage.getItem('access_token'),
+        id_token: localStorage.getItem('id_token'),
+        expiresAt,
+        now: new Date().getTime(),
+        valid: new Date().getTime() < expiresAt
+    });
     return new Date().getTime() < expiresAt;
 }
 
@@ -44,17 +51,28 @@ function updateAuthUI() {
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const profileLink = document.getElementById('profileLink');
+    const profileEmail = document.getElementById('profileEmail');
+    
+    console.log('updateAuthUI called - authenticated:', authenticated);
+    console.log('Found elements - loginBtn:', !!loginBtn, 'logoutBtn:', !!logoutBtn, 'profileLink:', !!profileLink, 'profileEmail:', !!profileEmail);
     
     if (loginBtn) loginBtn.style.display = !authenticated ? 'block' : 'none';
     if (logoutBtn) logoutBtn.style.display = authenticated ? 'block' : 'none';
-    if (profileLink) profileLink.style.display = authenticated ? 'block' : 'none';
     
-    if (authenticated && profileLink) {
-        auth0Client.client.userInfo(localStorage.getItem('access_token'), (err, user) => {
-            if (!err && user) {
-                profileLink.textContent = user.email || 'Profile';
-            }
-        });
+    if (profileLink) {
+        if (authenticated) {
+            profileLink.style.display = 'block';
+            profileLink.textContent = 'Profile';
+            profileLink.href = 'profile.html';
+            if (profileEmail) profileEmail.style.display = 'none';
+            // No tooltip logic needed, email will be on profile page
+        } else {
+            profileLink.style.display = 'none';
+            profileLink.textContent = '';
+            if (profileEmail) profileEmail.style.display = 'none';
+        }
+    } else {
+        console.log('Profile link element not found!');
     }
 }
 
@@ -129,10 +147,10 @@ function setupHeaderAuthListeners() {
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const profileLink = document.getElementById('profileLink');
+    const profileEmail = document.getElementById('profileEmail');
     
     if (loginBtn) loginBtn.onclick = login;
     if (logoutBtn) logoutBtn.onclick = logout;
-    if (profileLink) profileLink.onclick = function(e) { e.preventDefault(); };
     
     // Highlight active nav link
     const path = window.location.pathname;
