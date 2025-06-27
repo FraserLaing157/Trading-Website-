@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Token Shop - Cryptotech X</title>
+    <title>Token Shop - MILLISTRAT</title>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,9 +14,9 @@
     <!-- Auth0 SDK -->
     <script src="https://cdn.auth0.com/js/auth0/9.20.2/auth0.min.js"></script>
     <script src="ticker.js"></script>
+    <script src="cart.js"></script>
     
     <!-- Other scripts -->
-    <script src="cart.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -740,7 +740,7 @@
                             <path d="M8 32H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             <path d="M50 32H56" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
-                        <span class="text-xl font-semibold tracking-tight gradient-text">Cryptotech X</span>
+                        <span class="text-xl font-semibold tracking-tight gradient-text">MILLISTRAT</span>
                     </a>
                     <p class="text-gray-400">Building the future of crypto trading.</p>
                 </div>
@@ -766,7 +766,7 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Contact</h3>
                     <ul class="space-y-3">
-                        <li class="text-gray-400">support@cryptotechx.com</li>
+                        <li class="text-gray-400">support@millistrat.com</li>
                         <li class="text-gray-400">+1 (888) 888-8888</li>
                     </ul>
                 </div>
@@ -774,7 +774,7 @@
         </div>
         
         <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
-            <p>&copy; 2024 Cryptotech X. All rights reserved.</p>
+            <p>&copy; 2024 MILLISTRAT. All rights reserved.</p>
         </div>
     </footer>
 
@@ -886,7 +886,7 @@
 
                 const selectedPackage = packageDetails[packageType];
                 
-                // Add package to cart using centralized function
+                // Add package to cart
                 addToCart({
                     type: 'subscription',
                     package: packageType,
@@ -895,9 +895,9 @@
                     candles: selectedPackage.candles
                 });
                 
-                // Show success message and redirect to cart
+                // Show success message
                 const toast = document.createElement('div');
-                toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-500 translate-y-full';
+                toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-500 translate-y-full z-50';
                 toast.innerHTML = `Added ${selectedPackage.name.replace(' Package', '')} Package to cart!`;
                 document.body.appendChild(toast);
                 
@@ -906,7 +906,7 @@
                     toast.style.transform = 'translateY(0)';
                 }, 100);
                 
-                // Redirect after a short delay
+                // Redirect to cart after a short delay
                 setTimeout(() => {
                     window.location.href = 'cart.html';
                 }, 1500);
@@ -917,13 +917,10 @@
             }
         }
 
-        // Initialize cart badge on page load
+        // Initialize everything when the DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || { items: [], total: 0 };
-            const cartBadge = document.getElementById('cartCount');
-            if (cartBadge) {
-                cartBadge.textContent = cart.items.length;
-            }
+            detectOS();
+            checkLoginState();
         });
     </script>
 </body>

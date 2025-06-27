@@ -168,4 +168,35 @@ function setupHeaderAuthListeners() {
     updateAuthUI();
 }
 
-window.setupHeaderAuthListeners = setupHeaderAuthListeners; 
+window.setupHeaderAuthListeners = setupHeaderAuthListeners;
+
+// Cart badge update function
+function updateCartBadge() {
+    const cartBadge = document.getElementById('cartCount');
+    if (cartBadge) {
+        let cart = { items: [], total: 0 };
+        try {
+            cart = JSON.parse(localStorage.getItem('cart')) || { items: [], total: 0 };
+        } catch {}
+        cartBadge.textContent = cart.items.length;
+    }
+}
+
+// Call on load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateCartBadge);
+} else {
+    updateCartBadge();
+}
+
+// Listen for cart changes in other tabs
+window.addEventListener('storage', function(e) {
+    if (e.key === 'cart') {
+        updateCartBadge();
+    }
+});
+
+// Also update cart badge when the page/tab regains focus
+window.addEventListener('focus', function() {
+    updateCartBadge();
+}); 
